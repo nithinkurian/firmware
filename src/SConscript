@@ -1,0 +1,2 @@
+VariantDir('../build', '.', duplicate=0)
+Program('main.cpp')
