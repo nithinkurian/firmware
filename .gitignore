@@ -1,3 +1,4 @@
 build/*
 .sconsign.dblite
 tools/scons/scons-local-4.9.1/*
+src/ReferenceProject/Debug/*
