@@ -1,2 +1,28 @@
-VariantDir('../build', '.', duplicate=0)
-Program('main.cpp')
+
+import os
+env = Environment(ENV={'PATH': os.environ['PATH']})
+env.VariantDir('../build', '.', duplicate=0)
+env['CC'] = 'arm-none-eabi-gcc'
+env.Append(CFLAGS='-c')
+env.Append(CFLAGS='-mcpu=cortex-m7')
+env.Append(CFLAGS='-mthumb')
+env.Append(CFLAGS='-mfloat-abi=soft')
+env.Append(CFLAGS='-std=gnu11')
+env.Append(CFLAGS='-Wall')
+env.Append(CFLAGS='-O0')
+
+
+env.Append(CPPPATH='#src/')
+
+env.Append(LINKFLAGS='-mcpu=cortex-m7')
+env.Append(LINKFLAGS='-mthumb')
+env.Append(LINKFLAGS='-mfloat-abi=soft')
+env.Append(LINKFLAGS='--specs=nano.specs')
+env.Append(LINKFLAGS='-T src/stm32_ls.ld')
+env.Append(LINKFLAGS='-Wl,-Map=build/src/final.map')
+
+source_files = []
+source_files.append('main.c')
+source_files.append('stm32_startup.c')
+source_files.append('syscalls.c')
+env.Program('main.elf',source_files)
