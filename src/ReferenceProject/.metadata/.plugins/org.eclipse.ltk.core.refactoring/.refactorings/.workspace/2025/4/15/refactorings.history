@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Delete resource &apos;CubeIDEBased&apos;" deleteContents="false" description="Delete resource &apos;CubeIDEBased&apos;" element1="/CubeIDEBased" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1744129126639"/>&#x0A;<refactoring comment="Delete resource &apos;STM32H743ZI_Project&apos;" deleteContents="false" description="Delete resource &apos;STM32H743ZI_Project&apos;" element1="/STM32H743ZI_Project" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1744129246412"/>
+</session>
