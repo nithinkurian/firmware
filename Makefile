@@ -26,5 +26,7 @@ $(DST_DIR)/firmware.elf: $(DST_DIR)/$(SRC_DIR)/main.o $(DST_DIR)/$(SRC_DIR)/stm3
 clean:
 	rm -rf $(DST_DIR)/*.o $(DST_DIR)/*.elf $(DST_DIR)/*.map $(DST_DIR)/$(SRC_DIR)/*.o $(DST_DIR)/$(SRC_DIR)/*.elf
 	
-load:
+openocd:
 	openocd -f board/st_nucleo_h743zi.cfg
+load:
+	arm-none-eabi-gdb --command=flash_make.gdb

@@ -2,10 +2,8 @@ ToDo
 ------------	
 version control :git
 build system 	: scons,make
-
-- build using make
-- build same using scons
-
+	make  :make
+	scons :./build.sh
 - automate loading
 	make load 
 	gdb commands
