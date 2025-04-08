@@ -1,4 +1,4 @@
-11:43:30 **** Incremental Build of configuration Debug for project CubeIDEBased ****
+18:33:05 **** Incremental Build of configuration Debug for project CubeIDEBased ****
 make -j8 all 
 arm-none-eabi-gcc "../main.c" -mcpu=cortex-m7 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32H743xx -c -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"main.d" -MT"main.o" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "main.o"
 arm-none-eabi-gcc -o "CubeIDEBased.elf" @"objects.list"   -mcpu=cortex-m7 -T"/home/sera/MEGAsync/MYDOC/AmazingProject/src/ReferenceProject/CubeIDEBased/STM32H743ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="CubeIDEBased.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
@@ -15,11 +15,11 @@ Finished building target: CubeIDEBased.elf
 arm-none-eabi-size  CubeIDEBased.elf 
 arm-none-eabi-objdump -h -S CubeIDEBased.elf  > "CubeIDEBased.list"
    text	   data	    bss	    dec	    hex	filename
-   1184	      8	   1568	   2760	    ac8	CubeIDEBased.elf
+   1192	      8	   1568	   2768	    ad0	CubeIDEBased.elf
 Finished building: default.size.stdout
  
 Finished building: CubeIDEBased.list
  
 
-11:43:31 Build Finished. 0 errors, 4 warnings. (took 1s.48ms)
+18:33:06 Build Finished. 0 errors, 4 warnings. (took 941ms)
 

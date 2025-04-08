@@ -86,3 +86,33 @@ Command-line arguments:  -data /home/sera/MEGAsync/MYDOC/AmazingProject/src/Refe
 
 !ENTRY com.st.stm32cube.common.projectcreation 4 0 2025-04-08 11:43:30.830
 !MESSAGE Project is null
+
+!ENTRY org.eclipse.core.resources 4 77 2025-04-08 18:33:05.868
+!MESSAGE Invalid project description.
+!SUBENTRY 1 unknown 0 0 2025-04-08 18:33:05.869
+!MESSAGE OK
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2025-04-08 18:33:05.869
+!MESSAGE /home/sera/MEGAsync/MYDOC/AmazingProject/src/ReferenceProject/CubeIDEBased overlaps the location of another project: 'CubeIDEBased'
+
+!ENTRY com.st.stm32cube.common.projectcreation 4 0 2025-04-08 18:33:05.869
+!MESSAGE Project is null
+
+!ENTRY org.eclipse.core.resources 4 77 2025-04-08 18:33:05.921
+!MESSAGE Invalid project description.
+!SUBENTRY 1 unknown 0 0 2025-04-08 18:33:05.922
+!MESSAGE OK
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2025-04-08 18:33:05.922
+!MESSAGE /home/sera/MEGAsync/MYDOC/AmazingProject/src/ReferenceProject/CubeIDEBased overlaps the location of another project: 'CubeIDEBased'
+
+!ENTRY com.st.stm32cube.common.projectcreation 4 0 2025-04-08 18:33:05.922
+!MESSAGE Project is null
+
+!ENTRY org.eclipse.core.resources 4 77 2025-04-08 19:22:45.436
+!MESSAGE Invalid project description.
+!SUBENTRY 1 unknown 0 0 2025-04-08 19:22:45.436
+!MESSAGE OK
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2025-04-08 19:22:45.436
+!MESSAGE /home/sera/MEGAsync/MYDOC/AmazingProject/src/ReferenceProject/CubeIDEBased overlaps the location of another project: 'CubeIDEBased'
+
+!ENTRY com.st.stm32cube.common.projectcreation 4 0 2025-04-08 19:22:45.436
+!MESSAGE Project is null
