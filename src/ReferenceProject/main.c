@@ -12,23 +12,29 @@ int main(void)
 
 	while (1)
 	{
+		gpio_clear_pin(0);
 		delay();
 
-		gpio_clear_pin(0);
 		gpio_clear_pin(7);
-		gpio_clear_pin(14);
+		delay();
 
+		gpio_clear_pin(14);
 		delay();
 
 		gpio_set_pin(0);
+		delay();
+
 		gpio_set_pin(7);
+		delay();
+
 		gpio_set_pin(14);
+		delay();
 	}
 }
 
 void delay()
 {
-	uint32_t delay_count = 1000000;
+	uint32_t delay_count = 10000000;
 	while (delay_count--);
 }
 
