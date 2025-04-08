@@ -1,7 +1,8 @@
 
 import os
 env = Environment(ENV={'PATH': os.environ['PATH']})
-env.VariantDir('../build', '.', duplicate=0)
+#env.Execute(Mkdir('build/scons/'))
+env.VariantDir('build/scons/', '.', duplicate=0)
 env['CC'] = 'arm-none-eabi-gcc'
 env.Append(CFLAGS='-c')
 env.Append(CFLAGS='-mcpu=cortex-m7')
@@ -19,10 +20,10 @@ env.Append(LINKFLAGS='-mthumb')
 env.Append(LINKFLAGS='-mfloat-abi=soft')
 env.Append(LINKFLAGS='--specs=nano.specs')
 env.Append(LINKFLAGS='-T src/stm32_ls.ld')
-env.Append(LINKFLAGS='-Wl,-Map=build/src/final.map')
+env.Append(LINKFLAGS='-Wl,-Map=build/scons/firmware.map')
 
 source_files = []
-source_files.append('main.c')
-source_files.append('stm32_startup.c')
-source_files.append('syscalls.c')
-env.Program('main.elf',source_files)
+source_files.append('src/main.c')
+source_files.append('src/stm32_startup.c')
+source_files.append('src/syscalls.c')
+env.Program('firmware.elf',source_files)
