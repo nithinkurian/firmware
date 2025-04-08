@@ -1,0 +1,88 @@
+!SESSION 2025-04-08 11:41:48.775 -----------------------------------------------
+eclipse.buildId=Version 1.14.0
+java.version=17.0.8.1
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_IN
+Command-line arguments:  -data /home/sera/MEGAsync/MYDOC/AmazingProject/src/ReferenceProject -os linux -ws gtk -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2025-04-08 11:41:55.626
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2025-04-08 11:41:55.627
+!MESSAGE Log4j2 initialized with config file /home/sera/MEGAsync/MYDOC/AmazingProject/src/ReferenceProject/.metadata/.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2025-04-08 11:41:59.677
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.cdt.core 1 0 2025-04-08 11:42:50.960
+!MESSAGE Indexed 'CubeIDEBased' (1 sources, 7 headers) in 0.496 sec: 91 declarations; 363 references; 0 unresolved inclusions; 0 syntax errors; 0 unresolved names (0%)
+
+!ENTRY org.eclipse.core.resources 4 77 2025-04-08 11:42:51.594
+!MESSAGE Invalid project description.
+!SUBENTRY 1 unknown 0 0 2025-04-08 11:42:51.594
+!MESSAGE OK
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2025-04-08 11:42:51.594
+!MESSAGE /home/sera/MEGAsync/MYDOC/AmazingProject/src/ReferenceProject/CubeIDEBased overlaps the location of another project: 'CubeIDEBased'
+
+!ENTRY com.st.stm32cube.common.projectcreation 4 0 2025-04-08 11:42:51.595
+!MESSAGE Project is null
+
+!ENTRY org.eclipse.core.resources 4 77 2025-04-08 11:42:54.382
+!MESSAGE Invalid project description.
+!SUBENTRY 1 unknown 0 0 2025-04-08 11:42:54.382
+!MESSAGE OK
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2025-04-08 11:42:54.382
+!MESSAGE /home/sera/MEGAsync/MYDOC/AmazingProject/src/ReferenceProject/CubeIDEBased overlaps the location of another project: 'CubeIDEBased'
+
+!ENTRY com.st.stm32cube.common.projectcreation 4 0 2025-04-08 11:42:54.383
+!MESSAGE Project is null
+
+!ENTRY org.eclipse.core.resources 4 77 2025-04-08 11:43:02.390
+!MESSAGE Invalid project description.
+!SUBENTRY 1 unknown 0 0 2025-04-08 11:43:02.390
+!MESSAGE OK
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2025-04-08 11:43:02.390
+!MESSAGE /home/sera/MEGAsync/MYDOC/AmazingProject/src/ReferenceProject/CubeIDEBased overlaps the location of another project: 'CubeIDEBased'
+
+!ENTRY com.st.stm32cube.common.projectcreation 4 0 2025-04-08 11:43:02.390
+!MESSAGE Project is null
+
+!ENTRY org.eclipse.core.resources 4 77 2025-04-08 11:43:12.867
+!MESSAGE Invalid project description.
+!SUBENTRY 1 unknown 0 0 2025-04-08 11:43:12.867
+!MESSAGE OK
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2025-04-08 11:43:12.867
+!MESSAGE /home/sera/MEGAsync/MYDOC/AmazingProject/src/ReferenceProject/CubeIDEBased overlaps the location of another project: 'CubeIDEBased'
+
+!ENTRY com.st.stm32cube.common.projectcreation 4 0 2025-04-08 11:43:12.868
+!MESSAGE Project is null
+
+!ENTRY org.eclipse.core.resources 4 77 2025-04-08 11:43:12.900
+!MESSAGE Invalid project description.
+!SUBENTRY 1 unknown 0 0 2025-04-08 11:43:12.900
+!MESSAGE OK
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2025-04-08 11:43:12.900
+!MESSAGE /home/sera/MEGAsync/MYDOC/AmazingProject/src/ReferenceProject/CubeIDEBased overlaps the location of another project: 'CubeIDEBased'
+
+!ENTRY com.st.stm32cube.common.projectcreation 4 0 2025-04-08 11:43:12.901
+!MESSAGE Project is null
+
+!ENTRY org.eclipse.core.resources 4 77 2025-04-08 11:43:29.201
+!MESSAGE Invalid project description.
+!SUBENTRY 1 unknown 0 0 2025-04-08 11:43:29.201
+!MESSAGE OK
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2025-04-08 11:43:29.201
+!MESSAGE /home/sera/MEGAsync/MYDOC/AmazingProject/src/ReferenceProject/CubeIDEBased overlaps the location of another project: 'CubeIDEBased'
+
+!ENTRY com.st.stm32cube.common.projectcreation 4 0 2025-04-08 11:43:29.202
+!MESSAGE Project is null
+
+!ENTRY org.eclipse.core.resources 4 77 2025-04-08 11:43:30.829
+!MESSAGE Invalid project description.
+!SUBENTRY 1 unknown 0 0 2025-04-08 11:43:30.829
+!MESSAGE OK
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2025-04-08 11:43:30.829
+!MESSAGE /home/sera/MEGAsync/MYDOC/AmazingProject/src/ReferenceProject/CubeIDEBased overlaps the location of another project: 'CubeIDEBased'
+
+!ENTRY com.st.stm32cube.common.projectcreation 4 0 2025-04-08 11:43:30.830
+!MESSAGE Project is null
