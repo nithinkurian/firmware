@@ -18,16 +18,18 @@ env.Append(LINKFLAGS='-mcpu=cortex-m7')
 env.Append(LINKFLAGS='-mthumb')
 env.Append(LINKFLAGS='-mfloat-abi=soft')
 env.Append(LINKFLAGS='--specs=nano.specs')
-env.Append(LINKFLAGS='-T src/stm32_ls.ld')
-env.Append(LINKFLAGS='-Wl,-Map=build/scons/firmware.map')
+env.Append(LINKFLAGS='-T src/bsp/stm32h743_nucleo/stm32_ls.ld')
+env.Append(LINKFLAGS='-Wl,-Map=build/scons/stm32h743_nucleo/firmware.map')
 
-env.Append(CPPPATH=['src/include','src/bsp/include'])
+env.Append(CPPPATH=['include','bsp/include'])
 
 source_files = []
-source_files.append('src/main.c')
-source_files.append('src/stm32_startup.c')
-source_files.append('src/syscalls.c')
-source_files.append('src/led.c')
-source_files.append('src/bsp/stm32h743_nucleo/hal_gpio.c')
-source_files.append('src/bsp/stm32h743_nucleo/hal_cpu.c')
-env.Program('firmware.elf',source_files)
+source_files.append('main.c')
+source_files.append('led.c')
+
+hal_source_files = []
+hal_source_files.append('bsp/stm32h743_nucleo/stm32_startup.c')
+hal_source_files.append('bsp/stm32h743_nucleo/syscalls.c')
+hal_source_files.append('bsp/stm32h743_nucleo/hal_gpio.c')
+hal_source_files.append('bsp/stm32h743_nucleo/hal_cpu.c')
+env.Program('firmware.elf',source_files + hal_source_files)
