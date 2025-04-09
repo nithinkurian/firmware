@@ -1,8 +1,8 @@
-
 import os
 env = Environment(ENV={'PATH': os.environ['PATH']})
 #env.Execute(Mkdir('build/scons/'))
 env.VariantDir('build/scons/', '.', duplicate=0)
+target = 'stm32h743_nucleo'
 env['CC'] = 'arm-none-eabi-gcc'
 env.Append(CFLAGS='-c')
 env.Append(CFLAGS='-mcpu=cortex-m7')
@@ -18,8 +18,8 @@ env.Append(LINKFLAGS='-mcpu=cortex-m7')
 env.Append(LINKFLAGS='-mthumb')
 env.Append(LINKFLAGS='-mfloat-abi=soft')
 env.Append(LINKFLAGS='--specs=nano.specs')
-env.Append(LINKFLAGS='-T src/bsp/stm32h743_nucleo/stm32_ls.ld')
-env.Append(LINKFLAGS='-Wl,-Map=build/scons/stm32h743_nucleo/firmware.map')
+env.Append(LINKFLAGS='-T src/bsp/'+target+'/stm32_ls.ld')
+env.Append(LINKFLAGS='-Wl,-Map=build/scons/'+target+'/firmware.map')
 
 env.Append(CPPPATH=['include','bsp/include'])
 
@@ -28,8 +28,8 @@ source_files.append('main.c')
 source_files.append('led.c')
 
 hal_source_files = []
-hal_source_files.append('bsp/stm32h743_nucleo/stm32_startup.c')
-hal_source_files.append('bsp/stm32h743_nucleo/syscalls.c')
-hal_source_files.append('bsp/stm32h743_nucleo/hal_gpio.c')
-hal_source_files.append('bsp/stm32h743_nucleo/hal_cpu.c')
+hal_source_files.append('bsp/'+target+'/stm32_startup.c')
+hal_source_files.append('bsp/'+target+'/syscalls.c')
+hal_source_files.append('bsp/'+target+'/hal_gpio.c')
+hal_source_files.append('bsp/'+target+'/hal_cpu.c')
 env.Program('firmware.elf',source_files + hal_source_files)

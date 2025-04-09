@@ -16,7 +16,7 @@ void gpio_clear_pin(uint16_t value)
 	set_gpio_port_b_reg((1 << value) << 16);
 }
 
-void GPIO_Init(void)
+void gpio_init(void)
 {
 	//empty
 }

@@ -3,7 +3,7 @@
 
 void led_init()
 {
-	GPIO_Init();
+	gpio_init();
 }
 
 void turn_on_led(led_t led)
