@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include "hal_cpu.h"
 #include "led.h"
 
 void delay();
@@ -46,7 +47,7 @@ void Error_Handler(void)
 {
 	/* USER CODE BEGIN Error_Handler_Debug */
 	/* User can add his own implementation to report the HAL error return state */
-	__asm volatile ("cpsid i" : : : "memory");
+	__disable_irq();
 	while (1) {
 	}
 	/* USER CODE END Error_Handler_Debug */

@@ -7,7 +7,10 @@ build system 	: scons,make
 - automate loading using gdb
 
 Abstraction with HAL
+may be qemu
+freertos simulator
 Event driven pc testing
+
 UART intergration
 Serial Protocol for communication to PC
 bootloader over UART
