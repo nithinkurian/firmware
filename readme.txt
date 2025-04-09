@@ -7,10 +7,22 @@ build system 	: scons,make
 - automate loading using gdb
 Abstraction with HAL
 x86 version also
+clock/clock init
+
+continue udemy m3m4
+custom rtos
+target dll
+
+freertos
+timer 
+UART
+I2C
+SPI
+USB
+pc test
 may be qemu
 freertos simulator
 Event driven pc testing
-
 UART intergration
 Serial Protocol for communication to PC
 bootloader over UART
