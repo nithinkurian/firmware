@@ -12,6 +12,8 @@ elif [[ "$1" = "openocd" ]]; then
 openocd -f board/st_nucleo_h743zi.cfg
 elif [[ "$1" = "load" ]]; then
 arm-none-eabi-gdb --command=flash_scons.gdb
+elif [[ "$1" = "run" ]]; then
+./build/scons/x86_64/firmware_x86.elf 
 else
 $PYTHON $SCONS -Q
 fi

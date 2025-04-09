@@ -18,4 +18,4 @@ source_files.append('led.c')
 hal_source_files = []
 hal_source_files.append('bsp/'+target+'/hal_gpio.c')
 hal_source_files.append('bsp/'+target+'/hal_cpu.c')
-env.Program('firmware.elf',source_files + hal_source_files)
+env.Program('firmware_x86.elf',source_files + hal_source_files)
