@@ -5,8 +5,8 @@ build system 	: scons,make
 - build using make
 - build same using scons
 - automate loading using gdb
-
 Abstraction with HAL
+x86 version also
 may be qemu
 freertos simulator
 Event driven pc testing
