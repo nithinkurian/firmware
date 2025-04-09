@@ -357,8 +357,176 @@ uint32_t vectors[] __attribute__ ((section (".isr-vector"))) = {
 	(uint32_t)WKUP_IRQHandler     
 }; 
 
+#define FLASH_ACR_LATENCY_7WS                (0x00000007UL)
+#define FLASH_LATENCY_DEFAULT                FLASH_ACR_LATENCY_7WS 
+#define FLASH_ACR_LATENCY_Pos                (0U)
+#define FLASH_ACR_LATENCY_Msk                (0xFUL << FLASH_ACR_LATENCY_Pos)  /*!< 0x0000000F: bit4 is kept only for legacy purpose */
+#define FLASH_ACR_LATENCY                    FLASH_ACR_LATENCY_Msk             /*!< Read Latency */
+
+#define RCC_CR_HSION_Pos                       (0U)
+#define RCC_CR_HSION_Msk                       (0x1UL << RCC_CR_HSION_Pos)     /*!< 0x00000001 */
+#define RCC_CR_HSION                           RCC_CR_HSION_Msk                /*!< Internal High Speed clock enable */
+
+void SystemInit (void)
+{
+// #if defined (DATA_IN_D2_SRAM)
+//  __IO uint32_t tmpreg;
+// #endif /* DATA_IN_D2_SRAM */
+
+  /* FPU settings ------------------------------------------------------------*/
+  //#if (__FPU_PRESENT == 1) && (__FPU_USED == 1)
+    
+    *((volatile uint32_t*)0xE000ED88UL) |= ((3UL << (10*2))|(3UL << (11*2)));  /* set CP10 and CP11 Full Access */
+    //SCB->CPACR |= ((3UL << (10*2))|(3UL << (11*2)));  /* set CP10 and CP11 Full Access */
+  //#endif
+  /* Reset the RCC clock configuration to the default reset state ------------*/
+
+   /* Increasing the CPU frequeny */
+  if(FLASH_LATENCY_DEFAULT  > (*((volatile uint32_t*)0x52002000UL) | FLASH_ACR_LATENCY))
+  //if(FLASH_LATENCY_DEFAULT  > (READ_BIT((FLASH->ACR), FLASH_ACR_LATENCY)))
+  {
+    /* Program the new number of wait states to the LATENCY bits in the FLASH_ACR register */
+    *((volatile uint32_t*)0x52002000UL) = (*((volatile uint32_t*)0x52002000UL) & (~(FLASH_ACR_LATENCY))) | (FLASH_LATENCY_DEFAULT);
+    //MODIFY_REG(FLASH->ACR, FLASH_ACR_LATENCY, (uint32_t)(FLASH_LATENCY_DEFAULT));
+  }
+
+  /* Set HSION bit */
+ *((volatile uint32_t*)0x58024400UL)|= RCC_CR_HSION;
+  //RCC->CR |= RCC_CR_HSION;
+
+  /* Reset CFGR register */
+ *((volatile uint32_t*)0x58024410UL) = 0x00000000;
+  //RCC->CFGR = 0x00000000;
+
+  /* Reset HSEON, HSECSSON, CSION, HSI48ON, CSIKERON, PLL1ON, PLL2ON and PLL3ON bits */
+ *((volatile uint32_t*)0x58024400UL) &= 0xEAF6ED7FU;
+  //RCC->CR &= 0xEAF6ED7FU;
+
+   /* Decreasing the number of wait states because of lower CPU frequency */
+  if(FLASH_LATENCY_DEFAULT  < (*((volatile uint32_t*)0x52002000UL) | FLASH_ACR_LATENCY))
+  //if(FLASH_LATENCY_DEFAULT  < (READ_BIT((FLASH->ACR), FLASH_ACR_LATENCY)))
+  {
+    *((volatile uint32_t*)0x52002000UL) = (*((volatile uint32_t*)0x52002000UL) & (~(FLASH_ACR_LATENCY))) | (FLASH_LATENCY_DEFAULT);
+    /* Program the new number of wait states to the LATENCY bits in the FLASH_ACR register */
+    //MODIFY_REG(FLASH->ACR, FLASH_ACR_LATENCY, (uint32_t)(FLASH_LATENCY_DEFAULT));
+  }
+
+// #if defined(D3_SRAM_BASE)
+  /* Reset D1CFGR register */
+  *((volatile uint32_t*)0x58024418UL)= 0x00000000;
+  //RCC->D1CFGR = 0x00000000;
+
+  /* Reset D2CFGR register */
+  *((volatile uint32_t*)0x5802441CUL) = 0x00000000;
+  //RCC->D2CFGR = 0x00000000;
+
+  /* Reset D3CFGR register */
+  *((volatile uint32_t*)0x58024420UL) = 0x00000000;
+  //RCC->D3CFGR = 0x00000000;
+// #else
+//   /* Reset CDCFGR1 register */
+//   RCC->CDCFGR1 = 0x00000000;
+
+//   /* Reset CDCFGR2 register */
+//   RCC->CDCFGR2 = 0x00000000;
+
+//   /* Reset SRDCFGR register */
+//   RCC->SRDCFGR = 0x00000000;
+// #endif
+  /* Reset PLLCKSELR register */
+  *((volatile uint32_t*)0x58024428UL) = 0x02020200;
+  //RCC->PLLCKSELR = 0x02020200;
+
+  /* Reset PLLCFGR register */
+  *((volatile uint32_t*)0x5802442CUL) = 0x01FF0000;
+  //RCC->PLLCFGR = 0x01FF0000;
+  /* Reset PLL1DIVR register */
+  *((volatile uint32_t*)0x58024430UL) = 0x01010280;
+  //RCC->PLL1DIVR = 0x01010280;
+  /* Reset PLL1FRACR register */
+  *((volatile uint32_t*)0x58024434UL) = 0x00000000;
+  //RCC->PLL1FRACR = 0x00000000;
+
+  /* Reset PLL2DIVR register */
+  *((volatile uint32_t*)0x58024438UL) = 0x01010280;
+  //RCC->PLL2DIVR = 0x01010280;
+
+  /* Reset PLL2FRACR register */
+  *((volatile uint32_t*)0x5802443CUL) = 0x00000000;
+  //RCC->PLL2FRACR = 0x00000000;
+  /* Reset PLL3DIVR register */
+  *((volatile uint32_t*)0x58024440UL) = 0x01010280;
+  //RCC->PLL3DIVR = 0x01010280;
+
+  /* Reset PLL3FRACR register */
+  *((volatile uint32_t*)0x58024444UL) = 0x00000000;
+  //RCC->PLL3FRACR = 0x00000000;
+
+  /* Reset HSEBYP bit */
+  *((volatile uint32_t*)0x58024400UL)&= 0xFFFBFFFFU;
+  //RCC->CR &= 0xFFFBFFFFU;
+
+  /* Disable all interrupts */
+  *((volatile uint32_t*)0x58024460UL)= 0x00000000;
+  //RCC->CIER = 0x00000000;
+
+//#if (STM32H7_DEV_ID == 0x450UL)
+  /* dual core CM7 or single core line */
+  if((*((volatile uint32_t*)0x5C001000UL) & 0xFFFF0000U) < 0x20000000U)
+  //if((DBGMCU->IDCODE & 0xFFFF0000U) < 0x20000000U)
+  {
+    /* if stm32h7 revY*/
+    /* Change  the switch matrix read issuing capability to 1 for the AXI SRAM target (Target 7) */
+    *((volatile uint32_t*)0x51008108) = 0x000000001U;
+  }
+//#endif
+
+// #if defined (DATA_IN_D2_SRAM)
+//   /* in case of initialized data in D2 SRAM (AHB SRAM) , enable the D2 SRAM clock (AHB SRAM clock) */
+// #if defined(RCC_AHB2ENR_D2SRAM3EN)
+//   RCC->AHB2ENR |= (RCC_AHB2ENR_D2SRAM1EN | RCC_AHB2ENR_D2SRAM2EN | RCC_AHB2ENR_D2SRAM3EN);
+// #elif defined(RCC_AHB2ENR_D2SRAM2EN)
+//   RCC->AHB2ENR |= (RCC_AHB2ENR_D2SRAM1EN | RCC_AHB2ENR_D2SRAM2EN);
+// #else
+//   RCC->AHB2ENR |= (RCC_AHB2ENR_AHBSRAM1EN | RCC_AHB2ENR_AHBSRAM2EN);
+// #endif /* RCC_AHB2ENR_D2SRAM3EN */
+
+//   tmpreg = RCC->AHB2ENR;
+//   (void) tmpreg;
+// #endif /* DATA_IN_D2_SRAM */
+
+// #if defined(DUAL_CORE) && defined(CORE_CM4)
+//   /* Configure the Vector Table location add offset address for cortex-M4 ------------------*/
+// #if defined(USER_VECT_TAB_ADDRESS)
+//   SCB->VTOR = VECT_TAB_BASE_ADDRESS | VECT_TAB_OFFSET; /* Vector Table Relocation in Internal D2 AXI-RAM or in Internal FLASH */
+// #endif /* USER_VECT_TAB_ADDRESS */
+
+// #else
+
+  /*
+   * Disable the FMC bank1 (enabled after reset).
+   * This, prevents CPU speculation access on this bank which blocks the use of FMC during
+   * 24us. During this time the others FMC master (such as LTDC) cannot use it!
+   */
+  *((volatile uint32_t*)0x52004000) =  0x000030D2;
+  //FMC_Bank1_R->BTCR[0] = 0x000030D2;
+
+  /* Configure the Vector Table location -------------------------------------*/
+// #if defined(USER_VECT_TAB_ADDRESS)
+//   SCB->VTOR = VECT_TAB_BASE_ADDRESS | VECT_TAB_OFFSET; /* Vector Table Relocation in Internal D1 AXI-RAM or in Internal FLASH */
+// #endif /* USER_VECT_TAB_ADDRESS */
+
+// #endif /*DUAL_CORE && CORE_CM4*/
+
+}
+
 void Reset_Handler(void)
 {
+    //ldr   sp, =_estack; may not be needed
+    // from c reset handler this may not be proper
+
+    SystemInit();
+
 	//Copy .data section to SRAM
 	uint32_t size = (uint32_t)&_edata - (uint32_t)&_sdata;
 	
