@@ -11,9 +11,8 @@ env.Append(CFLAGS='-mfloat-abi=soft')
 env.Append(CFLAGS='-std=gnu11')
 env.Append(CFLAGS='-Wall')
 env.Append(CFLAGS='-O0')
-
-
-env.Append(CPPPATH='#src/')
+env.Append(CFLAGS='-g3')
+env.Append(CFLAGS='-ggdb')
 
 env.Append(LINKFLAGS='-mcpu=cortex-m7')
 env.Append(LINKFLAGS='-mthumb')
@@ -22,8 +21,12 @@ env.Append(LINKFLAGS='--specs=nano.specs')
 env.Append(LINKFLAGS='-T src/stm32_ls.ld')
 env.Append(LINKFLAGS='-Wl,-Map=build/scons/firmware.map')
 
+env.Append(CPPPATH=['src/BSP/STM32H743'])
+
 source_files = []
 source_files.append('src/main.c')
 source_files.append('src/stm32_startup.c')
 source_files.append('src/syscalls.c')
+source_files.append('src/led.c')
+source_files.append('src/BSP/STM32H743/hal_gpio.c')
 env.Program('firmware.elf',source_files)

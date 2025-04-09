@@ -19,3 +19,4 @@ PC Tool Parameter Viewer Tool
 Wireshark pluggin to sniff
 CI-CD
 MQTT over USB
+debugging microcontroller using gdb, souce file visualization

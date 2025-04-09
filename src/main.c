@@ -1,33 +1,31 @@
 #include <stdint.h>
+#include "led.h"
 
 void delay();
-void gpio_set_pin(uint16_t value);
-void gpio_clear_pin(uint16_t value);
-void GPIO_Init(void);
 
 int main(void)
 {
 
-	GPIO_Init();
+	led_init();
 
 	while (1)
 	{
-		gpio_clear_pin(0);
+		turn_on_led(YELLOW);
 		delay();
 
-		gpio_clear_pin(7);
+		turn_off_led(YELLOW);
 		delay();
 
-		gpio_clear_pin(14);
+		turn_on_led(BLUE);
 		delay();
 
-		gpio_set_pin(0);
+		turn_off_led(BLUE);
 		delay();
 
-		gpio_set_pin(7);
+		turn_on_led(RED);
 		delay();
 
-		gpio_set_pin(14);
+		turn_off_led(RED);
 		delay();
 	}
 }
@@ -38,37 +36,7 @@ void delay()
 	while (delay_count--);
 }
 
-void set_gpio_port_b_reg(uint32_t value)
-{
-	uint32_t *GPIO_PortB_Set_Reset = (uint32_t*) 0x58020418UL;
-	*GPIO_PortB_Set_Reset = value;
-}
 
-void gpio_set_pin(uint16_t value)
-{
-	set_gpio_port_b_reg(1 << value);
-}
-
-void gpio_clear_pin(uint16_t value)
-{
-	set_gpio_port_b_reg((1 << value) << 16);
-}
-
-void GPIO_Init(void)
-{
-	//GPIO Port B clock enable
-	uint32_t *reg = (uint32_t*) 0x580244E0UL;
-	*reg |= 2;
-
-	/*Configure GPIO pin Output Level */
-	gpio_clear_pin(0);
-	gpio_clear_pin(7);
-	gpio_clear_pin(14);
-
-	/* Configure IO Direction mode (Input, Output, Alternate or Analog) */
-	uint32_t *GPIO_PortB_Mode = (uint32_t*) 0x58020400UL;
-	*GPIO_PortB_Mode = (1 << (0 * 2U)) | (1 << (7 * 2U)) | (1 << (14 * 2U));
-}
 
 /**
  * @brief  This function is executed in case of error occurrence.
