@@ -7,7 +7,9 @@ BUILD="./build"
 if [[ "$1" = "clean" ]]; then
 $PYTHON $SCONS -Qc
 elif [[ "$1" = "tree" ]]; then
-tree -I tools/
+tree -I tools/ -I reference_project
+elif [[ "$1" = "treebuild" ]]; then
+tree build -I tools/ -I reference_project -I docs
 elif [[ "$1" = "openocd" ]]; then
 openocd -f board/st_nucleo_h743zi.cfg
 elif [[ "$1" = "load" ]]; then

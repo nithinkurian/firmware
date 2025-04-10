@@ -1,0 +1,84 @@
+OpenOCD GDB Commands
+-----------------------------------------------
+OpenOCD
+make load : Start OpenOCD
+
+https://openocd.org/doc/html/General-Commands.html
+
+-----------------------------------------------
+gdb
+arm-none-eabi-gdb : to start
+
+target remote localhost:3333 : for connecting to Open OCD
+target extended-remote localhost:3333 : for connecting to Open OCD
+
+monitor reset init : to reset
+
+monitor flash write_image erase final.elf
+
+monitor reset halt : to reset and halt immediatly
+
+monitor resume : to resume
+
+monitor halt : to halt
+
+monitor reset : to reset
+
+monitor mdw address length : to read word at address for length
+
+monitor bp address length hw : to set break point at address length hw/sw
+
+monitor rbp address : to remove break point
+
+monitor bp : to list the break points
+
+q : quit
+help <> : for help
+
+monitor arm semihosting enable : to enable semi hosting
+
+shutdown : to quit
+-----------------------------------------------
+telnet
+telnet localhost 4444: to start
+
+
+
+reset init : to reset
+
+flash write_image erase final.elf
+
+reset halt : to reset and halt immediatly
+
+resume : to resume
+
+halt : to halt
+
+reset : to reset
+
+mdw address length : to read word at address for length
+
+bp address length hw : to set break point at address length hw/sw
+
+rbp address : to remove break point
+
+bp : to list the break points
+
+shutdown : quit
+
+arm semihosting enable : to enable semi hosting
+-----------------------------------------------
+>>Terminal 1
+make clean
+make all
+make semi
+make load
+
+>>Terminal 2
+telnet localhost 4444: to start
+reset init    
+flash write_image erase final_sh.elf
+arm semihosting enable              
+reset                               
+shutdown                   
+

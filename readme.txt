@@ -35,3 +35,14 @@ Wireshark pluggin to sniff
 CI-CD
 MQTT over USB
 debugging microcontroller using gdb, souce file visualization
+SWV over commandline
+
+RTOS support : https://en.wikipedia.org/wiki/Comparison_of_real-time_operating_systems
+	custom
+	FreeRTOS
+	μC/OS-III
+	ThreadX
+	Zephyr
+	Mynewt
+OSAL layer is needed
+
