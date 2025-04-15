@@ -32,5 +32,6 @@ hal_source_files = []
 hal_source_files.append('bsp/'+target+'/stm32_startup.c')
 hal_source_files.append('bsp/'+target+'/hal_gpio.c')
 hal_source_files.append('bsp/'+target+'/hal_cpu.c')
+hal_source_files.append('bsp/'+target+'/hal_processor_faults.c')
 
 env.Program('firmware_semi.elf',source_files + hal_source_files)

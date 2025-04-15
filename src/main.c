@@ -4,6 +4,7 @@
 #include "delay.h"
 #include <stdio.h>
 #include "print_colour.h"
+#include "hal_processor_faults.h"
 
 
 #define TICK_HZ				1000U
@@ -15,6 +16,9 @@ int main(void)
 {
 	//Semi hosting init function
 	initialise_monitor_handles();
+
+	//enabling processor faults
+	enable_processor_faults();
 	
 	//Initialize systick
 	init_systick_timer(TICK_HZ);

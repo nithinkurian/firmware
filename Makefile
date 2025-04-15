@@ -44,13 +44,20 @@ $(HAL_DST_DIR)/hal_cpu.o: $(HAL_SRC_DIR)/hal_cpu.c
 	mkdir -p $(HAL_DST_DIR)
 	$(CC) $(CFLAGS) -o $@ $^
 
+$(HAL_DST_DIR)/hal_processor_faults.o: $(HAL_SRC_DIR)/hal_processor_faults.c
+	mkdir -p $(HAL_DST_DIR)
+	$(CC) $(CFLAGS) -o $@ $^
+
+
 $(DST_DIR)/firmware.elf: $(DST_DIR)/main.o $(HAL_DST_DIR)/stm32_startup.o $(HAL_DST_DIR)/syscalls.o $(DST_DIR)/led.o \
-						 $(DST_DIR)/delay.o $(HAL_DST_DIR)/hal_gpio.o $(HAL_DST_DIR)/hal_cpu.o					 
+						 $(DST_DIR)/delay.o $(HAL_DST_DIR)/hal_gpio.o $(HAL_DST_DIR)/hal_cpu.o		\
+						 $(HAL_DST_DIR)/hal_processor_faults.o			 
 	mkdir -p $(DST_DIR)
 	$(CC) $(LDFLAGS) -o $@ $^
 
 $(DST_DIR)/firmware_semi.elf: $(DST_DIR)/main.o $(HAL_DST_DIR)/stm32_startup.o $(DST_DIR)/led.o \
-						 $(DST_DIR)/delay.o $(HAL_DST_DIR)/hal_gpio.o $(HAL_DST_DIR)/hal_cpu.o						 
+						 $(DST_DIR)/delay.o $(HAL_DST_DIR)/hal_gpio.o $(HAL_DST_DIR)/hal_cpu.o	\
+						 $(HAL_DST_DIR)/hal_processor_faults.o					 
 	mkdir -p $(DST_DIR)
 	$(CC) $(LDFLAGS_SEMI) -o $@ $^
 
