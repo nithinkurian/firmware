@@ -1,41 +1,20 @@
 import os
-env = Environment(ENV={'PATH': os.environ['PATH']})
-#env.Execute(Mkdir('build/scons/'))
-env.VariantDir('build/scons/', '.', duplicate=0)
-target = 'stm32h743_nucleo'
-env['CC'] = 'arm-none-eabi-gcc'
-env.Append(CFLAGS='-c')
-env.Append(CFLAGS='-mcpu=cortex-m7')
-env.Append(CFLAGS='-mthumb')
-env.Append(CFLAGS='-mfloat-abi=soft')
-env.Append(CFLAGS='-std=gnu11')
-env.Append(CFLAGS='-Wall')
-env.Append(CFLAGS='-O0')
-env.Append(CFLAGS='-g3')
-env.Append(CFLAGS='-ggdb')
+from Environments import *
+#from common_source import *
 
-env.Append(LINKFLAGS='-mcpu=cortex-m7')
-env.Append(LINKFLAGS='-mthumb')
-env.Append(LINKFLAGS='-mfloat-abi=soft')
+env = get_stm32_env()
+
+env.Append(BOARD='stm32h743_nucleo')
 env.Append(LINKFLAGS='--specs=nano.specs')
-env.Append(LINKFLAGS='-T src/bsp/'+target+'/stm32_ls.ld')
-env.Append(LINKFLAGS='-Wl,-Map=build/scons/'+target+'/firmware.map')
+env.Append(LINKFLAGS='-T src/bsp/'+'${BOARD}'+'/stm32_ls.ld')
+env.Append(LINKFLAGS='-Wl,-Map=build/scons/'+'${BOARD}'+'/firmware.map')
 
 env.Append(CPPPATH=['include','bsp/include'])
 
-source_files = []
-source_files.append('main.c')
-source_files.append('led.c')
-source_files.append('delay.c')
+source = SConscript('#common_source.py', exports='env')
+source.append('bsp/'+'${BOARD}'+'/stm32_startup.c')
+source.append('bsp/'+'${BOARD}'+'/syscalls.c')
 
-hal_source_files = []
-hal_source_files.append('bsp/'+target+'/stm32_startup.c')
-hal_source_files.append('bsp/'+target+'/syscalls.c')
-hal_source_files.append('bsp/'+target+'/hal_gpio.c')
-hal_source_files.append('bsp/'+target+'/hal_cpu.c')
-hal_source_files.append('bsp/'+target+'/hal_processor_faults.c')
-hal_source_files.append('bsp/'+target+'/hal_processor_faults_test.c')
-
-firmware = env.Program('firmware.elf',source_files + hal_source_files)
+firmware = env.Program('firmware.elf',source)
 env.SideEffect('firmware.map', firmware)
 env.Command(target='firmware.list',source='firmware.elf', action=['arm-none-eabi-objdump -h -S $SOURCE > $TARGET'])

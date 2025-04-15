@@ -2,3 +2,5 @@ build/*
 .sconsign.dblite
 tools/scons/scons-local-4.9.1/*
 src/ReferenceProject/Debug/*
+/site_scons/__pycache__/Environments.cpython-310.pyc
+/__pycache__/common_source.cpython-310.pyc

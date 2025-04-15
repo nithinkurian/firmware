@@ -11,13 +11,13 @@ HAL_DST_DIR=$(DST_DIR)/$(HAL_DIR)
 
 CFLAGS= -c -mcpu=$(MACH) -mthumb -mfloat-abi=soft -std=gnu11 -Wall -O0 -g3 -ggdb -Isrc/include -I$(HAL_INC_DIR)
 LDFLAGS= -mcpu=$(MACH) -mthumb -mfloat-abi=soft --specs=nano.specs -T $(HAL_SRC_DIR)/stm32_ls.ld -Wl,-Map=$(DST_DIR)/firmware.map
-LDFLAGS_SEMI= -mcpu=$(MACH) -mthumb -mfloat-abi=soft --specs=rdimon.specs -T $(HAL_SRC_DIR)/stm32_ls.ld -Wl,-Map=$(DST_DIR_SEMI)/firmware_semi.map
+LDFLAGS_SEMI= -mcpu=$(MACH) -mthumb -mfloat-abi=soft --specs=rdimon.specs -T $(HAL_SRC_DIR)/stm32_ls.ld -Wl,-Map=$(DST_DIR_SEMI)/firmware.map
 
 
 all: $(DST_DIR)/main.o  $(HAL_DST_DIR)/stm32_startup.o $(HAL_DST_DIR)/syscalls.o $(DST_DIR)/led.o $(DST_DIR)/delay.o \
 			$(HAL_DST_DIR)/hal_gpio.o  $(HAL_DST_DIR)/hal_cpu.o \
-			$(DST_DIR)/firmware.elf $(DST_DIR_SEMI)/firmware_semi.elf \
-			$(DST_DIR)/firmware.list $(DST_DIR_SEMI)/firmware_semi.list
+			$(DST_DIR)/firmware.elf $(DST_DIR_SEMI)/firmware.elf \
+			$(DST_DIR)/firmware.list $(DST_DIR_SEMI)/firmware.list
 
 $(DST_DIR)/main.o: $(SRC_DIR)/main.c
 	mkdir -p $(DST_DIR)
@@ -58,9 +58,9 @@ $(HAL_DST_DIR)/hal_processor_faults_test.o: $(HAL_SRC_DIR)/hal_processor_faults_
 $(DST_DIR)/firmware.list:$(DST_DIR)/firmware.elf
 	$(OBJDUMP) -h -S $(DST_DIR)/firmware.elf > "$(DST_DIR)/firmware.list"
 
-$(DST_DIR_SEMI)/firmware_semi.list:$(DST_DIR_SEMI)/firmware_semi.elf
+$(DST_DIR_SEMI)/firmware.list:$(DST_DIR_SEMI)/firmware.elf
 	mkdir -p $(DST_DIR_SEMI)
-	$(OBJDUMP) -h -S $(DST_DIR_SEMI)/firmware_semi.elf > "$(DST_DIR_SEMI)/firmware_semi.list"
+	$(OBJDUMP) -h -S $(DST_DIR_SEMI)/firmware.elf > "$(DST_DIR_SEMI)/firmware.list"
 
 
 $(DST_DIR)/firmware.elf: $(DST_DIR)/main.o $(HAL_DST_DIR)/stm32_startup.o $(HAL_DST_DIR)/syscalls.o $(DST_DIR)/led.o \
@@ -69,7 +69,7 @@ $(DST_DIR)/firmware.elf: $(DST_DIR)/main.o $(HAL_DST_DIR)/stm32_startup.o $(HAL_
 	mkdir -p $(DST_DIR)
 	$(CC) $(LDFLAGS) -o $@ $^
 
-$(DST_DIR_SEMI)/firmware_semi.elf: $(DST_DIR)/main.o $(HAL_DST_DIR)/stm32_startup.o $(DST_DIR)/led.o \
+$(DST_DIR_SEMI)/firmware.elf: $(DST_DIR)/main.o $(HAL_DST_DIR)/stm32_startup.o $(DST_DIR)/led.o \
 						 $(DST_DIR)/delay.o $(HAL_DST_DIR)/hal_gpio.o $(HAL_DST_DIR)/hal_cpu.o	\
 						 $(HAL_DST_DIR)/hal_processor_faults.o $(HAL_DST_DIR)/hal_processor_faults_test.o					 
 	mkdir -p $(DST_DIR_SEMI)

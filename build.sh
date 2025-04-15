@@ -33,7 +33,7 @@ do
 		arm-none-eabi-gdb --command=semi_hosting_enable.gdb
 		exit 0
 	elif [[ "$1" = "run" ]]; then
-		./build/scons/x86_64/firmware_x86.elf 
+		./build/scons/x86_64/firmware.elf 
 		exit 0
 	else
 		arguments+=($argument)
