@@ -19,4 +19,5 @@ source_files.append('delay.c')
 hal_source_files = []
 hal_source_files.append('bsp/'+target+'/hal_gpio.c')
 hal_source_files.append('bsp/'+target+'/hal_cpu.c')
+hal_source_files.append('bsp/'+target+'/semihosting.c')
 env.Program('firmware_x86.elf',source_files + hal_source_files)

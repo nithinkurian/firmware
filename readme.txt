@@ -8,6 +8,7 @@ build system 	: scons,make
 Abstraction with HAL
 x86 version also
 clock/clock init
+semi hosting
 
 continue udemy m3m4
 custom rtos

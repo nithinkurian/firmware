@@ -15,6 +15,7 @@ void __disable_irq(void)
 
 void init_systick_timer(uint32_t tick_hz)
 {
+	//Systick timer is 24bit
 	uint32_t *pSYST_CSR = (uint32_t *)0xE000E010;
 	uint32_t *pSYST_RVR = (uint32_t *)0xE000E014;
 	uint32_t count_value = (SYSTICK_TIM_CLK/tick_hz) - 1;
