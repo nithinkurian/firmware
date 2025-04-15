@@ -9,12 +9,11 @@ Abstraction with HAL
 x86 version also
 clock/clock init
 semi hosting
-
-continue udemy m3m4
-custom rtos
 fault handling/ handlers
-target dll
 
+continue m3m4
+custom rtos
+target dll
 
 freertos
 timer 

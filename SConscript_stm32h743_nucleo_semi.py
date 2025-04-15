@@ -35,5 +35,7 @@ hal_source_files.append('bsp/'+target+'/hal_cpu.c')
 hal_source_files.append('bsp/'+target+'/hal_processor_faults.c')
 hal_source_files.append('bsp/'+target+'/hal_processor_faults_test.c')
 
-env.Program('firmware_semi.elf',source_files + hal_source_files)
+firmware = env.Program('firmware_semi.elf',source_files + hal_source_files)
+env.SideEffect('firmware_semi.map', firmware)
+
 env.Command(target='firmware_semi.list',source='firmware_semi.elf', action=['arm-none-eabi-objdump -h -S $SOURCE > $TARGET'])

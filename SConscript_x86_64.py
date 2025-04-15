@@ -22,4 +22,6 @@ hal_source_files.append('bsp/'+target+'/hal_cpu.c')
 hal_source_files.append('bsp/'+target+'/semihosting.c')
 hal_source_files.append('bsp/'+target+'/hal_processor_faults.c')
 hal_source_files.append('bsp/'+target+'/hal_processor_faults_test.c')
-env.Program('firmware_x86.elf',source_files + hal_source_files)
+
+firmware = env.Program('firmware.elf',source_files + hal_source_files)
+env.SideEffect('firmware.map', firmware)

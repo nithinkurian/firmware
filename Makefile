@@ -77,7 +77,7 @@ $(DST_DIR_SEMI)/firmware_semi.elf: $(DST_DIR)/main.o $(HAL_DST_DIR)/stm32_startu
 
 clean:
 	rm -rf $(DST_DIR)/*.o $(DST_DIR)/*.elf $(DST_DIR)/*.map $(DST_DIR)/*.o $(HAL_DST_DIR)/*.o \
-	$(DST_DIR)/*.elf $(DST_DIR)/*.list  $(DST_DIR_SEMI)/*.elf $(DST_DIR_SEMI)/*.list
+	$(DST_DIR)/*.elf $(DST_DIR)/*.list  $(DST_DIR_SEMI)/*.elf $(DST_DIR_SEMI)/*.list $(DST_DIR_SEMI)/*.map 
 	
 openocd:
 	openocd -f board/st_nucleo_h743zi.cfg
