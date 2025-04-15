@@ -1,42 +1,37 @@
 #include <stdint.h>
 #include "hal_cpu.h"
 #include "led.h"
+#include "delay.h"
 
-void delay();
+#define TICK_HZ				1000U
 
 int main(void)
 {
 
+	init_systick_timer(TICK_HZ);
 	led_init();
 
 	while (1)
 	{
 		turn_on_led(YELLOW);
-		delay();
+		delay_tick(1000);
 
 		turn_off_led(YELLOW);
-		delay();
+		delay_tick(1000);
 
 		turn_on_led(BLUE);
-		delay();
+		delay_tick(1000);
 
 		turn_off_led(BLUE);
-		delay();
+		delay_tick(1000);
 
 		turn_on_led(RED);
-		delay();
+		delay_tick(1000);
 
 		turn_off_led(RED);
-		delay();
+		delay_tick(1000);
 	}
 }
-
-void delay()
-{
-	uint32_t delay_count = 10000000;
-	while (delay_count--);
-}
-
 
 
 /**

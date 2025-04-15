@@ -14,6 +14,7 @@ env.Append(CPPPATH=['include','bsp/include'])
 source_files = []
 source_files.append('main.c')
 source_files.append('led.c')
+source_files.append('delay.c')
 
 hal_source_files = []
 hal_source_files.append('bsp/'+target+'/hal_gpio.c')

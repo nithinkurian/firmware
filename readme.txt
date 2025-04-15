@@ -11,7 +11,9 @@ clock/clock init
 
 continue udemy m3m4
 custom rtos
+fault handling/ handlers
 target dll
+
 
 freertos
 timer 
