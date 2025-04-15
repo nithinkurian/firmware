@@ -19,7 +19,7 @@ env.Append(LINKFLAGS='-mthumb')
 env.Append(LINKFLAGS='-mfloat-abi=soft')
 env.Append(LINKFLAGS='--specs=rdimon.specs')
 env.Append(LINKFLAGS='-T src/bsp/'+target+'/stm32_ls.ld')
-env.Append(LINKFLAGS='-Wl,-Map=build/scons/'+target+'/firmware.map')
+env.Append(LINKFLAGS='-Wl,-Map=build/scons/'+target+'_semi/firmware_semi.map')
 
 env.Append(CPPPATH=['include','bsp/include'])
 
@@ -33,5 +33,6 @@ hal_source_files.append('bsp/'+target+'/stm32_startup.c')
 hal_source_files.append('bsp/'+target+'/hal_gpio.c')
 hal_source_files.append('bsp/'+target+'/hal_cpu.c')
 hal_source_files.append('bsp/'+target+'/hal_processor_faults.c')
+hal_source_files.append('bsp/'+target+'/hal_processor_faults_test.c')
 
 env.Program('firmware_semi.elf',source_files + hal_source_files)

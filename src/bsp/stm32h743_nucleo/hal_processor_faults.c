@@ -1,6 +1,7 @@
 
 #include "hal_cpu.h"
 #include <stdio.h>
+#include "print_colour.h"
 
 
 void enable_processor_faults(void)
@@ -10,19 +11,24 @@ void enable_processor_faults(void)
 	*pSHCSR |= ( 1 << 16); //mem manage
 	*pSHCSR |= ( 1 << 17); //bus fault
 	*pSHCSR |= ( 1 << 18); //usage fault
+
+
+	//enable divide by zero trap
+	uint32_t *pCCR = (uint32_t*)0xE000ED14;
+	*pCCR |= ( 1 << 4);
 }
 
 //2. implement the fault handlers
 void HardFault_Handler(void)
 {
-	printf("Exception : Hardfault\n");
+	printf(BOLD_RED"Exception : Hardfault\n");
 	while(1);
 }
 
 
 void MemManage_Handler(void)
 {
-	printf("Exception : MemManage\n");
+	printf(BOLD_RED"Exception : MemManage\n");
 	//Need to implement these
 	while(1);
 }
@@ -46,7 +52,7 @@ __attribute__ ((naked)) void UsageFault_Handler(void)
 void UsageFault_Handler_c(uint32_t *pBaseStackFrame)
 {
 	uint16_t *pUFSR = (uint16_t *)0xE000ED2A; // Half word access
-	printf("Exception : UsageFault\n");
+	printf(BOLD_RED"Exception : UsageFault\n");
 	printf("UFSR = %u\n",(*pUFSR) & 0xFFFF);
 	if(*pUFSR == 1)
 	{
@@ -56,6 +62,11 @@ void UsageFault_Handler_c(uint32_t *pBaseStackFrame)
 	{
 		printf("Invalid state UsageFault\n");
 	}
+	else if(*pUFSR == 512)
+	{
+		printf("Divide by zero UsageFault\n");
+	}
+
 	printf("pBaseStackFrame = %p\n",pBaseStackFrame);
 	printf("Value of R0 = %lx\n", pBaseStackFrame[0]);
 	printf("Value of R1 = %lx\n", pBaseStackFrame[1]);

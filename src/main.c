@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include "print_colour.h"
 #include "hal_processor_faults.h"
+#include "hal_processor_faults_test.h" //just for testing
 
 
 #define TICK_HZ				1000U
@@ -19,6 +20,11 @@ int main(void)
 
 	//enabling processor faults
 	enable_processor_faults();
+
+	//enable one by one for testing
+	//generate_undefined_instruction_usagefault();
+	//generate_invalid_state_usagefault();
+	//generate_divide_by_zero_usagefault();
 	
 	//Initialize systick
 	init_systick_timer(TICK_HZ);
