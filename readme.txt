@@ -11,6 +11,7 @@ clock/clock init
 semi hosting
 fault handling/ handlers
 
+targets : correct in sconstruct
 continue m3m4
 custom rtos
 target dll

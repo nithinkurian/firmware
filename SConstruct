@@ -1,3 +1,8 @@
-SConscript('SConscript_stm32h743_nucleo.py', variant_dir='build/scons/stm32h743_nucleo/',src_dir='src', duplicate=False)
-SConscript('SConscript_stm32h743_nucleo_semi.py', variant_dir='build/scons/stm32h743_nucleo_semi/',src_dir='src', duplicate=False)
-SConscript('SConscript_x86_64.py', variant_dir='build/scons/x86_64/',src_dir='src', duplicate=False)
+targets = []
+#<XXXXX><XXX><X> :<Board><Number><Type>
+targets.append('STH7N001N')#STM32 H743 Nucleo Normal
+targets.append('STH7N001S')#STM32 H743 Nucleo Semi hosting
+targets.append('X8664001N')#x86_64
+for target in targets:
+	print(target)
+	SConscript('target_'+target+'.py', variant_dir='build/scons/'+target+'/',src_dir='src', duplicate=False)
