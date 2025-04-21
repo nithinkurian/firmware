@@ -10,10 +10,14 @@ x86 version also
 clock/clock init
 semi hosting
 fault handling/ handlers
-
-targets : correct in sconstruct
-continue m3m4
+targets in sconstruct
 custom rtos
+
+task create apis to be created and used
+osal should be added osal.h
+idle task to be moved inside, may be weak, config to enable
+need to add support for make
+continue m3m4
 target dll
 
 freertos

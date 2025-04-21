@@ -1,17 +1,23 @@
 #include <stdint.h>
 #include "hal_cpu.h"
 #include "led.h"
-#include "delay.h"
 #include <stdio.h>
 #include "print_colour.h"
 #include "hal_processor_faults.h"
 #include "hal_processor_faults_test.h" //just for testing
+#include "rtos.h"
 
 
 #define TICK_HZ				1000U
 
 //Semi hosting init function
 extern void initialise_monitor_handles(void);
+
+void task1_handler(void); //This is task1
+void task2_handler(void); //This is task2
+void task3_handler(void); //This is task3
+void task4_handler(void); //This is task4
+void idle_task(void); //Idle task
 
 int main(void)
 {
@@ -31,37 +37,69 @@ int main(void)
 
 	//Initialize LED
 	led_init();
-
-
 	printf("Initialized\n");
 
-	while (1)
+	rtos_init();
+	run_scheduler();
+
+}
+
+void task1_handler(void)
+{
+	while(1)
 	{
-		printf("loop\n");
-
-		printf(BOLD_YELLOW"YELLOW\n\r");
+		printf(BOLD_YELLOW"task1 ON\n\r");
 		turn_on_led(YELLOW);
-		delay_tick(1000);
-
-		
+		rtos_delay(1000);	
+		printf(YELLOW_COLOUR"task1 OFF\n\r");	
 		turn_off_led(YELLOW);
-		delay_tick(1000);
-
-		printf(BOLD_BLUE"BLUE\n\r");
-		turn_on_led(BLUE);
-		delay_tick(1000);
-
-		turn_off_led(BLUE);
-		delay_tick(1000);
-
-		printf(BOLD_RED"RED\n\r");
-		turn_on_led(RED);
-		delay_tick(1000);
-
-		turn_off_led(RED);
-		delay_tick(1000);
+		rtos_delay(1000);
 	}
 }
+
+void task2_handler(void)
+{
+	while(1)
+	{
+		printf(BOLD_BLUE"task2 ON\n\r");
+		turn_on_led(BLUE);
+		rtos_delay(2000);
+		printf(BLUE_COLOUR"task2 OFF\n\r");	
+		turn_off_led(BLUE);
+		rtos_delay(2000);
+	}
+}
+
+void task3_handler(void)
+{
+	while(1)
+	{
+		printf(BOLD_RED"task3 ON\n\r");
+		turn_on_led(RED);
+		rtos_delay(4000);
+		printf(RED_COLOUR"task3 OFF\n\r");	
+		turn_off_led(RED);
+		rtos_delay(4000);
+	}
+}
+
+void task4_handler(void)
+{
+	while(1)
+	{
+		printf(BOLD_GREEN"task4 ON\n\r");
+		rtos_delay(8000);
+		printf(GREEN_COLOUR"task4 OFF\n\r");
+		rtos_delay(8000);
+	}
+}
+
+void idle_task(void)
+{
+	while(1);
+}
+
+
 
 
 /**
