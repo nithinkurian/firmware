@@ -12,15 +12,18 @@ semi hosting
 fault handling/ handlers
 targets in sconstruct
 custom rtos
+x86 version of rtos
+
 
 task create apis to be created and used
-osal should be added osal.h
 idle task to be moved inside, may be weak, config to enable
-need to add support for make
 continue m3m4
+debug -> semi , release : merge targets
+need to add support for make
 target dll
 
 freertos
+osal should be added osal.h
 timer 
 UART
 I2C

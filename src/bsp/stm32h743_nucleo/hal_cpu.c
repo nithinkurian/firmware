@@ -14,6 +14,8 @@
 
 uint64_t g_tick_count = 0;
 
+void update_global_tick_count(void);
+
 void disable_interrupt()
 {
 	INTERRUPT_DISABLE();

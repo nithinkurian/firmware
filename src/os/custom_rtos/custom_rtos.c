@@ -43,7 +43,6 @@ __attribute__((naked)) void init_scheduler_stack(uint32_t sched_top_of_stack);
 void init_tasks_stack(void);
 void switch_sp_to_psp(void);
 __attribute__((naked)) void switch_sp_to_psp(void);
-void rtos_delay(uint32_t tick_count);
 void pend_pendsv();
 void schedule(void);
 uint32_t task_stack_init(uint32_t psp_value, void (*task_handler)(void));
