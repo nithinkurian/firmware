@@ -15,15 +15,16 @@ custom rtos
 x86 version of rtos
 rtos sources to seperate script
 
-continue m3m4
+freertos
+osal should be added osal.h
 task create apis to be created and used
 idle task to be moved inside, may be weak, config to enable
 debug -> semi , release : merge targets
 need to add support for make
 target dll
 
-freertos
-osal should be added osal.h
+
+
 timer 
 UART
 I2C

@@ -548,7 +548,7 @@ void Reset_Handler(void)
 	}
 	
 	//init for standard library
-	//__libc_init_array();
+	__libc_init_array();
 	
 	//call main()
 	main();
