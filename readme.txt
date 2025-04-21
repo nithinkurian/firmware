@@ -13,11 +13,11 @@ fault handling/ handlers
 targets in sconstruct
 custom rtos
 x86 version of rtos
+rtos sources to seperate script
 
-
+continue m3m4
 task create apis to be created and used
 idle task to be moved inside, may be weak, config to enable
-continue m3m4
 debug -> semi , release : merge targets
 need to add support for make
 target dll
