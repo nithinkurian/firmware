@@ -29,11 +29,6 @@ void update_tick_count(void)
 {
 }
 
-uint64_t get_tick_count(void)
-{
-	return time(0)*tick_in_hz;;
-}
-
 void pend_pendsv()
 {
 }
@@ -47,7 +42,7 @@ void switch_sp_to_psp(void)
 {
 }
 
-uint32_t task_stack_init(uint32_t psp_value, void (*task_handler)(void))
+uint32_t task_stack_init(uint32_t psp_value, void (*task_handler)(void* parameters))
 {
 	return (uint32_t)psp_value;
 }

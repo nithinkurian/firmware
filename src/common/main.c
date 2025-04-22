@@ -8,16 +8,16 @@
 #include "rtos.h"
 
 
-#define TICK_HZ				1000U
+
 
 //Semi hosting init function
 extern void initialise_monitor_handles(void);
 
-void task1_handler(void); //This is task1
-void task2_handler(void); //This is task2
-void task3_handler(void); //This is task3
-void task4_handler(void); //This is task4
-void idle_task(void); //Idle task
+void task1_handler(void* parameters); //This is task1
+void task2_handler(void* parameters); //This is task2
+void task3_handler(void* parameters); //This is task3
+void task4_handler(void* parameters); //This is task4
+void idle_task(void* parameters); //Idle task
 
 int main(void)
 {
@@ -31,9 +31,6 @@ int main(void)
 	//generate_undefined_instruction_usagefault();
 	//generate_invalid_state_usagefault();
 	//generate_divide_by_zero_usagefault();
-	
-	//Initialize systick
-	init_systick_timer(TICK_HZ);
 
 	//Initialize LED
 	led_init();
@@ -44,7 +41,7 @@ int main(void)
 
 }
 
-void task1_handler(void)
+void task1_handler(void* parameters)
 {
 	while(1)
 	{
@@ -57,7 +54,7 @@ void task1_handler(void)
 	}
 }
 
-void task2_handler(void)
+void task2_handler(void* parameters)
 {
 	while(1)
 	{
@@ -70,7 +67,7 @@ void task2_handler(void)
 	}
 }
 
-void task3_handler(void)
+void task3_handler(void* parameters)
 {
 	while(1)
 	{
@@ -83,7 +80,7 @@ void task3_handler(void)
 	}
 }
 
-void task4_handler(void)
+void task4_handler(void* parameters)
 {
 	while(1)
 	{
@@ -94,7 +91,7 @@ void task4_handler(void)
 	}
 }
 
-void idle_task(void)
+void idle_task(void* parameters)
 {
 	while(1);
 }

@@ -11,10 +11,8 @@
 
 #define INTERRUPT_ENABLE()  do{__asm volatile ("MOV R0,#0x0"); asm volatile("MSR PRIMASK,R0"); } while(0)
 
+uint32_t SystemCoreClock = HSI_CLK;
 
-uint64_t g_tick_count = 0;
-
-void update_global_tick_count(void);
 
 void disable_interrupt()
 {
@@ -52,59 +50,10 @@ void init_systick_timer(uint32_t tick_hz)
 	*pSYST_CSR |= (1 << 0); // Enables the counter
 }
 
-__attribute__ ((naked)) void PendSV_Handler(void)
-{
-	/* Save the context of current task */
-
-	//1. Get current running task's PSP value
-	__asm volatile("MRS R0, PSP");
-	//2 Using that PSP value store SF2 (R4 to R11)
-	__asm volatile("STMDB R0!,{R4-R11}");
-
-	//Preserve LR
-	__asm volatile("PUSH {LR}");
-
-	//3. Save the current value of PSP
-	__asm volatile("BL save_psp_value");
-
-	/*Retrieve the context of next task */
-
-	//1. Decide next task to run
-	__asm volatile("BL update_next_task");
-	//2. get its past PSP value
-	__asm volatile("BL get_psp_value");
-	//3. Using that PSP value retrieve SF2(R4 to R11)
-	__asm volatile("LDMIA R0!,{R4-R11}");
-	//4. Update PSP and exit
-	__asm volatile("MSR PSP, R0");
-
-	//Loads LR
-	__asm volatile("POP {LR}");
-
-	//Switches to thread/user mode
-	__asm volatile("BX LR");
-}
-
 __attribute__((naked)) void init_scheduler_stack(uint32_t sched_top_of_stack)
 {
 	__asm  volatile("MSR MSP,%0": : "r" (sched_top_of_stack) : );
 	__asm  volatile("BX LR");
-}
-
-/* this function changes SP to PSP */
-__attribute__((naked)) void switch_sp_to_psp(void)
-{
-	//get the value of psp of current task;
-	__asm volatile("PUSH {LR}");//Preserve LR which connects back to main()
-	__asm volatile("BL get_psp_value");//load current task (task1) psp value to R0
-	__asm volatile("MSR PSP,R0");//Initialise PSR
-	__asm volatile("POP {LR}");//Pops back LR
-
-	// change SP to PSP using CONTROL register.
-	__asm volatile("MOV R0,#0X02");
-	__asm volatile("MSR CONTROL,R0");
-	__asm volatile("BX LR");
-
 }
 
 void pend_pendsv()
@@ -114,26 +63,7 @@ void pend_pendsv()
 	*pICSR |= (1 << 28);
 }
 
-
-
-void SysTick_Handler(void)
-{
-	update_global_tick_count();
-	unblock_tasks();
-	pend_pendsv();
-}
-
-void update_global_tick_count(void)
-{
-	g_tick_count++;
-}
-
-uint64_t get_tick_count(void)
-{
-	return g_tick_count;
-}
-
-uint32_t task_stack_init(uint32_t psp_value, void (*task_handler)(void))
+uint32_t task_stack_init(uint32_t psp_value, void (*task_handler)(void* parameters))
 {
 	uint32_t *pPSP;
 	pPSP = (uint32_t *)psp_value;

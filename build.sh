@@ -27,13 +27,19 @@ do
 	elif [[ "$1" = "loadsemi" ]]; then
 		arm-none-eabi-gdb --command=flash_scons_semi.gdb
 		exit 0
+	elif [[ "$1" = "loadfreertos" ]]; then
+		arm-none-eabi-gdb --command=flash_scons_freertos.gdb
+		exit 0
+	elif [[ "$1" = "loadsemifreertos" ]]; then
+		arm-none-eabi-gdb --command=flash_scons_semi_freertos.gdb
+		exit 0
 	elif [[ "$1" = "semihosting" ]]; then
 		#Semihost enabled firmware will run only when semihosting is enabled from gdb client
 		#semi hosting prints will appear in gdb server
 		arm-none-eabi-gdb --command=semi_hosting_enable.gdb
 		exit 0
 	elif [[ "$1" = "run" ]]; then
-		./build/scons/X8664001N/firmware.elf 
+		./build/scons/X8664______PTHRE_001S/firmware.elf 
 		exit 0
 	else
 		arguments+=($argument)

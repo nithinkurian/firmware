@@ -14,8 +14,10 @@ targets in sconstruct
 custom rtos
 x86 version of rtos
 rtos sources to seperate script
+rtos : freertos
 
-freertos
+
+need to default freertos config
 osal should be added osal.h
 task create apis to be created and used
 idle task to be moved inside, may be weak, config to enable
