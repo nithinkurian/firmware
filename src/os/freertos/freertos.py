@@ -12,5 +12,6 @@ source.append('os/${OS_NAME}/portable/MemMang/heap_4.c')
 source.append('os/${OS_NAME}/portable/GCC/ARM_CM7/r0p1/port.c')
 
 source.append('os/${OS_NAME}/${OS_NAME}.c')
+source.append('os/${OS_NAME}/${OS_NAME}_hook.c')
 
 Return('source') 
