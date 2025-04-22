@@ -31,6 +31,8 @@ int thread_args[MAX_TASKS] = {0,1,2,3,4};
 int i, result;
 extern uint32_t tick_in_hz;
 
+uint8_t next_task_index = 1;
+
 // Function executed by the thread
 void *thread_function(void *arg) {
     int thread_id = *(int*)arg;
@@ -39,31 +41,30 @@ void *thread_function(void *arg) {
     pthread_exit(NULL);
 }
 
-void rtos_init()
+void create_task(void (*task_handler)(void*),uint16_t stack_size, uint8_t priority)
 {
-	user_tasks[0].task_handler = idle_task;
-	user_tasks[1].task_handler = task1_handler;
-	user_tasks[2].task_handler = task2_handler;
-	user_tasks[3].task_handler = task3_handler;
-	user_tasks[4].task_handler = task4_handler;
-
-
-    //Initialize systick
-    init_systick_timer(TICK_HZ);
-
+    user_tasks[next_task_index].task_handler = task_handler;
     // Create threads
-    for(int i =0; i < MAX_TASKS; i++)
-    {
-        result = pthread_create(&threads[i], NULL, thread_function, &thread_args[i]);
-        if (result != 0) {
-            perror("Thread creation failed");
-            exit(1);
-        }
+    result = pthread_create(&threads[next_task_index], NULL, thread_function, &thread_args[next_task_index]);
+    if (result != 0) {
+        perror("Thread creation failed");
+        exit(1);
     }
+    next_task_index++;
 }
 
 void run_scheduler()
 {
+    user_tasks[0].task_handler = idle_task;
+    result = pthread_create(&threads[0], NULL, thread_function, &thread_args[0]);
+    if (result != 0) {
+        perror("Thread creation failed");
+        exit(1);
+    }
+
+    //Initialize systick
+    init_systick_timer(TICK_HZ);
+
 	// Wait for threads to finish
     for(int i =0; i < MAX_TASKS; i++)
     {

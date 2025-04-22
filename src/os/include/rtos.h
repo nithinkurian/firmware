@@ -3,9 +3,8 @@
 
 #include <stdint.h>
 
-void rtos_init();
+void create_task(void (*task_handler)(void*),uint16_t stack_size, uint8_t priority);
 void run_scheduler();
 void rtos_delay(uint32_t tick_count);
-void unblock_tasks(void);
 
 #endif /* RTOS_H_ */

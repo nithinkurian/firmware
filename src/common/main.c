@@ -36,7 +36,11 @@ int main(void)
 	led_init();
 	printf("Initialized\n");
 
-	rtos_init();
+	create_task(task1_handler,760, 2);
+	create_task(task2_handler,760, 2);
+	create_task(task3_handler,760, 2);
+	create_task(task4_handler,760, 2);
+	
 	run_scheduler();
 
 }

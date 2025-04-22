@@ -19,12 +19,9 @@ extern void idle_task(void* parameters); //Idle task
 #define SIZE_SRAM			( (128) * (1024))
 #define SRAM_END			( (SRAM_START) + (SIZE_SRAM))
 
-#define T1_STACK_START		SRAM_END
-#define T2_STACK_START		( (SRAM_END) - (1 * SIZE_TASK_STACK) )
-#define T3_STACK_START		( (SRAM_END) - (2 * SIZE_TASK_STACK) )
-#define T4_STACK_START		( (SRAM_END) - (3 * SIZE_TASK_STACK) )
-#define IDLE_STACK_START	( (SRAM_END) - (4 * SIZE_TASK_STACK) )
-#define SCHED_STACK_START	( (SRAM_END) - (5 * SIZE_TASK_STACK) )
+#define SCHED_STACK_START	SRAM_END
+#define IDLE_STACK_START	( (SRAM_END) - (1 * SIZE_TASK_STACK) )
+#define FIRST_STACK_START	( (SRAM_END) - (2 * SIZE_TASK_STACK) )
 
 #define TASK_READY_STATE 	0x00
 #define TASK_BLOCKED_STATE 	0xFF
@@ -50,52 +47,42 @@ void schedule(void);
 uint32_t task_stack_init(uint32_t psp_value, void (*task_handler)(void* parameters));
 void update_global_tick_count(void);
 uint64_t get_tick_count(void);
+void init_idle_task_stack(void);
+void unblock_tasks(void);
 
 
 TCB_t user_tasks[MAX_TASKS];
 uint64_t g_tick_count = 0;
 uint32_t current_task = 1;
-
-void rtos_init()
-{
-	//Initialize systick
-	init_systick_timer(TICK_HZ);
-	init_tasks_stack();	
-}
+uint32_t next_task_start = FIRST_STACK_START;
+uint8_t next_task_index = 1;
 
 void run_scheduler()
 {
+	init_systick_timer(TICK_HZ);
+	init_idle_task_stack();
 	init_scheduler_stack(SCHED_STACK_START);
 	switch_sp_to_psp();
 	task1_handler(NULL);
 }
 
-void init_tasks_stack(void)
+void create_task(void (*task_handler)(void*),uint16_t stack_size, uint8_t priority)
 {
-	user_tasks[0].current_state = TASK_READY_STATE;
-	user_tasks[1].current_state = TASK_READY_STATE;
-	user_tasks[2].current_state = TASK_READY_STATE;
-	user_tasks[3].current_state = TASK_READY_STATE;
-	user_tasks[4].current_state = TASK_READY_STATE;
+	user_tasks[next_task_index].task_handler = task_handler;
+	user_tasks[next_task_index].psp_value = next_task_start;
+	user_tasks[next_task_index].current_state = TASK_READY_STATE;
+	user_tasks[next_task_index].psp_value=task_stack_init(user_tasks[next_task_index].psp_value,user_tasks[next_task_index].task_handler);
 
+	next_task_start -= stack_size;
+	next_task_index++;
+}
+
+void init_idle_task_stack(void)
+{
 	user_tasks[0].psp_value = IDLE_STACK_START;
-	user_tasks[1].psp_value = T1_STACK_START;
-	user_tasks[2].psp_value = T2_STACK_START;
-	user_tasks[3].psp_value = T3_STACK_START;
-	user_tasks[4].psp_value = T4_STACK_START;
-
 	user_tasks[0].task_handler = idle_task;
-	user_tasks[1].task_handler = task1_handler;
-	user_tasks[2].task_handler = task2_handler;
-	user_tasks[3].task_handler = task3_handler;
-	user_tasks[4].task_handler = task4_handler;
-
-	
-	for(int i =0; i < MAX_TASKS; i++)
-	{
-
-		user_tasks[i].psp_value=task_stack_init(user_tasks[i].psp_value,user_tasks[i].task_handler);
-	}
+	user_tasks[0].current_state = TASK_READY_STATE;
+	user_tasks[0].psp_value=task_stack_init(user_tasks[0].psp_value,user_tasks[0].task_handler);
 }
 
 
