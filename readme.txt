@@ -15,17 +15,18 @@ custom rtos
 x86 version of rtos
 rtos sources to seperate script
 rtos : freertos
-
 need to create gdb script also
-need to add support for make : haerachial make
-target dll
 
+continue
 timer 
 UART
 I2C
 SPI
 USB
 pc test
+need to add support for make : haerachial make
+free rtos simulator
+target dll
 may be qemu
 freertos simulator
 Event driven pc testing
@@ -52,4 +53,5 @@ RTOS support : https://en.wikipedia.org/wiki/Comparison_of_real-time_operating_s
 	Mynewt
 OSAL layer is needed
 debugging using IDE
+Emacs + GDB
 

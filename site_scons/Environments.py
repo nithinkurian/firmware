@@ -2,7 +2,7 @@ import os
 from SCons.Environment import Environment
 
 def get_stm32_env():
-	env = Environment(ENV={'PATH': os.environ['PATH']})
+	env = Environment(ENV={'PATH': os.environ['PATH']}, tools = ['default', 'textfile'])
 	env.VariantDir('build/scons/', '.', duplicate=0)
 	env['CC'] = 'arm-none-eabi-gcc'
 	env.Append(CFLAGS='-c') #no linking

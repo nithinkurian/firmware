@@ -33,8 +33,18 @@ for env in env_list:
 		env.SideEffect('firmware_semi.map', firmware)
 
 		env.Command(target='firmware_semi.list',source='firmware_semi.elf', action=['arm-none-eabi-objdump -h -S $SOURCE > $TARGET'])
+
+		conf_dict = {'##Firmware##': '''build/scons/${TARGET_NAME}/firmware_semi.elf
+monitor arm semihosting enable'''}
+		env.Substfile('flash_semi.gdb','flash_template.gdb', SUBST_DICT = conf_dict)
 	else:
 		firmware = env.Program('firmware.elf',source)
 		env.SideEffect('firmware.map', firmware)
 
 		env.Command(target='firmware.list',source='firmware.elf', action=['arm-none-eabi-objdump -h -S $SOURCE > $TARGET'])
+
+		conf_dict = {'##Firmware##': '''build/scons/${TARGET_NAME}/firmware.elf'''}
+		env.Substfile('flash.gdb', 'flash_template.gdb',SUBST_DICT = conf_dict)
+
+
+
