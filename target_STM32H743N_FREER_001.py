@@ -11,11 +11,11 @@ env_semi.Append(SEMI_HOSTING=True)
 env_list.append(env_semi)
 
 for env in env_list:
-	env.Append(OS_NAME='custom_rtos')
+	env.Append(OS_NAME='freertos')
 	env.Append(BOARD_NAME='stm32h743_nucleo')
-	env.Append(TARGET_NAME='STM32H743N_CUSTR_001')
+	env.Append(TARGET_NAME='STM32H743N_FREER_001')
 	env.Append(LINKFLAGS='-T src/bsp/'+'${BOARD_NAME}'+'/stm32_ls.ld')
-	env.Append(CPPPATH=['include','bsp/include', 'os/include'])
+	env.Append(CPPPATH=['include','bsp/include', 'os/include', 'os/${OS_NAME}/include', 'os/${OS_NAME}/portable/GCC/ARM_CM7/r0p1', 'os/${OS_NAME}'])
 	if env['SEMI_HOSTING'] == True:
 		env.Append(LINKFLAGS='--specs=rdimon.specs')
 		env.Append(LINKFLAGS='-Wl,-Map=build/scons/'+'${TARGET_NAME}'+'/firmware_semi.map')

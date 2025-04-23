@@ -16,8 +16,8 @@ x86 version of rtos
 rtos sources to seperate script
 rtos : freertos
 
-debug -> semi , release : merge targets
-need to add support for make
+need to create gdb script also
+need to add support for make : haerachial make
 target dll
 
 timer 
@@ -51,4 +51,5 @@ RTOS support : https://en.wikipedia.org/wiki/Comparison_of_real-time_operating_s
 	Zephyr
 	Mynewt
 OSAL layer is needed
+debugging using IDE
 
