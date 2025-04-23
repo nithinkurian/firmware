@@ -54,4 +54,4 @@ RTOS support : https://en.wikipedia.org/wiki/Comparison_of_real-time_operating_s
 OSAL layer is needed
 debugging using IDE
 Emacs + GDB
-
+Need to add segger support
