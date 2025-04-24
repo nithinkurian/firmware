@@ -50,51 +50,55 @@ int main(void)
 
 void task1_handler(void* parameters)
 {
+	uint32_t previous_wake_time = get_rtos_tick_count();
 	while(1)
 	{
 		printf(BOLD_YELLOW"task1 ON\n\r");
 		turn_on_led(YELLOW);
-		rtos_delay_ms(1000);	
+		rtos_delay_until_ms(&previous_wake_time,1000);
 		printf(YELLOW_COLOUR"task1 OFF\n\r");	
 		turn_off_led(YELLOW);
-		rtos_delay_ms(1000);
+		rtos_delay_until_ms(&previous_wake_time,1000);
 	}
 }
 
 void task2_handler(void* parameters)
 {
+	uint32_t previous_wake_time = get_rtos_tick_count();
 	while(1)
 	{
 		printf(BOLD_BLUE"task2 ON\n\r");
 		turn_on_led(BLUE);
-		rtos_delay_ms(2000);
+		rtos_delay_until_ms(&previous_wake_time,2000);
 		printf(BLUE_COLOUR"task2 OFF\n\r");	
 		turn_off_led(BLUE);
-		rtos_delay_ms(2000);
+		rtos_delay_until_ms(&previous_wake_time,2000);
 	}
 }
 
 void task3_handler(void* parameters)
 {
+	uint32_t previous_wake_time = get_rtos_tick_count();
 	while(1)
 	{
 		printf(BOLD_RED"task3 ON\n\r");
 		turn_on_led(RED);
-		rtos_delay_ms(4000);
+		rtos_delay_until_ms(&previous_wake_time,4000);
 		printf(RED_COLOUR"task3 OFF\n\r");	
 		turn_off_led(RED);
-		rtos_delay_ms(4000);
+		rtos_delay_until_ms(&previous_wake_time,4000);
 	}
 }
 
 void task4_handler(void* parameters)
 {
+	uint32_t previous_wake_time = get_rtos_tick_count();
 	while(1)
 	{
 		printf(BOLD_GREEN"task4 ON\n\r");
-		rtos_delay_ms(8000);
+		rtos_delay_until_ms(&previous_wake_time,8000);
 		printf(GREEN_COLOUR"task4 OFF\n\r");
-		rtos_delay_ms(8000);
+		rtos_delay_until_ms(&previous_wake_time,8000);
 	}
 }
 

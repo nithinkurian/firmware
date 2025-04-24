@@ -46,13 +46,13 @@ void pend_pendsv();
 void schedule(void);
 uint32_t task_stack_init(uint32_t psp_value, void (*task_handler)(void* parameters));
 void update_global_tick_count(void);
-uint64_t get_tick_count(void);
+uint32_t get_tick_count(void);
 void init_idle_task_stack(void);
 void unblock_tasks(void);
 
 
 TCB_t user_tasks[MAX_TASKS];
-uint64_t g_tick_count = 0;
+uint32_t g_tick_count = 0;
 uint32_t current_task = 1;
 uint32_t next_task_start = FIRST_STACK_START;
 uint8_t next_task_index = 1;
@@ -113,6 +113,28 @@ void rtos_delay_ms(uint32_t ms)
 {
     uint32_t tick_count = tick_in_hz*ms/1000;
     rtos_delay_tick(tick_count);
+}
+
+void rtos_delay_until_ms(uint32_t *previous_wake_time,uint32_t ms)
+{
+    //disable interrupt
+	disable_interrupt();
+
+	if(current_task)
+	{
+		user_tasks[current_task].block_count = (*previous_wake_time) + tick_in_hz*ms/1000;
+		user_tasks[current_task].current_state = TASK_BLOCKED_STATE;
+		*previous_wake_time = user_tasks[current_task].block_count;
+		schedule();
+	}
+
+	//enable interrupt
+	enable_interrupt();
+}
+
+uint32_t get_rtos_tick_count()
+{
+    return get_tick_count();
 }
 
 void unblock_tasks(void)
@@ -187,7 +209,7 @@ void update_global_tick_count(void)
 	g_tick_count++;
 }
 
-uint64_t get_tick_count(void)
+uint32_t get_tick_count(void)
 {
 	return g_tick_count;
 }

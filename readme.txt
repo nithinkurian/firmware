@@ -16,8 +16,8 @@ x86 version of rtos
 rtos sources to seperate script
 rtos : freertos
 need to create gdb script also
-
 delay until
+
 continue
 timer 
 UART

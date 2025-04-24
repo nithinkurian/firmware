@@ -40,3 +40,13 @@ void rtos_delay_ms(uint32_t ms)
 {
 	vTaskDelay(pdMS_TO_TICKS(ms));
 }
+
+void rtos_delay_until_ms(uint32_t *previous_wake_time,uint32_t ms)
+{
+	vTaskDelayUntil(previous_wake_time, pdMS_TO_TICKS(ms));
+}
+
+uint32_t get_rtos_tick_count()
+{
+	return xTaskGetTickCount();
+}

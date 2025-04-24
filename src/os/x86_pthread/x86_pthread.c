@@ -12,7 +12,7 @@ extern void task2_handler(void* parameters); //This is task2
 extern void task3_handler(void* parameters); //This is task3
 extern void task4_handler(void* parameters); //This is task4
 extern void idle_task(void* parameters); //Idle task
-uint64_t get_tick_count(void);
+uint32_t get_tick_count(void);
 
 #define MAX_TASKS			5
  #define TICK_HZ                1000U
@@ -83,7 +83,7 @@ void run_scheduler()
 
 
 
-uint64_t get_tick_count(void)
+uint32_t get_tick_count(void)
 {
     return time(0)*tick_in_hz;;
 }
@@ -94,7 +94,7 @@ void rtos_delay_tick(uint32_t tick_count)
 	//disable interrupt
 	disable_interrupt();
 
-	uint64_t initial_tick = get_tick_count();
+	uint32_t initial_tick = get_tick_count();
 	while(initial_tick+ tick_count>get_tick_count());
 
 	//enable interrupt
@@ -105,4 +105,21 @@ void rtos_delay_ms(uint32_t ms)
 {
     uint32_t tick_count = tick_in_hz*ms/1000;
     rtos_delay_tick(tick_count);
+}
+
+void rtos_delay_until_ms(uint32_t *previous_wake_time,uint32_t ms)
+{
+    //disable interrupt
+    disable_interrupt();
+
+    uint32_t initial_tick = *previous_wake_time;
+    while(initial_tick+ tick_in_hz*ms/1000>get_tick_count());
+    *previous_wake_time = initial_tick+ tick_in_hz*ms/1000;
+    //enable interrupt
+    enable_interrupt();
+}
+
+uint32_t get_rtos_tick_count()
+{
+    return get_tick_count();
 }
