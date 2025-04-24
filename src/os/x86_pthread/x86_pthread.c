@@ -41,32 +41,39 @@ void *thread_function(void *arg) {
     pthread_exit(NULL);
 }
 
+
+
+char * get_rtos_name()
+{
+    return "x86Pthread";
+}
+
 void create_task(void (*task_handler)(void*),uint16_t stack_size, uint8_t priority)
 {
     user_tasks[next_task_index].task_handler = task_handler;
-    // Create threads
-    result = pthread_create(&threads[next_task_index], NULL, thread_function, &thread_args[next_task_index]);
-    if (result != 0) {
-        perror("Thread creation failed");
-        exit(1);
-    }
     next_task_index++;
 }
 
 void run_scheduler()
 {
-    user_tasks[0].task_handler = idle_task;
-    result = pthread_create(&threads[0], NULL, thread_function, &thread_args[0]);
-    if (result != 0) {
-        perror("Thread creation failed");
-        exit(1);
-    }
 
     //Initialize systick
     init_systick_timer(TICK_HZ);
 
+    user_tasks[0].task_handler = idle_task;
+
+    for(int i=0;i<next_task_index;i++)
+    {
+        result = pthread_create(&threads[i], NULL, thread_function, &thread_args[i]);
+        if (result != 0) {
+            perror("Thread creation failed");
+            exit(1);
+        }
+    }
+    
+
 	// Wait for threads to finish
-    for(int i =0; i < MAX_TASKS; i++)
+    for(int i =0; i < next_task_index; i++)
     {
         pthread_join(threads[i], NULL);
     }
@@ -82,7 +89,7 @@ uint64_t get_tick_count(void)
 }
 
 
-void rtos_delay(uint32_t tick_count)
+void rtos_delay_tick(uint32_t tick_count)
 {
 	//disable interrupt
 	disable_interrupt();
@@ -92,4 +99,10 @@ void rtos_delay(uint32_t tick_count)
 
 	//enable interrupt
 	enable_interrupt();
+}
+
+void rtos_delay_ms(uint32_t ms)
+{
+    uint32_t tick_count = tick_in_hz*ms/1000;
+    rtos_delay_tick(tick_count);
 }

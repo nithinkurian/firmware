@@ -34,12 +34,15 @@ int main(void)
 
 	//Initialize LED
 	led_init();
-	printf("Initialized\n");
+
+	printf(BOLD_DARK_GRAY"Initialized\n");
+	printf("%s Initializing\n",get_rtos_name());
 
 	create_task(task1_handler,760, 2);
 	create_task(task2_handler,760, 2);
 	create_task(task3_handler,760, 2);
 	create_task(task4_handler,760, 2);
+	
 	
 	run_scheduler();
 
@@ -51,10 +54,10 @@ void task1_handler(void* parameters)
 	{
 		printf(BOLD_YELLOW"task1 ON\n\r");
 		turn_on_led(YELLOW);
-		rtos_delay(1000);	
+		rtos_delay_ms(1000);	
 		printf(YELLOW_COLOUR"task1 OFF\n\r");	
 		turn_off_led(YELLOW);
-		rtos_delay(1000);
+		rtos_delay_ms(1000);
 	}
 }
 
@@ -64,10 +67,10 @@ void task2_handler(void* parameters)
 	{
 		printf(BOLD_BLUE"task2 ON\n\r");
 		turn_on_led(BLUE);
-		rtos_delay(2000);
+		rtos_delay_ms(2000);
 		printf(BLUE_COLOUR"task2 OFF\n\r");	
 		turn_off_led(BLUE);
-		rtos_delay(2000);
+		rtos_delay_ms(2000);
 	}
 }
 
@@ -77,10 +80,10 @@ void task3_handler(void* parameters)
 	{
 		printf(BOLD_RED"task3 ON\n\r");
 		turn_on_led(RED);
-		rtos_delay(4000);
+		rtos_delay_ms(4000);
 		printf(RED_COLOUR"task3 OFF\n\r");	
 		turn_off_led(RED);
-		rtos_delay(4000);
+		rtos_delay_ms(4000);
 	}
 }
 
@@ -89,9 +92,9 @@ void task4_handler(void* parameters)
 	while(1)
 	{
 		printf(BOLD_GREEN"task4 ON\n\r");
-		rtos_delay(8000);
+		rtos_delay_ms(8000);
 		printf(GREEN_COLOUR"task4 OFF\n\r");
-		rtos_delay(8000);
+		rtos_delay_ms(8000);
 	}
 }
 

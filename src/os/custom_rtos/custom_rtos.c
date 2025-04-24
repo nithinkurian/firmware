@@ -56,9 +56,16 @@ uint64_t g_tick_count = 0;
 uint32_t current_task = 1;
 uint32_t next_task_start = FIRST_STACK_START;
 uint8_t next_task_index = 1;
+uint32_t tick_in_hz = 0;
+
+char * get_rtos_name()
+{
+	return "CustomRTOS";
+}
 
 void run_scheduler()
 {
+	tick_in_hz = TICK_HZ;
 	init_systick_timer(TICK_HZ);
 	init_idle_task_stack();
 	init_scheduler_stack(SCHED_STACK_START);
@@ -86,7 +93,7 @@ void init_idle_task_stack(void)
 }
 
 
-void rtos_delay(uint32_t tick_count)
+void rtos_delay_tick(uint32_t tick_count)
 {
 	//disable interrupt
 	disable_interrupt();
@@ -100,6 +107,12 @@ void rtos_delay(uint32_t tick_count)
 
 	//enable interrupt
 	enable_interrupt();
+}
+
+void rtos_delay_ms(uint32_t ms)
+{
+    uint32_t tick_count = tick_in_hz*ms/1000;
+    rtos_delay_tick(tick_count);
 }
 
 void unblock_tasks(void)

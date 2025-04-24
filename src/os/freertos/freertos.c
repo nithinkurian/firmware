@@ -11,6 +11,11 @@ extern void task3_handler(void* parameters); //This is task3
 extern void task4_handler(void* parameters); //This is task4
 extern void idle_task(void* parameters); //Idle task
 
+char * get_rtos_name()
+{
+	return "FreeRTOS";
+}
+
 void run_scheduler()
 {
 	vTaskStartScheduler();
@@ -26,8 +31,12 @@ void create_task(void (*task_handler)(void*),uint16_t stack_size, uint8_t priori
 }
 
 
-void rtos_delay(uint32_t tick_count)
+void rtos_delay_tick(uint32_t tick_count)
 {
-	//vTaskDelay(pdMS_TO_TICKS(1000));
 	vTaskDelay(tick_count);
+}
+
+void rtos_delay_ms(uint32_t ms)
+{
+	vTaskDelay(pdMS_TO_TICKS(ms));
 }
