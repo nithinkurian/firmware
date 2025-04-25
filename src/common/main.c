@@ -8,7 +8,20 @@
 #include "rtos.h"
 
 
+#define TASK_1_ON    0x01
+#define TASK_1_OFF   0x10
+#define TASK_2_ON    0x02
+#define TASK_2_OFF   0x20
+#define TASK_3_ON    0x04
+#define TASK_3_OFF   0x40
+#define TASK_4_ON    0x08
+#define TASK_4_OFF   0x80
 
+#define TASK_1_DELAY 1000
+#define TASK_2_DELAY 2 * TASK_1_DELAY
+#define TASK_3_DELAY 2 * TASK_2_DELAY
+#define TASK_4_DELAY 2 * TASK_3_DELAY
+#define TASK_5_DELAY 2 * TASK_4_DELAY
 
 //Semi hosting init function
 extern void initialise_monitor_handles(void);
@@ -17,11 +30,13 @@ taskhandle_t task1_handler;
 taskhandle_t task2_handler;
 taskhandle_t task3_handler;
 taskhandle_t task4_handler;
+taskhandle_t notification_receive_task_handler;
 
 void task1_function(void* parameters); //This is task1
 void task2_function(void* parameters); //This is task2
 void task3_function(void* parameters); //This is task3
 void task4_function(void* parameters); //This is task4
+void notification_receive_task( void *pvParameter );
 
 int main(void)
 {
@@ -46,6 +61,7 @@ int main(void)
 	task2_handler = create_task(task2_function,760, 2);
 	task3_handler = create_task(task3_function,760, 2);
 	task4_handler = create_task(task4_function,760, 2);
+	notification_receive_task_handler = create_task(notification_receive_task,760, 2);
 	
 	
 	run_scheduler();
@@ -59,10 +75,12 @@ void task1_function(void* parameters)
 	{
 		printf(BOLD_YELLOW"task1 ON\n\r");
 		turn_on_led(YELLOW);
-		rtos_delay_until_ms(&previous_wake_time,1000);
+		notify_task_setbit(notification_receive_task_handler,TASK_1_ON);
+		rtos_delay_until_ms(&previous_wake_time,TASK_1_DELAY);
 		printf(YELLOW_COLOUR"task1 OFF\n\r");	
 		turn_off_led(YELLOW);
-		rtos_delay_until_ms(&previous_wake_time,1000);
+		notify_task_setbit(notification_receive_task_handler,TASK_1_OFF);
+		rtos_delay_until_ms(&previous_wake_time,TASK_1_DELAY);
 	}
 }
 
@@ -73,10 +91,12 @@ void task2_function(void* parameters)
 	{
 		printf(BOLD_BLUE"task2 ON\n\r");
 		turn_on_led(BLUE);
-		rtos_delay_until_ms(&previous_wake_time,2000);
+		notify_task_setbit(notification_receive_task_handler,TASK_2_ON);
+		rtos_delay_until_ms(&previous_wake_time,TASK_2_DELAY);
 		printf(BLUE_COLOUR"task2 OFF\n\r");	
 		turn_off_led(BLUE);
-		rtos_delay_until_ms(&previous_wake_time,2000);
+		notify_task_setbit(notification_receive_task_handler,TASK_2_OFF);
+		rtos_delay_until_ms(&previous_wake_time,TASK_2_DELAY);
 	}
 }
 
@@ -87,10 +107,12 @@ void task3_function(void* parameters)
 	{
 		printf(BOLD_RED"task3 ON\n\r");
 		turn_on_led(RED);
-		rtos_delay_until_ms(&previous_wake_time,4000);
+		notify_task_setbit(notification_receive_task_handler,TASK_3_ON);
+		rtos_delay_until_ms(&previous_wake_time,TASK_3_DELAY);
 		printf(RED_COLOUR"task3 OFF\n\r");	
 		turn_off_led(RED);
-		rtos_delay_until_ms(&previous_wake_time,4000);
+		notify_task_setbit(notification_receive_task_handler,TASK_3_OFF);
+		rtos_delay_until_ms(&previous_wake_time,TASK_3_DELAY);
 	}
 }
 
@@ -100,19 +122,76 @@ void task4_function(void* parameters)
 	while(1)
 	{
 		printf(BOLD_GREEN"task4 ON\n\r");
-		rtos_delay_until_ms(&previous_wake_time,8000);
+		notify_task_setbit(notification_receive_task_handler,TASK_4_ON);
+		rtos_delay_until_ms(&previous_wake_time,TASK_4_DELAY);
 		printf(GREEN_COLOUR"task4 OFF\n\r");
-		rtos_delay_until_ms(&previous_wake_time,8000);
+		notify_task_setbit(notification_receive_task_handler,TASK_4_OFF);
+		rtos_delay_until_ms(&previous_wake_time,TASK_4_DELAY);
 	}
 }
 
-void idle_task(void* parameters)
+
+void notification_receive_task( void *pvParameter )
 {
-	while(1);
+	printf(TEAL_COLOUR"notification_receive_task\n\r");
+   for( ;; )
+   {
+      uint32_t notification_value = 0;
+      if(notify_task_wait(TASK_5_DELAY,&notification_value))
+      {
+      	//printf("%x \n\r",notification_value);
+      	/* A notification was received. See which bits were set. */
+         if( ( notification_value & TASK_1_ON ) != 0 )
+         {
+            printf(BOLD_YELLOW"Notification : TASK_1_ON\n\r");
+         }
+         
+         /* A notification was received. See which bits were set. */
+         if( ( notification_value & TASK_1_OFF ) != 0 )
+         {
+            printf(YELLOW_COLOUR"Notification : TASK_1_OFF\n\r");
+         }
+
+      	/* A notification was received. See which bits were set. */
+         if( ( notification_value & TASK_2_ON ) != 0 )
+         {
+            printf(BOLD_BLUE"Notification : TASK_2_ON\n\r");
+         }
+         
+         /* A notification was received. See which bits were set. */
+         if( ( notification_value & TASK_2_OFF ) != 0 )
+         {
+            printf(BLUE_COLOUR"Notification : TASK_2_OFF\n\r");
+         }
+
+         if( ( notification_value & TASK_3_ON ) != 0 )
+         {
+            printf(BOLD_RED"Notification : TASK_3_ON\n\r");
+         }
+
+      	/* A notification was received. See which bits were set. */
+         if( ( notification_value & TASK_3_OFF ) != 0 )
+         {
+            printf(RED_COLOUR"Notification : TASK_3_OFF\n\r");
+         }
+
+         /* A notification was received. See which bits were set. */
+         if( ( notification_value & TASK_4_ON ) != 0 )
+         {
+            printf(BOLD_GREEN"Notification : TASK_4_ON\n\r");
+         }
+
+         if( ( notification_value & TASK_4_OFF ) != 0 )
+         {
+            printf(GREEN_COLOUR"Notification : TASK_4_OFF\n\r");
+         }
+      }
+      else
+      {
+      	printf(TEAL_COLOUR"no notification\n\r");
+      }
+   }
 }
-
-
-
 
 /**
  * @brief  This function is executed in case of error occurrence.

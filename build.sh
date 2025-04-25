@@ -28,7 +28,11 @@ do
 		arm-none-eabi-gdb --command=build/scons/$2/flash_semi.gdb
 		exit 0
 	elif [[ "$1" = "debug" ]]; then
-		arm-none-eabi-gdb --command=build/scons/$2/debug.gdb -tui build/scons/$2/firmware.elf
+		if [[ "$2" = "X8664______PTHRE_001" ]]; then
+			gdb -tui build/scons/$2/firmware.elf
+		else
+			arm-none-eabi-gdb --command=build/scons/$2/debug.gdb -tui build/scons/$2/firmware.elf
+		fi
 		exit 0
 	elif [[ "$1" = "debugsemi" ]]; then
 		arm-none-eabi-gdb --command=build/scons/$2/debug_semi.gdb -tui build/scons/$2/firmware_semi.elf

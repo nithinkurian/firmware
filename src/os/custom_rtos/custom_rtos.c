@@ -10,7 +10,7 @@ extern void task3_function(void* parameters); //This is task3
 extern void task4_function(void* parameters); //This is task4
 void idle_task(void* parameters); //Idle task
 
-#define MAX_TASKS			5
+#define MAX_TASKS			6
 
 /* Stack memory calculations */
 #define SIZE_TASK_STACK		1024U
@@ -35,6 +35,8 @@ typedef struct
 	uint32_t psp_value;
 	uint32_t block_count;
 	uint8_t current_state;
+	uint32_t notification_value;
+    bool notification_status;
 	void (*task_handler)(void* parameters);
 }TCB_t;
 
@@ -50,6 +52,7 @@ void update_global_tick_count(void);
 uint32_t get_tick_count(void);
 void init_idle_task_stack(void);
 void unblock_tasks(void);
+TCB_t * get_current_task_tcb();
 
 
 TCB_t user_tasks[MAX_TASKS];
@@ -84,7 +87,7 @@ taskhandle_t create_task(void (*task_handler)(void*),uint16_t stack_size, uint8_
 {
 	if(next_task_index >= MAX_TASKS)
 	{
-		printf("TCB are not available, please increase MAX_TASKS");
+		printf("TCB are not available, please increase MAX_TASKS\n");
 		while(1);
 	}
 	user_tasks[next_task_index].task_handler = task_handler;
@@ -267,4 +270,47 @@ __attribute__ ((naked)) void PendSV_Handler(void)
 
 	//Switches to thread/user mode
 	__asm volatile("BX LR");
+}
+
+
+TCB_t * get_current_task_tcb()
+{
+    return &user_tasks[current_task];
+}
+
+void notify_task_setbit(taskhandle_t dest_task,uint32_t bit)
+{
+    TCB_t * dest_task_tcb = dest_task;
+    dest_task_tcb->notification_value |= bit;
+    dest_task_tcb->notification_status = true;
+}
+
+bool notify_task_wait(uint32_t block_time_ms,uint32_t * notification_value)
+{
+    //disable interrupt
+    disable_interrupt();
+    uint32_t tick_count = tick_in_hz*block_time_ms/1000;
+    uint32_t initial_tick = get_tick_count();
+    TCB_t * current_task_tcb = get_current_task_tcb();
+    if(current_task_tcb == NULL)
+    {
+        printf("current_task_tcb is NULL\n");
+        while(1);
+        return false;
+    }
+    while(initial_tick+ tick_count>get_tick_count())
+    {
+        if(current_task_tcb->notification_status != 0)
+        {
+            *notification_value = current_task_tcb->notification_value;
+            current_task_tcb->notification_value = 0;
+            current_task_tcb->notification_status = false;
+            return true;
+        }
+        rtos_delay_ms(1);
+    }
+
+    //enable interrupt
+    enable_interrupt();
+    return false;
 }
