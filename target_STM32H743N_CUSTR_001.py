@@ -33,6 +33,10 @@ for env in env_list:
 		conf_dict = {'##Firmware##': '''build/scons/${TARGET_NAME}/firmware_semi.elf
 monitor arm semihosting enable'''}
 		env.Substfile('flash_semi.gdb','flash_template.gdb', SUBST_DICT = conf_dict)
+
+		conf_dict = {'##Firmware##': '''build/scons/${TARGET_NAME}/firmware_semi.elf
+monitor arm semihosting enable'''}
+		env_semi.Substfile('debug_semi.gdb','debug_template.gdb', SUBST_DICT = conf_dict)
 	else:
 
 		env.Append(LINKFLAGS='--specs=nano.specs')
@@ -51,8 +55,12 @@ monitor arm semihosting enable'''}
 		conf_dict = {'##Firmware##': '''build/scons/${TARGET_NAME}/firmware.elf'''}
 		env.Substfile('flash.gdb', 'flash_template.gdb',SUBST_DICT = conf_dict)
 
+		conf_dict = {'##Firmware##': '''build/scons/${TARGET_NAME}/firmware.elf'''}
+		env_semi.Substfile('debug.gdb','debug_template.gdb', SUBST_DICT = conf_dict)
+
 	env.Depends(firmware, '#build/scons/libs/common/'+'${BOARD_NAME}'+'/libcommon.a')
 	env.Depends(firmware, '#build/scons/libs/bsp/'+'${BOARD_NAME}'+'/libbsp.a')
 	env.Depends(firmware, '#build/scons/libs/os/'+'${OS_NAME}'+'/libos.a')
+
 
 

@@ -2,12 +2,13 @@
 #include "rtos.h"
 #include "hal_cpu.h"
 #include <stddef.h>
+#include <stdio.h>
 
-extern void task1_handler(void* parameters); //This is task1
-extern void task2_handler(void* parameters); //This is task2
-extern void task3_handler(void* parameters); //This is task3
-extern void task4_handler(void* parameters); //This is task4
-extern void idle_task(void* parameters); //Idle task
+extern void task1_function(void* parameters); //This is task1
+extern void task2_function(void* parameters); //This is task2
+extern void task3_function(void* parameters); //This is task3
+extern void task4_function(void* parameters); //This is task4
+void idle_task(void* parameters); //Idle task
 
 #define MAX_TASKS			5
 
@@ -58,6 +59,12 @@ uint32_t next_task_start = FIRST_STACK_START;
 uint8_t next_task_index = 1;
 uint32_t tick_in_hz = 0;
 
+
+void idle_task(void* parameters)
+{
+	while(1);
+}
+
 char * get_rtos_name()
 {
 	return "CustomRTOS";
@@ -70,11 +77,16 @@ void run_scheduler()
 	init_idle_task_stack();
 	init_scheduler_stack(SCHED_STACK_START);
 	switch_sp_to_psp();
-	task1_handler(NULL);
+	task1_function(NULL);
 }
 
-void create_task(void (*task_handler)(void*),uint16_t stack_size, uint8_t priority)
+taskhandle_t create_task(void (*task_handler)(void*),uint16_t stack_size, uint8_t priority)
 {
+	if(next_task_index >= MAX_TASKS)
+	{
+		printf("TCB are not available, please increase MAX_TASKS");
+		while(1);
+	}
 	user_tasks[next_task_index].task_handler = task_handler;
 	user_tasks[next_task_index].psp_value = next_task_start;
 	user_tasks[next_task_index].current_state = TASK_READY_STATE;
@@ -82,6 +94,7 @@ void create_task(void (*task_handler)(void*),uint16_t stack_size, uint8_t priori
 
 	next_task_start -= stack_size;
 	next_task_index++;
+	return &user_tasks[next_task_index-1];
 }
 
 void init_idle_task_stack(void)
@@ -139,7 +152,7 @@ uint32_t get_rtos_tick_count()
 
 void unblock_tasks(void)
 {
-	for(int i =1; i < MAX_TASKS; i++)
+	for(int i =1; i < next_task_index; i++)
 	{
 		if(user_tasks[i].current_state != TASK_READY_STATE)
 		{
@@ -184,10 +197,10 @@ void save_psp_value(uint32_t current_psp_value)
 void update_next_task(void)
 {
 	int state =  TASK_BLOCKED_STATE;
-	for(int i = 0; i < MAX_TASKS; i++)
+	for(int i = 0; i < next_task_index; i++)
 	{
 		current_task++;
-		current_task %= MAX_TASKS;
+		current_task %= next_task_index;
 		state = user_tasks[current_task].current_state;
 		if( (state == TASK_READY_STATE) && (current_task != 0))
 			break;

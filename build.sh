@@ -27,10 +27,11 @@ do
 	elif [[ "$1" = "loadsemi" ]]; then
 		arm-none-eabi-gdb --command=build/scons/$2/flash_semi.gdb
 		exit 0
-	elif [[ "$1" = "semihosting" ]]; then
-		#Semihost enabled firmware will run only when semihosting is enabled from gdb client
-		#semi hosting prints will appear in gdb server
-		arm-none-eabi-gdb --command=semi_hosting_enable.gdb
+	elif [[ "$1" = "debug" ]]; then
+		arm-none-eabi-gdb --command=build/scons/$2/debug.gdb -tui build/scons/$2/firmware.elf
+		exit 0
+	elif [[ "$1" = "debugsemi" ]]; then
+		arm-none-eabi-gdb --command=build/scons/$2/debug_semi.gdb -tui build/scons/$2/firmware_semi.elf
 		exit 0
 	elif [[ "$1" = "run" ]]; then
 		./build/scons/$2/firmware.elf 

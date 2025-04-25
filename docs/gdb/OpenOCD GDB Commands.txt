@@ -7,7 +7,7 @@ https://openocd.org/doc/html/General-Commands.html
 
 -----------------------------------------------
 gdb
-arm-none-eabi-gdb : to start
+arm-none-eabi-gdb -tui: to start
 
 target remote localhost:3333 : for connecting to Open OCD
 target extended-remote localhost:3333 : for connecting to Open OCD

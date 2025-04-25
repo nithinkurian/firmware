@@ -13,11 +13,15 @@
 //Semi hosting init function
 extern void initialise_monitor_handles(void);
 
-void task1_handler(void* parameters); //This is task1
-void task2_handler(void* parameters); //This is task2
-void task3_handler(void* parameters); //This is task3
-void task4_handler(void* parameters); //This is task4
-void idle_task(void* parameters); //Idle task
+taskhandle_t task1_handler;
+taskhandle_t task2_handler;
+taskhandle_t task3_handler;
+taskhandle_t task4_handler;
+
+void task1_function(void* parameters); //This is task1
+void task2_function(void* parameters); //This is task2
+void task3_function(void* parameters); //This is task3
+void task4_function(void* parameters); //This is task4
 
 int main(void)
 {
@@ -38,17 +42,17 @@ int main(void)
 	printf(BOLD_DARK_GRAY"Initialized\n");
 	printf("%s Initializing\n",get_rtos_name());
 
-	create_task(task1_handler,760, 2);
-	create_task(task2_handler,760, 2);
-	create_task(task3_handler,760, 2);
-	create_task(task4_handler,760, 2);
+	task1_handler = create_task(task1_function,760, 2);
+	task2_handler = create_task(task2_function,760, 2);
+	task3_handler = create_task(task3_function,760, 2);
+	task4_handler = create_task(task4_function,760, 2);
 	
 	
 	run_scheduler();
 
 }
 
-void task1_handler(void* parameters)
+void task1_function(void* parameters)
 {
 	uint32_t previous_wake_time = get_rtos_tick_count();
 	while(1)
@@ -62,7 +66,7 @@ void task1_handler(void* parameters)
 	}
 }
 
-void task2_handler(void* parameters)
+void task2_function(void* parameters)
 {
 	uint32_t previous_wake_time = get_rtos_tick_count();
 	while(1)
@@ -76,7 +80,7 @@ void task2_handler(void* parameters)
 	}
 }
 
-void task3_handler(void* parameters)
+void task3_function(void* parameters)
 {
 	uint32_t previous_wake_time = get_rtos_tick_count();
 	while(1)
@@ -90,7 +94,7 @@ void task3_handler(void* parameters)
 	}
 }
 
-void task4_handler(void* parameters)
+void task4_function(void* parameters)
 {
 	uint32_t previous_wake_time = get_rtos_tick_count();
 	while(1)

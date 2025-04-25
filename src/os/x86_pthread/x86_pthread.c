@@ -7,15 +7,16 @@
 #include <pthread.h>
 #include <stddef.h>
 
-extern void task1_handler(void* parameters); //This is task1
-extern void task2_handler(void* parameters); //This is task2
-extern void task3_handler(void* parameters); //This is task3
-extern void task4_handler(void* parameters); //This is task4
-extern void idle_task(void* parameters); //Idle task
+extern void task1_function(void* parameters); //This is task1
+extern void task2_function(void* parameters); //This is task2
+extern void task3_function(void* parameters); //This is task3
+extern void task4_function(void* parameters); //This is task4
+void idle_task(void* parameters); //Idle task
+
 uint32_t get_tick_count(void);
 
 #define MAX_TASKS			5
- #define TICK_HZ                1000U
+#define TICK_HZ             1000U
 
 typedef struct
 {
@@ -42,16 +43,27 @@ void *thread_function(void *arg) {
 }
 
 
+void idle_task(void* parameters)
+{
+    while(1);
+}
 
 char * get_rtos_name()
 {
     return "x86Pthread";
 }
 
-void create_task(void (*task_handler)(void*),uint16_t stack_size, uint8_t priority)
+taskhandle_t create_task(void (*task_handler)(void*),uint16_t stack_size, uint8_t priority)
 {
+    if(next_task_index >= MAX_TASKS)
+    {
+        printf("TCB are not available, please increase MAX_TASKS");
+        while(1);
+    }
+
     user_tasks[next_task_index].task_handler = task_handler;
     next_task_index++;
+    return &user_tasks[next_task_index-1];
 }
 
 void run_scheduler()
