@@ -29,6 +29,10 @@ void idle_task(void* parameters); //Idle task
 
 #define TICK_HZ				1000U
 
+#define NO_NOTIFICATION     		0
+#define WAITING_FOR_NOTIFICATION	1
+#define NOTIFICATION_PRESENT		2
+
 
 typedef struct
 {
@@ -36,7 +40,7 @@ typedef struct
 	uint32_t block_count;
 	uint8_t current_state;
 	uint32_t notification_value;
-    bool notification_status;
+    uint8_t notification_status;
 	void (*task_handler)(void* parameters);
 }TCB_t;
 
@@ -163,6 +167,11 @@ void unblock_tasks(void)
 			{
 				user_tasks[i].current_state = TASK_READY_STATE;
 			}
+			else if(user_tasks[i].notification_status == NOTIFICATION_PRESENT)
+			{
+				user_tasks[i].current_state = TASK_READY_STATE;
+			}
+
 		}
 	}
 }
@@ -282,35 +291,43 @@ void notify_task_setbit(taskhandle_t dest_task,uint32_t bit)
 {
     TCB_t * dest_task_tcb = dest_task;
     dest_task_tcb->notification_value |= bit;
-    dest_task_tcb->notification_status = true;
+
+    if(dest_task_tcb->notification_status == WAITING_FOR_NOTIFICATION)
+    {
+    	dest_task_tcb->notification_status = NOTIFICATION_PRESENT;
+    	schedule();
+    }
+    else
+    {
+    	dest_task_tcb->notification_status = NOTIFICATION_PRESENT;
+    }
 }
 
 bool notify_task_wait(uint32_t block_time_ms,uint32_t * notification_value)
 {
-    //disable interrupt
-    disable_interrupt();
-    uint32_t tick_count = tick_in_hz*block_time_ms/1000;
-    uint32_t initial_tick = get_tick_count();
     TCB_t * current_task_tcb = get_current_task_tcb();
     if(current_task_tcb == NULL)
     {
-        printf("current_task_tcb is NULL\n");
-        while(1);
         return false;
     }
-    while(initial_tick+ tick_count>get_tick_count())
+
+    if(current_task_tcb->notification_status != NOTIFICATION_PRESENT)
     {
-        if(current_task_tcb->notification_status != 0)
-        {
-            *notification_value = current_task_tcb->notification_value;
-            current_task_tcb->notification_value = 0;
-            current_task_tcb->notification_status = false;
-            return true;
-        }
-        rtos_delay_ms(1);
+	    current_task_tcb->notification_status = WAITING_FOR_NOTIFICATION;
+	    rtos_delay_ms(block_time_ms);
     }
 
-    //enable interrupt
-    enable_interrupt();
-    return false;
+    if(current_task_tcb->notification_status == NOTIFICATION_PRESENT)
+    {
+        *notification_value = current_task_tcb->notification_value;
+        current_task_tcb->notification_value = 0;
+        current_task_tcb->notification_status = NO_NOTIFICATION;
+        return true;
+    }
+    else
+    {
+	    current_task_tcb->notification_status = NO_NOTIFICATION;
+	    return false;
+    }
+
 }
