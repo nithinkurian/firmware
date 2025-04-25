@@ -57,6 +57,7 @@ monitor arm semihosting enable'''}
 		conf_dict = {'##Firmware##': '''build/scons/${TARGET_NAME}/firmware.elf'''}
 		env_semi.Substfile('debug.gdb','debug_template.gdb', SUBST_DICT = conf_dict)
 
+	env.Depends(firmware, '#src/bsp/'+'${BOARD_NAME}'+'/stm32_ls.ld')
 	env.Depends(firmware, '#build/scons/libs/common/'+'${BOARD_NAME}'+'/libcommon.a')
 	env.Depends(firmware, '#build/scons/libs/bsp/'+'${BOARD_NAME}'+'/libbsp.a')
 	env.Depends(firmware, '#build/scons/libs/os/'+'${OS_NAME}'+'/libos.a')
