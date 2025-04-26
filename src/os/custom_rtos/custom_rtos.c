@@ -89,27 +89,38 @@ void run_scheduler()
 
 taskhandle_t create_task(void (*task_handler)(void*),uint16_t stack_size, uint8_t priority)
 {
+	//disable interrupt
+	disable_interrupt();
 	if(next_task_index >= MAX_TASKS)
 	{
 		printf("TCB are not available, please increase MAX_TASKS\n");
 		while(1);
 	}
-	user_tasks[next_task_index].task_handler = task_handler;
-	user_tasks[next_task_index].psp_value = next_task_start;
-	user_tasks[next_task_index].current_state = TASK_READY_STATE;
-	user_tasks[next_task_index].psp_value=task_stack_init(user_tasks[next_task_index].psp_value,user_tasks[next_task_index].task_handler);
+	TCB_t * next_task = &user_tasks[next_task_index];
+	next_task->task_handler = task_handler;
+	next_task->psp_value = next_task_start;
+	next_task->current_state = TASK_READY_STATE;
+	next_task->psp_value=task_stack_init(next_task->psp_value,next_task->task_handler);
 
 	next_task_start -= stack_size;
 	next_task_index++;
-	return &user_tasks[next_task_index-1];
+
+	//enable interrupt
+	enable_interrupt();
+	return next_task;
 }
 
 void init_idle_task_stack(void)
 {
+	//disable interrupt
+	disable_interrupt();
 	user_tasks[0].psp_value = IDLE_STACK_START;
 	user_tasks[0].task_handler = idle_task;
 	user_tasks[0].current_state = TASK_READY_STATE;
 	user_tasks[0].psp_value=task_stack_init(user_tasks[0].psp_value,user_tasks[0].task_handler);
+
+	//enable interrupt
+	enable_interrupt();
 }
 
 
@@ -289,6 +300,10 @@ TCB_t * get_current_task_tcb()
 
 void notify_task_setbit(taskhandle_t dest_task,uint32_t bit)
 {
+
+    //disable interrupt
+	disable_interrupt();
+
     TCB_t * dest_task_tcb = dest_task;
     dest_task_tcb->notification_value |= bit;
 
@@ -301,13 +316,22 @@ void notify_task_setbit(taskhandle_t dest_task,uint32_t bit)
     {
     	dest_task_tcb->notification_status = NOTIFICATION_PRESENT;
     }
+
+	//enable interrupt
+	enable_interrupt();
 }
 
 bool notify_task_wait(uint32_t block_time_ms,uint32_t * notification_value)
 {
+	//disable interrupt
+	disable_interrupt();
+
     TCB_t * current_task_tcb = get_current_task_tcb();
     if(current_task_tcb == NULL)
     {
+
+		//enable interrupt
+		enable_interrupt();
         return false;
     }
 
@@ -322,12 +346,17 @@ bool notify_task_wait(uint32_t block_time_ms,uint32_t * notification_value)
         *notification_value = current_task_tcb->notification_value;
         current_task_tcb->notification_value = 0;
         current_task_tcb->notification_status = NO_NOTIFICATION;
+        //enable interrupt
+		enable_interrupt();
         return true;
     }
     else
     {
 	    current_task_tcb->notification_status = NO_NOTIFICATION;
+	    //enable interrupt
+		enable_interrupt();
 	    return false;
     }
 
+}
 }
