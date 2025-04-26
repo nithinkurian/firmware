@@ -38,6 +38,13 @@ void task3_function(void* parameters); //This is task3
 void task4_function(void* parameters); //This is task4
 void notification_receive_task( void *pvParameter );
 
+
+taskhandle_t send_handler;
+taskhandle_t receive_handler;
+
+void send_task(void* parameters); //This is send
+void receive_task(void* parameters); //This is receive
+
 int main(void)
 {
 	//Semi hosting init function
@@ -57,11 +64,13 @@ int main(void)
 	printf(BOLD_DARK_GRAY"Initialized\n");
 	printf("%s Initializing\n",get_rtos_name());
 
-	task1_handler = create_task(task1_function,760, 2);
-	task2_handler = create_task(task2_function,760, 2);
-	task3_handler = create_task(task3_function,760, 2);
-	task4_handler = create_task(task4_function,760, 2);
+	task1_handler   = create_task(task1_function,760, 2);
+	task2_handler   = create_task(task2_function,760, 2);
+	task3_handler   = create_task(task3_function,760, 2);
+	task4_handler   = create_task(task4_function,760, 2);
 	notification_receive_task_handler = create_task(notification_receive_task,760, 2);
+	send_handler    = create_task(send_task,760, 2);
+	receive_handler = create_task(receive_task,760, 2);
 	
 	
 	run_scheduler();
@@ -73,6 +82,13 @@ void task1_function(void* parameters)
 	uint32_t previous_wake_time = get_rtos_tick_count();
 	while(1)
 	{
+#if 0
+	 	char data[80];
+	 	char * p = data;
+	 	printf("Enter data\n");
+    	scanf("%s", p);
+    	printf("data %s \n",data);
+#endif
 		printf(BOLD_YELLOW"task1 ON\n\r");
 		turn_on_led(YELLOW);
 		notify_task_setbit(notification_receive_task_handler,TASK_1_ON);
@@ -128,6 +144,16 @@ void task4_function(void* parameters)
 		notify_task_setbit(notification_receive_task_handler,TASK_4_OFF);
 		rtos_delay_until_ms(&previous_wake_time,TASK_4_DELAY);
 	}
+}
+
+void send_task(void* parameters) //This is send
+{
+	while(1);
+}
+
+void receive_task(void* parameters) //This is receive
+{
+	while(1);
 }
 
 

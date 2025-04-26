@@ -10,7 +10,7 @@ extern void task3_function(void* parameters); //This is task3
 extern void task4_function(void* parameters); //This is task4
 void idle_task(void* parameters); //Idle task
 
-#define MAX_TASKS			6
+#define MAX_TASKS			8
 
 /* Stack memory calculations */
 #define SIZE_TASK_STACK		1024U

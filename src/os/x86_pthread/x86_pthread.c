@@ -24,7 +24,7 @@ TCB_t * get_current_task_tcb();
 
 uint32_t get_tick_count(void);
 
-#define MAX_TASKS			6
+#define MAX_TASKS			8
 #define TICK_HZ             1000U
 TCB_t user_tasks[MAX_TASKS];
 
@@ -32,7 +32,7 @@ uint32_t current_task = 1;
 
 
 pthread_t threads[MAX_TASKS];
-int thread_args[MAX_TASKS] = {0,1,2,3,4,5};
+int thread_args[MAX_TASKS] = {0,1,2,3,4,5,6,7};
 int i, result;
 extern uint32_t tick_in_hz;
 

@@ -57,3 +57,5 @@ OSAL layer is needed
 debugging using IDE
 Emacs + GDB
 Need to add trace support
+named pipe for hal simulation.
+another application to connect over named pipe to visualize
