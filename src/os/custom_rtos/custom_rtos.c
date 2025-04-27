@@ -3,11 +3,11 @@
 #include "hal_cpu.h"
 #include <stddef.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include "print_colour.h"
 
-extern void task1_function(void* parameters); //This is task1
-extern void task2_function(void* parameters); //This is task2
-extern void task3_function(void* parameters); //This is task3
-extern void task4_function(void* parameters); //This is task4
+
+
 void idle_task(void* parameters); //Idle task
 
 #define MAX_TASKS			8
@@ -33,6 +33,10 @@ void idle_task(void* parameters); //Idle task
 #define WAITING_FOR_NOTIFICATION	1
 #define NOTIFICATION_PRESENT		2
 
+#define NOT_WAITING_ON_QUEUE        0
+#define WAITING_ON_EMPTY_QUEUE      1
+#define WAITING_ON_FULL_QUEUE       2
+
 
 typedef struct
 {
@@ -41,8 +45,19 @@ typedef struct
 	uint8_t current_state;
 	uint32_t notification_value;
     uint8_t notification_status;
+    uint8_t queue_waiting_state;
+    uint32_t currently_waiting_queue;
 	void (*task_handler)(void* parameters);
 }TCB_t;
+
+// Defining the Queue structure
+typedef struct {
+    void *queue_buffer;
+    uint16_t queue_length;
+    uint16_t item_size;
+    int front;
+    int back;
+} QCB_t;
 
 
 __attribute__((naked)) void init_scheduler_stack(uint32_t sched_top_of_stack);
@@ -57,6 +72,9 @@ uint32_t get_tick_count(void);
 void init_idle_task_stack(void);
 void unblock_tasks(void);
 TCB_t * get_current_task_tcb();
+void print_queue(queuehandle_t handle);
+bool is_queue_empty(queuehandle_t handle);
+bool is_queue_full(queuehandle_t handle);
 
 
 TCB_t user_tasks[MAX_TASKS];
@@ -65,6 +83,10 @@ uint32_t current_task = 1;
 uint32_t next_task_start = FIRST_STACK_START;
 uint8_t next_task_index = 1;
 uint32_t tick_in_hz = 0;
+
+#define MAX_QUEUES           2
+QCB_t user_queue[MAX_QUEUES];
+uint8_t next_queue = 0;
 
 
 void idle_task(void* parameters)
@@ -84,7 +106,12 @@ void run_scheduler()
 	init_idle_task_stack();
 	init_scheduler_stack(SCHED_STACK_START);
 	switch_sp_to_psp();
-	task1_function(NULL);
+	if(user_tasks[1].task_handler == NULL)
+	{
+		printf("First task is not created, please create first task\n");
+		while(1);
+	}
+	user_tasks[1].task_handler(NULL);
 }
 
 taskhandle_t create_task(void (*task_handler)(void*),uint16_t stack_size, uint8_t priority)
@@ -182,6 +209,23 @@ void unblock_tasks(void)
 			{
 				user_tasks[i].current_state = TASK_READY_STATE;
 			}
+            else if(user_tasks[i].currently_waiting_queue != NULL)
+            {
+                if(user_tasks[i].queue_waiting_state == WAITING_ON_FULL_QUEUE)
+                {
+                    if(!is_queue_full(user_tasks[i].currently_waiting_queue))
+                    {
+                        user_tasks[i].current_state = TASK_READY_STATE;
+                    }
+                }
+                else if(user_tasks[i].queue_waiting_state == WAITING_ON_EMPTY_QUEUE)
+                {
+                    if(!is_queue_empty(user_tasks[i].currently_waiting_queue))
+                    {
+                        user_tasks[i].current_state = TASK_READY_STATE;
+                    }
+                }
+            }
 
 		}
 	}
@@ -359,4 +403,161 @@ bool notify_task_wait(uint32_t block_time_ms,uint32_t * notification_value)
     }
 
 }
+
+bool is_queue_empty(queuehandle_t handle)
+{
+    QCB_t * queue_handle = (QCB_t *)handle;
+    return (queue_handle->back == -1);
+}
+
+bool is_queue_full(queuehandle_t handle)
+{
+    QCB_t * queue_handle = (QCB_t *)handle;
+    return (queue_handle->back == queue_handle->front);
+}
+
+queuehandle_t create_queue(const uint32_t queue_length,const uint32_t item_size)
+{
+    if(next_queue >= MAX_QUEUES)
+    {
+        printf("QCB are not available, please increase MAX_QUEUES\n");
+        while(1);
+    }
+
+    QCB_t * q_handle = &user_queue[next_queue];
+
+    if(q_handle == NULL)
+    {
+        return NULL;
+    }
+
+    q_handle->queue_length = queue_length;
+    q_handle->item_size =item_size;
+    q_handle->front = 0;
+    q_handle->back = -1;
+    q_handle->queue_buffer=malloc(queue_length*item_size);
+
+    if(q_handle->queue_buffer == NULL)
+    {
+        printf("Queue buffer allocation failed\n");
+        while(1);
+    }
+
+    next_queue++;
+    return q_handle;
+}
+
+
+
+void print_queue(queuehandle_t handle)
+{
+    QCB_t * q_handle = (QCB_t *)handle;
+    printf(RED_COLOUR"q_handle->queue_length %d \n"
+    "q_handle->item_size %d \n"
+    "q_handle->front %d \n"
+    "q_handle->back %d \n"
+    "q_handle->queue_buffer %d \n"
+        ,q_handle->queue_length
+        ,q_handle->item_size
+        ,q_handle->front
+        ,q_handle->back
+        ,(uint32_t) q_handle->queue_buffer
+        );
+}
+
+bool send_to_queue(queuehandle_t handle,void * data, uint32_t ms)
+{
+    QCB_t * queue_handle = (QCB_t *)handle;
+    if(is_queue_full(queue_handle))
+    {
+        TCB_t * current_task_tcb = get_current_task_tcb();
+        if(current_task_tcb == NULL)
+        {
+            printf("current_task_tcb is null\n");
+            return false;
+        }
+
+        current_task_tcb->queue_waiting_state = WAITING_ON_FULL_QUEUE;
+        current_task_tcb->currently_waiting_queue = queue_handle;
+
+        rtos_delay_ms(ms);
+
+        current_task_tcb->queue_waiting_state = NOT_WAITING_ON_QUEUE;
+        current_task_tcb->currently_waiting_queue = NULL;
+    }
+
+    if(is_queue_full(queue_handle))
+    {
+        return false;
+    }
+
+    if(data == NULL)
+    {
+        printf("Queue data pointer is null\n");
+        while(1);
+    }
+
+    memcpy(&(queue_handle->queue_buffer[queue_handle->front++]),data, queue_handle->item_size);
+    if(queue_handle->front == queue_handle->queue_length)
+    {
+        queue_handle->front = 0;
+    }
+
+    if(queue_handle->back == -1)
+    {
+        queue_handle->back = 0;
+    }
+
+    return true;
+}
+
+bool receive_from_queue(queuehandle_t handle,void * data, uint32_t ms)
+{
+    QCB_t * queue_handle = (QCB_t *)handle;
+    if(is_queue_empty(queue_handle))
+    {
+
+        TCB_t * current_task_tcb = get_current_task_tcb();
+        if(current_task_tcb == NULL)
+        {
+            printf("current_task_tcb is null\n");
+            return false;
+        }
+
+        current_task_tcb->queue_waiting_state = WAITING_ON_EMPTY_QUEUE;
+        current_task_tcb->currently_waiting_queue = queue_handle;
+
+        rtos_delay_ms(ms);
+
+        current_task_tcb->queue_waiting_state = NOT_WAITING_ON_QUEUE;
+        current_task_tcb->currently_waiting_queue = NULL;
+    }
+
+    if(is_queue_empty(queue_handle))
+    {
+        return false;
+    }
+
+    if(data == NULL)
+    {
+        printf(BOLD_TEAL"Queue data pointer is null\n");
+        while(1);
+    }
+
+    //print_queue(queue_handle);
+    memcpy(data,&(queue_handle->queue_buffer[queue_handle->back++]), queue_handle->item_size);
+
+    if(queue_handle->back == queue_handle->queue_length)
+    {
+        queue_handle->back = 0;
+    }
+
+    if(queue_handle->back == queue_handle->front)
+    {
+        queue_handle->front = 0;
+        queue_handle->back = -1;
+    }
+
+    //print_queue(queue_handle);
+    return true;
 }

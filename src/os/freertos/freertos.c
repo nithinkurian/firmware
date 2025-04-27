@@ -6,11 +6,7 @@
 #include <stdio.h> 
 #include <limits.h>
 #include <stdint.h>
-
-extern void task1_function(void* parameters); //This is task1
-extern void task2_function(void* parameters); //This is task2
-extern void task3_function(void* parameters); //This is task3
-extern void task4_function(void* parameters); //This is task4
+#include <queue.h>
 
 char * get_rtos_name()
 {
@@ -67,4 +63,28 @@ bool notify_task_wait(uint32_t block_time_ms,uint32_t * notification_value)
                                  notification_value, /* Stores the notified value. */
                                  max_block_time );
 	return (xResult == pdPASS);
+}
+
+queuehandle_t create_queue(const uint32_t queue_length,const uint32_t item_size)
+{
+	QueueHandle_t q_handle = xQueueCreate(queue_length,item_size);
+	configASSERT(q_handle != pdPASS);
+	return q_handle;
+}
+
+bool send_to_queue(queuehandle_t handle,void * data, uint32_t ms)
+{
+	if( xQueueSend(handle, data, pdMS_TO_TICKS(ms)) == pdPASS )
+	{
+	    return true;
+	}
+	else
+	{
+	    return false;
+	}
+}
+
+bool receive_from_queue(queuehandle_t handle,void * data, uint32_t ms)
+{
+	return (xQueueReceive(handle,data,pdMS_TO_TICKS(ms)) == pdTRUE);
 }

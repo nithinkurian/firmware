@@ -6,6 +6,7 @@
 #include "hal_processor_faults.h"
 #include "hal_processor_faults_test.h" //just for testing
 #include "rtos.h"
+#include <string.h>
 
 
 #define TASK_1_ON    0x01
@@ -41,6 +42,7 @@ void notification_receive_task( void *pvParameter );
 
 taskhandle_t send_handler;
 taskhandle_t receive_handler;
+queuehandle_t queue_data_handler;
 
 void send_task(void* parameters); //This is send
 void receive_task(void* parameters); //This is receive
@@ -71,6 +73,8 @@ int main(void)
 	notification_receive_task_handler = create_task(notification_receive_task,760, 2);
 	send_handler    = create_task(send_task,760, 2);
 	receive_handler = create_task(receive_task,760, 2);
+	queue_data_handler = create_queue(80,sizeof(char));
+
 	
 	
 	run_scheduler();
@@ -148,12 +152,51 @@ void task4_function(void* parameters)
 
 void send_task(void* parameters) //This is send
 {
-	while(1);
+	rtos_delay_ms(3000);
+	char data[] = "Welcome to queue";
+
+	while(1)
+	{
+		uint8_t index = 0;
+		printf(BOLD_PURPLE"sending Data length %d : %s \n",strlen(data),data);
+		do
+		{
+			if(!send_to_queue(queue_data_handler,&data[index], 5000))
+			{
+				printf(BOLD_PURPLE"sending to data queue failed @ index: %d\n",index);
+				break;
+			}
+		}		
+		while(data[index++]!='\0');
+
+		rtos_delay_ms(3000);
+	}
 }
 
 void receive_task(void* parameters) //This is receive
 {
-	while(1);
+
+	char data[80];
+	while(1)
+	{
+		memset(data,0,sizeof(data));
+		uint8_t index = 0;
+		while(1)
+		{
+			if(!receive_from_queue(queue_data_handler,&data[index], 20000))
+			{
+				data[index++]='\0';
+				break;
+			}
+			if(data[index]=='\0')
+			{
+				printf(BOLD_TEAL"Received data length %d : %s \n",index,data);
+				break;
+			}
+			index++;
+		}
+	}
+	
 }
 
 
