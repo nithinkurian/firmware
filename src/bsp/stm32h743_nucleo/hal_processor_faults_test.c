@@ -50,6 +50,6 @@ void generate_invalid_state_usagefault(void)
 
 int generate_divide_by_zero_usagefault(void)
 {
-	int x = 10/0;
-	return x;
+	int x = 0;
+	return 10/x;
 }

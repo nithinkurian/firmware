@@ -1,0 +1,9 @@
+#ifndef NOTIFICATION_H_
+#define NOTIFICATION_H_
+
+
+#define NO_NOTIFICATION             0
+#define WAITING_FOR_NOTIFICATION    1
+#define NOTIFICATION_PRESENT        2
+
+#endif /* NOTIFICATION_H_ */

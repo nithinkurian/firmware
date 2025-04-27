@@ -68,7 +68,7 @@ bool notify_task_wait(uint32_t block_time_ms,uint32_t * notification_value)
 queuehandle_t create_queue(const uint32_t queue_length,const uint32_t item_size)
 {
 	QueueHandle_t q_handle = xQueueCreate(queue_length,item_size);
-	configASSERT(q_handle != pdPASS);
+	configASSERT(q_handle != NULL);
 	return q_handle;
 }
 

@@ -15,7 +15,7 @@ def get_stm32_env():
 	env.Append(CFLAGS='-g3')
 	env.Append(CFLAGS='-ggdb')
 
-
+	env.Append(CPPDEFINES='STM32')
 
 	env.Append(LINKFLAGS='-mcpu=cortex-m7') #cortex-m7
 	env.Append(LINKFLAGS='-mthumb') #thumb instruction set
@@ -28,4 +28,6 @@ def get_x86_64_env():
 	env.Append(CFLAGS='-O0')
 	env.Append(CFLAGS='-g3')
 	env.Append(CFLAGS='-ggdb')
+
+	env.Append(CPPDEFINES='X86_64')
 	return env

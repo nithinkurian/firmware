@@ -158,7 +158,11 @@ void send_task(void* parameters) //This is send
 	while(1)
 	{
 		uint8_t index = 0;
+		#if defined(X86_64)
+		printf(BOLD_PURPLE"sending Data length %ld : %s \n",strlen(data),data);
+		#else
 		printf(BOLD_PURPLE"sending Data length %d : %s \n",strlen(data),data);
+		#endif
 		do
 		{
 			if(!send_to_queue(queue_data_handler,&data[index], 5000))
