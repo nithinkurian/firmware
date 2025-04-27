@@ -7,6 +7,7 @@
 #include <limits.h>
 #include <stdint.h>
 #include <queue.h>
+#include "timers.h"
 
 char * get_rtos_name()
 {
@@ -87,4 +88,19 @@ bool send_to_queue(queuehandle_t handle,void * data, uint32_t ms)
 bool receive_from_queue(queuehandle_t handle,void * data, uint32_t ms)
 {
 	return (xQueueReceive(handle,data,pdMS_TO_TICKS(ms)) == pdTRUE);
+}
+
+
+timerhandle_t create_and_start_software_timer(uint32_t ms,bool auto_reload,void callback( timerhandle_t timer_handle ))
+{
+   timerhandle_t soft_timer = xTimerCreate( "", pdMS_TO_TICKS(ms), auto_reload, ( void * ) 0, (void (*)(struct tmrTimerControl *))callback);
+
+  if( soft_timer != NULL )
+  {
+      if( xTimerStart( soft_timer, 0 ) != pdPASS )
+      {
+          printf("Failed to create timer\n");
+      }
+  }
+  return soft_timer;
 }

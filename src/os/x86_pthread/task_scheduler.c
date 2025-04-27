@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include "task_scheduler.h"
 #include "sleep.h"
+#include "software_timer.h"
 
 extern uint32_t tick_in_hz;
 
@@ -13,8 +14,8 @@ TCB_t user_tasks[MAX_TASKS];
 uint8_t current_task = 1;
 
 
-pthread_t threads[MAX_TASKS];
-int thread_args[MAX_TASKS] = {0,1,2,3,4,5,6,7};
+pthread_t threads[MAX_TASKS],timer_thread;
+int thread_args[MAX_TASKS] = {0,1,2,3,4,5,6,7}, timer_thread_args;
 int i, result;
 extern uint32_t tick_in_hz;
 
@@ -36,6 +37,11 @@ void *thread_function(void *arg) {
     pthread_exit(NULL);
 }
 
+void *timer_thread_function(void *arg) {
+    int thread_id = *(int*)arg;
+    timer_manager(NULL);
+    pthread_exit(NULL);
+}
 
 void idle_task(void* parameters)
 {
@@ -78,6 +84,12 @@ void run_scheduler()
             perror("Thread creation failed\n");
             exit(1);
         }
+    }
+
+    result = pthread_create(&timer_thread, NULL, timer_thread_function, &timer_thread_args);
+    if (result != 0) {
+        perror("Timer Thread creation failed\n");
+        exit(1);
     }
     
 

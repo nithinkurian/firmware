@@ -6,6 +6,7 @@
 #include "task_scheduler.h"
 #include "notification.h"
 #include "queue.h"
+#include "software_timer.h"
 
 
 
@@ -21,6 +22,7 @@ uint32_t task_stack_init(uint32_t psp_value, void (*task_handler)(void* paramete
 void update_global_tick_count(void);
 uint32_t get_tick_count(void);
 void init_idle_task_stack(void);
+void init_timer_manager_stack(void);
 void unblock_tasks(void);
 
 
@@ -28,7 +30,7 @@ TCB_t user_tasks[MAX_TASKS];
 uint32_t g_tick_count = 0;
 uint32_t current_task = 1;
 uint32_t next_task_start = FIRST_STACK_START;
-uint8_t next_task_index = 1;
+uint8_t next_task_index = 2;
 uint32_t tick_in_hz = 0;
 
 
@@ -47,6 +49,7 @@ void run_scheduler()
 	tick_in_hz = TICK_HZ;
 	init_systick_timer(TICK_HZ);
 	init_idle_task_stack();
+	init_timer_manager_stack();
 	init_scheduler_stack(SCHED_STACK_START);
 	switch_sp_to_psp();
 	if(user_tasks[1].task_handler == NULL)
@@ -88,6 +91,19 @@ void init_idle_task_stack(void)
 	user_tasks[0].task_handler = idle_task;
 	user_tasks[0].current_state = TASK_READY_STATE;
 	user_tasks[0].psp_value=task_stack_init(user_tasks[0].psp_value,user_tasks[0].task_handler);
+
+	//enable interrupt
+	enable_interrupt();
+}
+
+void init_timer_manager_stack(void)
+{
+	//disable interrupt
+	disable_interrupt();
+	user_tasks[1].psp_value = TIMER_STACK_START;
+	user_tasks[1].task_handler = timer_manager;
+	user_tasks[1].current_state = TASK_READY_STATE;
+	user_tasks[1].psp_value=task_stack_init(user_tasks[1].psp_value,user_tasks[1].task_handler);
 
 	//enable interrupt
 	enable_interrupt();

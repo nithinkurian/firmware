@@ -5,6 +5,7 @@ source = []
 source.append('task_scheduler.c')
 source.append('notification.c')
 source.append('queue.c')
+source.append('software_timer.c')
 
 env = get_stm32_env()
 env.Append(CPPPATH=['#src/os/include','#src/os/custom_rtos/include','#src/bsp/include','#src/include'])

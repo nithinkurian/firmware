@@ -41,4 +41,18 @@ void turn_off_led(led_t led)
 	}
 }
 
+void toggle_led(led_t led,bool * current_state)
+{
+	if(*current_state)
+	{
+		turn_off_led(led);
+		*current_state = false;
+	}
+	else
+	{
+		turn_on_led(led);
+		*current_state = true;
+	}
+}
+
 		

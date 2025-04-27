@@ -12,7 +12,8 @@
 
 #define SCHED_STACK_START	SRAM_END
 #define IDLE_STACK_START	( (SRAM_END) - (1 * SIZE_TASK_STACK) )
-#define FIRST_STACK_START	( (SRAM_END) - (2 * SIZE_TASK_STACK) )
+#define TIMER_STACK_START	( (SRAM_END) - (2 * SIZE_TASK_STACK) )
+#define FIRST_STACK_START	( (SRAM_END) - (3 * SIZE_TASK_STACK) )
 
 #define TASK_READY_STATE 	0x00
 #define TASK_BLOCKED_STATE 	0xFF
@@ -36,6 +37,8 @@ typedef struct
 TCB_t * get_current_task_tcb();
 void schedule(void);
 
-#define MAX_TASKS           8
+#define MAX_TASKS           5
+
+extern uint32_t tick_in_hz;
 
 #endif /* TASK_SCHEDULER_H_ */

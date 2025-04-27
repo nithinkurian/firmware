@@ -6,6 +6,8 @@ source.append('task_scheduler.c')
 source.append('notification.c')
 source.append('queue.c')
 source.append('sleep.c')
+source.append('software_timer.c')
+
 
 env = get_x86_64_env()
 env.Append(CPPPATH=['#src/os/include','#src/os/x86_pthread/include','#src/bsp/include','#src/include'])
