@@ -111,6 +111,11 @@ semaphore_handle_t create_binary_semaphore()
    return xSemaphoreCreateBinary();
 }
 
+semaphore_handle_t create_counting_semaphore(uint32_t max_count,uint32_t initial_count)
+{
+   return xSemaphoreCreateCounting(max_count, initial_count);
+}
+
 bool take_semaphore(semaphore_handle_t handle,uint32_t ms)
 {
    return ( xSemaphoreTake( handle,pdMS_TO_TICKS(ms)) == pdTRUE );

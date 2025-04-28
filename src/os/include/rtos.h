@@ -23,6 +23,7 @@ bool send_to_queue(queuehandle_t handle,void * data, uint32_t ms);
 bool receive_from_queue(queuehandle_t handle,void * data, uint32_t ms);
 timerhandle_t create_and_start_software_timer(uint32_t ms,bool auto_reload,void callback( timerhandle_t timer_handle ));
 semaphore_handle_t create_binary_semaphore();
+semaphore_handle_t create_counting_semaphore(uint32_t max_count,uint32_t initial_count);
 bool take_semaphore(semaphore_handle_t handle,uint32_t ms);
 bool give_semaphore(semaphore_handle_t handle);
 

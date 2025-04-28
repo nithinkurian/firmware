@@ -20,9 +20,9 @@ delay until
 notification
 Queue
 Software timer
+semaphore
 
 continue
-semaphore
 mutex
 timer 
 UART
