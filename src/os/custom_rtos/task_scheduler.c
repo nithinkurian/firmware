@@ -30,6 +30,8 @@ TCB_t user_tasks[MAX_TASKS];
 uint32_t g_tick_count = 0;
 uint32_t current_task = 1;
 uint32_t next_task_start = FIRST_STACK_START;
+uint8_t idle_task_index = 0;
+uint8_t timer_manager_index = 1;
 uint8_t next_task_index = 2;
 uint32_t tick_in_hz = 0;
 
@@ -87,10 +89,10 @@ void init_idle_task_stack(void)
 {
 	//disable interrupt
 	disable_interrupt();
-	user_tasks[0].psp_value = IDLE_STACK_START;
-	user_tasks[0].task_handler = idle_task;
-	user_tasks[0].current_state = TASK_READY_STATE;
-	user_tasks[0].psp_value=task_stack_init(user_tasks[0].psp_value,user_tasks[0].task_handler);
+	user_tasks[idle_task_index].psp_value = IDLE_STACK_START;
+	user_tasks[idle_task_index].task_handler = idle_task;
+	user_tasks[idle_task_index].current_state = TASK_READY_STATE;
+	user_tasks[idle_task_index].psp_value=task_stack_init(user_tasks[idle_task_index].psp_value,user_tasks[idle_task_index].task_handler);
 
 	//enable interrupt
 	enable_interrupt();
@@ -98,12 +100,13 @@ void init_idle_task_stack(void)
 
 void init_timer_manager_stack(void)
 {
+
 	//disable interrupt
 	disable_interrupt();
-	user_tasks[1].psp_value = TIMER_STACK_START;
-	user_tasks[1].task_handler = timer_manager;
-	user_tasks[1].current_state = TASK_READY_STATE;
-	user_tasks[1].psp_value=task_stack_init(user_tasks[1].psp_value,user_tasks[1].task_handler);
+	user_tasks[timer_manager_index].psp_value = TIMER_STACK_START;
+	user_tasks[timer_manager_index].task_handler = timer_manager;
+	user_tasks[timer_manager_index].current_state = TASK_READY_STATE;
+	user_tasks[timer_manager_index].psp_value=task_stack_init(user_tasks[timer_manager_index].psp_value,user_tasks[timer_manager_index].task_handler);
 
 	//enable interrupt
 	enable_interrupt();
@@ -149,6 +152,22 @@ void rtos_delay_until_ms(uint32_t *previous_wake_time,uint32_t ms)
 	enable_interrupt();
 }
 
+void rtos_delay_until_absolute(uint32_t absolute_time)
+{
+    //disable interrupt
+	disable_interrupt();
+
+	if(current_task)
+	{
+		user_tasks[current_task].block_count = absolute_time;
+		user_tasks[current_task].current_state = TASK_BLOCKED_STATE;
+		schedule();
+	}
+
+	//enable interrupt
+	enable_interrupt();
+}
+
 uint32_t get_rtos_tick_count()
 {
     return get_tick_count();
@@ -156,6 +175,13 @@ uint32_t get_rtos_tick_count()
 
 void unblock_tasks(void)
 {
+	if(timer_modified)
+	{
+		if(user_tasks[timer_manager_index].current_state != TASK_READY_STATE)
+		{
+			user_tasks[timer_manager_index].current_state = TASK_READY_STATE;
+		}
+	}
 	for(int i =1; i < next_task_index; i++)
 	{
 		if(user_tasks[i].current_state != TASK_READY_STATE)

@@ -6,6 +6,7 @@
 #include <stddef.h>
 #include "task_scheduler.h"
 #include <limits.h>
+#include "print_colour.h"
 
 typedef struct
 {
@@ -88,7 +89,7 @@ void update_next_expiry()
 
 void timer_manager(void* parameters)
 {
-    printf("Timer manager is running.....\n");
+    printf("%ld: Timer manager is running.....\n",get_rtos_tick_count());
     while(1)
     {
         if(timer_modified)
@@ -96,8 +97,8 @@ void timer_manager(void* parameters)
             update_next_expiry();
             timer_modified = false;
         }
-        
-        if(get_rtos_tick_count()>next_expiry)
+
+        if(get_rtos_tick_count()>=next_expiry)
         {
             TimerCB_t * timer_tcb = &user_timer[next_expiry_index];
             if( (timer_tcb != NULL) &&                
@@ -122,7 +123,6 @@ void timer_manager(void* parameters)
                 timer_modified = true;
             }
         }
-        
-        rtos_delay_ms(1);
+        rtos_delay_until_absolute(next_expiry);
     }
 }

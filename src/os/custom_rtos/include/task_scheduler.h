@@ -36,6 +36,7 @@ typedef struct
 
 TCB_t * get_current_task_tcb();
 void schedule(void);
+void rtos_delay_until_absolute(uint32_t absolute_time);
 
 #define MAX_TASKS           5
 

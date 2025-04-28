@@ -70,15 +70,15 @@ void timer_callback( timerhandle_t timer_handle )
 	uint8_t index = 0;
 	char data[] = "Welcome to queue";
 	#if defined(X86_64)
-	printf(BOLD_PURPLE"%"U32_PRINT"Timer :Sending Data, length %ld : %s \n",get_rtos_tick_count(),strlen(data),data);
+	printf(BOLD_PURPLE"%"U32_PRINT": Timer : Sending Data, length %ld : %s \n",get_rtos_tick_count(),strlen(data),data);
 	#else
-	printf(BOLD_PURPLE"%"U32_PRINT"Timer :Sending Data, length %d : %s \n",get_rtos_tick_count(),strlen(data),data);
+	printf(BOLD_PURPLE"%"U32_PRINT": Timer : Sending Data, length %d : %s \n",get_rtos_tick_count(),strlen(data),data);
 	#endif
 	do
 	{
 		if(!send_to_queue(queue_data_handler,&data[index], 0))
 		{
-			printf(BOLD_PURPLE"%"U32_PRINT": sending to data queue failed @ index: %d\n",get_rtos_tick_count(),index);
+			printf(BOLD_PURPLE"%"U32_PRINT": Sending to data queue failed @ index: %d\n",get_rtos_tick_count(),index);
 			break;
 		}
 	}		
