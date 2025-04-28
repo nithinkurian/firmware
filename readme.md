@@ -3,7 +3,6 @@
 - PC
 
 # 2.RTOS
-RTOS support : https://en.wikipedia.org/wiki/Comparison_of_real-time_operating_systems
 
 ## 2.1 Supported Features
 - notification
@@ -59,7 +58,7 @@ RTOS support : https://en.wikipedia.org/wiki/Comparison_of_real-time_operating_s
 - semi hosting
 - fault handling/ handlers
 
-## *4.2 Plannned*
+## *4.2 Planned*
 - bootloader over UART,USB
 - Serial Protocol for communication to PC
 - Need to improve x86 tick interval to ms
@@ -68,11 +67,17 @@ RTOS support : https://en.wikipedia.org/wiki/Comparison_of_real-time_operating_s
 # 5. Peripherals
 ## 5.1 Planned
 - GPIO
-- Timer
 - UART
+- Timer
 - I2C
 - SPI
 - USB
+- DMA
+- FLASH
+- RTC
+- Ethernet
+- CRC
+- Hardware Semaphore
 
 # 6. Tools
 ## 6.1 Planned
@@ -86,6 +91,8 @@ RTOS support : https://en.wikipedia.org/wiki/Comparison_of_real-time_operating_s
 TBD
 
 # Links
-https://www.markdownguide.org/cheat-sheet/
+[Mark Down Cheatsheet](https://www.markdownguide.org/cheat-sheet/)
 
+[Mark Down Sublime Package](https://packagecontrol.io/packages/MarkdownLivePreview)
 
+[RTOS support](https://en.wikipedia.org/wiki/Comparison_of_real-time_operating_systems)
