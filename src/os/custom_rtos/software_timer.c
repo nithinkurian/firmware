@@ -96,6 +96,7 @@ void timer_manager(void* parameters)
             update_next_expiry();
             timer_modified = false;
         }
+        
         if(get_rtos_tick_count()>next_expiry)
         {
             TimerCB_t * timer_tcb = &user_timer[next_expiry_index];
@@ -121,6 +122,7 @@ void timer_manager(void* parameters)
                 timer_modified = true;
             }
         }
+        
         rtos_delay_ms(1);
     }
 }

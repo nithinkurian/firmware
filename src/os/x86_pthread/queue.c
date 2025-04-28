@@ -82,10 +82,10 @@ bool send_to_queue(queuehandle_t handle,void * data, uint32_t ms)
     QCB_t * queue_handle = (QCB_t *)handle;
     if(is_queue_full(queue_handle))
     {
-        uint32_t initial_tick = get_tick_count();
+        uint32_t initial_tick = get_rtos_tick_count();
         uint32_t tick_count = tick_in_hz*ms/1000;
 
-        while(initial_tick+ tick_count>get_tick_count())
+        while(initial_tick+ tick_count>get_rtos_tick_count())
         {
             if(!is_queue_full(queue_handle))
             {
@@ -126,10 +126,10 @@ bool receive_from_queue(queuehandle_t handle,void * data, uint32_t ms)
     QCB_t * queue_handle = (QCB_t *)handle;
     if(is_queue_empty(queue_handle))
     {
-        uint32_t initial_tick = get_tick_count();
+        uint32_t initial_tick = get_rtos_tick_count();
         uint32_t tick_count = tick_in_hz*ms/1000;
 
-        while(initial_tick+ tick_count>get_tick_count())
+        while(initial_tick+ tick_count>get_rtos_tick_count())
         {
             if(!is_queue_empty(queue_handle))
             {

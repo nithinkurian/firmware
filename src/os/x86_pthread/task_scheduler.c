@@ -15,7 +15,7 @@ uint8_t current_task = 1;
 
 
 pthread_t threads[MAX_TASKS],timer_thread;
-int thread_args[MAX_TASKS] = {0,1,2,3,4,5,6,7}, timer_thread_args;
+int thread_args[MAX_TASKS] = {0,1,2,3,4}, timer_thread_args;
 int i, result;
 extern uint32_t tick_in_hz;
 
@@ -69,11 +69,14 @@ taskhandle_t create_task(void (*task_handler)(void*),uint16_t stack_size, uint8_
     return &user_tasks[next_task_index-1];
 }
 
+uint32_t initial;
 void run_scheduler()
 {
-
+    
     //Initialize systick
     init_systick_timer(TICK_HZ);
+    initial = get_tick_count();
+    printf("%d \n",initial);
 
     user_tasks[0].task_handler = idle_task;
 
@@ -115,8 +118,8 @@ void rtos_delay_tick(uint32_t tick_count)
 	//disable interrupt
 	disable_interrupt();
 
-	uint32_t initial_tick = get_tick_count();
-	while(initial_tick+ tick_count>get_tick_count())
+	uint32_t initial_tick = get_rtos_tick_count();
+	while(initial_tick+ tick_count>get_rtos_tick_count())
     {
         sleep_ms(1);
     }
@@ -137,7 +140,7 @@ void rtos_delay_until_ms(uint32_t *previous_wake_time,uint32_t ms)
     disable_interrupt();
 
     uint32_t initial_tick = *previous_wake_time;
-    while(initial_tick+ tick_in_hz*ms/1000>get_tick_count())
+    while(initial_tick+ tick_in_hz*ms/1000>get_rtos_tick_count())
     {
         sleep_ms(1);
     }
@@ -148,7 +151,7 @@ void rtos_delay_until_ms(uint32_t *previous_wake_time,uint32_t ms)
 
 uint32_t get_rtos_tick_count()
 {
-    return get_tick_count();
+    return (get_tick_count() - initial);
 }
 
 TCB_t * get_current_task_tcb()

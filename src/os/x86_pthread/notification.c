@@ -19,7 +19,7 @@ bool notify_task_wait(uint32_t block_time_ms,uint32_t * notification_value)
     //disable interrupt
     disable_interrupt();
     uint32_t tick_count = tick_in_hz*block_time_ms/1000;
-    uint32_t initial_tick = get_tick_count();
+    uint32_t initial_tick = get_rtos_tick_count();
     TCB_t * current_task_tcb = get_current_task_tcb();
     if(current_task_tcb == NULL)
     {
@@ -27,7 +27,7 @@ bool notify_task_wait(uint32_t block_time_ms,uint32_t * notification_value)
         while(1);
         return false;
     }
-    while(initial_tick+ tick_count>get_tick_count())
+    while(initial_tick+ tick_count>get_rtos_tick_count())
     {
         if(current_task_tcb->notification_status != 0)
         {

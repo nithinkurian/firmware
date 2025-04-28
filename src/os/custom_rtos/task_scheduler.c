@@ -117,7 +117,7 @@ void rtos_delay_tick(uint32_t tick_count)
 
 	if(current_task)
 	{
-		user_tasks[current_task].block_count = get_tick_count() + tick_count;
+		user_tasks[current_task].block_count = get_rtos_tick_count() + tick_count;
 		user_tasks[current_task].current_state = TASK_BLOCKED_STATE;
 		schedule();
 	}
@@ -160,7 +160,7 @@ void unblock_tasks(void)
 	{
 		if(user_tasks[i].current_state != TASK_READY_STATE)
 		{
-			if(user_tasks[i].block_count == get_tick_count())
+			if(user_tasks[i].block_count == get_rtos_tick_count())
 			{
 				user_tasks[i].current_state = TASK_READY_STATE;
 			}

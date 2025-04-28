@@ -38,7 +38,7 @@ timerhandle_t create_and_start_software_timer(uint32_t ms,bool auto_reload,void 
                 (timer_tcb->using == false) && 
                 (callback!=NULL) && (ms != 0))
             {
-                uint32_t initial_tick = get_tick_count();
+                uint32_t initial_tick = get_rtos_tick_count();
                 timer_tcb->period = tick_in_hz*ms/1000;
                 timer_tcb->expiry_time = timer_tcb->period + initial_tick;
                 timer_tcb->auto_reload = auto_reload;
@@ -98,7 +98,7 @@ void timer_manager(void* parameters)
             timer_modified = false;
         }
         sleep_ms(1);
-        if(get_tick_count()>next_expiry)
+        if(get_rtos_tick_count()>next_expiry)
         {
             TimerCB_t * timer_tcb = &user_timer[next_expiry_index];
             if( (timer_tcb != NULL) &&                
