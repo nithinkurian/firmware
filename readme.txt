@@ -21,9 +21,9 @@ notification
 Queue
 Software timer
 
-
-need to improve timer_manager in custom
 continue
+semaphore
+mutex
 timer 
 UART
 I2C

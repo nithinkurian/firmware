@@ -13,7 +13,9 @@
 #define TASK_1_OFF   	0x02
 #define RECEIVED_DATA	0x04
 
-#define TASK_1_DELAY 1000
+#define TASK_1_DELAY 	1000
+#define TIMER_DELAY 		4000
+
 
 //Semi hosting init function
 extern void initialise_monitor_handles(void);
@@ -23,6 +25,7 @@ taskhandle_t notification_receive_task_handler;
 taskhandle_t send_handler;
 taskhandle_t receive_handler;
 queuehandle_t queue_data_handler;
+semaphore_handle_t binary_semaphore_handler;
 
 void task1_function(void* parameters); //This is task1
 void receive_task(void* parameters); //This is receive
@@ -60,7 +63,7 @@ int main(void)
 	notification_receive_task_handler = create_task(notification_receive_task,760, 2);
 	receive_handler = create_task(receive_task,760, 2);
 	queue_data_handler = create_queue(80,sizeof(char));
-	
+	binary_semaphore_handler = create_binary_semaphore();
 	run_scheduler();
 
 }
@@ -88,17 +91,21 @@ void timer_callback( timerhandle_t timer_handle )
 void task1_function(void* parameters)
 {
 
-	create_and_start_software_timer(4000,true,timer_callback);
+	create_and_start_software_timer(TIMER_DELAY,true,timer_callback);
 
 	uint32_t previous_wake_time = get_rtos_tick_count();
 	while(1)
 	{
-		turn_on_led(YELLOW);
-		notify_task_setbit(notification_receive_task_handler,TASK_1_ON);
-		rtos_delay_until_ms(&previous_wake_time,TASK_1_DELAY);
-		turn_off_led(YELLOW);
-		notify_task_setbit(notification_receive_task_handler,TASK_1_OFF);
-		rtos_delay_until_ms(&previous_wake_time,TASK_1_DELAY);
+		if(take_semaphore(binary_semaphore_handler,TIMER_DELAY*2))
+		{
+			turn_on_led(YELLOW);
+			notify_task_setbit(notification_receive_task_handler,TASK_1_ON);
+			rtos_delay_until_ms(&previous_wake_time,TASK_1_DELAY);
+			turn_off_led(YELLOW);
+			notify_task_setbit(notification_receive_task_handler,TASK_1_OFF);
+			rtos_delay_until_ms(&previous_wake_time,TASK_1_DELAY);
+		}
+		
 	}
 }
 
@@ -161,6 +168,7 @@ void notification_receive_task( void *pvParameter )
          {
          	toggle_led(BLUE,&blue_state);
             printf(BOLD_BLUE"%"U32_PRINT": Notification : RECEIVED_DATA\n\r",get_rtos_tick_count());
+            give_semaphore(binary_semaphore_handler);
          }
          
       }

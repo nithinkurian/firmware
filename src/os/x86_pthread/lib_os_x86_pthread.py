@@ -7,6 +7,7 @@ source.append('notification.c')
 source.append('queue.c')
 source.append('sleep.c')
 source.append('software_timer.c')
+source.append('semaphore.c')
 
 
 env = get_x86_64_env()

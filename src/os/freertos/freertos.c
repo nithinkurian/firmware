@@ -8,6 +8,7 @@
 #include <stdint.h>
 #include <queue.h>
 #include "timers.h"
+#include "semphr.h"
 
 char * get_rtos_name()
 {
@@ -104,3 +105,19 @@ timerhandle_t create_and_start_software_timer(uint32_t ms,bool auto_reload,void 
   }
   return soft_timer;
 }
+
+semaphore_handle_t create_binary_semaphore()
+{
+   return xSemaphoreCreateBinary();
+}
+
+bool take_semaphore(semaphore_handle_t handle,uint32_t ms)
+{
+   return ( xSemaphoreTake( handle,pdMS_TO_TICKS(ms)) == pdTRUE );
+}
+
+bool give_semaphore(semaphore_handle_t handle)
+{
+   return (xSemaphoreGive( handle ) != pdTRUE );
+}
+

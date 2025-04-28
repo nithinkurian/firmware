@@ -7,6 +7,7 @@
 typedef void * taskhandle_t;
 typedef void * queuehandle_t;
 typedef void * timerhandle_t;
+typedef void * semaphore_handle_t;
 
 char * get_rtos_name();
 taskhandle_t create_task(void (*task_handler)(void*),uint16_t stack_size, uint8_t priority);
@@ -21,5 +22,8 @@ queuehandle_t create_queue(const uint32_t queue_length,const uint32_t item_size)
 bool send_to_queue(queuehandle_t handle,void * data, uint32_t ms);
 bool receive_from_queue(queuehandle_t handle,void * data, uint32_t ms);
 timerhandle_t create_and_start_software_timer(uint32_t ms,bool auto_reload,void callback( timerhandle_t timer_handle ));
+semaphore_handle_t create_binary_semaphore();
+bool take_semaphore(semaphore_handle_t handle,uint32_t ms);
+bool give_semaphore(semaphore_handle_t handle);
 
 #endif /* RTOS_H_ */
