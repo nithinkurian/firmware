@@ -62,6 +62,7 @@
 - bootloader over UART,USB
 - Serial Protocol for communication to PC
 - Need to improve x86 tick interval to ms
+- C++
 
 
 # 5. Peripherals
@@ -78,6 +79,7 @@
 - Ethernet
 - CRC
 - Hardware Semaphore
+- TCM
 
 # 6. Tools
 ## 6.1 Planned
