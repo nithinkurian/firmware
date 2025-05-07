@@ -2,20 +2,19 @@
 #include "hal_cpu.h"
 #include <stdio.h>
 #include "print_colour.h"
+#include "cortexm7.h"
 
 
 void enable_processor_faults(void)
 {
-	uint32_t *pSHCSR = (uint32_t*)0xE000ED24;
 
-	*pSHCSR |= ( 1 << 16); //mem manage
-	*pSHCSR |= ( 1 << 17); //bus fault
-	*pSHCSR |= ( 1 << 18); //usage fault
+	SCB->SHCSR |= ( 1 << 16); //mem manage
+	SCB->SHCSR |= ( 1 << 17); //bus fault
+	SCB->SHCSR |= ( 1 << 18); //usage fault
 
 
 	//enable divide by zero trap
-	uint32_t *pCCR = (uint32_t*)0xE000ED14;
-	*pCCR |= ( 1 << 4);
+	SCB->CCR |= ( 1 << 4);
 }
 
 //2. implement the fault handlers
@@ -51,18 +50,18 @@ __attribute__ ((naked)) void UsageFault_Handler(void)
 
 void UsageFault_Handler_c(uint32_t *pBaseStackFrame)
 {
-	uint16_t *pUFSR = (uint16_t *)0xE000ED2A; // Half word access
+	uint16_t UFSR = (SCB->CFSR >> 16)& 0xFFFF;
 	printf(BOLD_RED"Exception : UsageFault\n");
-	printf("UFSR = %u\n",(*pUFSR) & 0xFFFF);
-	if(*pUFSR == 1)
+	printf("UFSR = %u\n",UFSR);
+	if(UFSR == 1)
 	{
 		printf("Undefined instruction UsageFault\n");
 	}
-	else if(*pUFSR == 2)
+	else if(UFSR == 2)
 	{
 		printf("Invalid state UsageFault\n");
 	}
-	else if(*pUFSR == 512)
+	else if(UFSR == 512)
 	{
 		printf("Divide by zero UsageFault\n");
 	}

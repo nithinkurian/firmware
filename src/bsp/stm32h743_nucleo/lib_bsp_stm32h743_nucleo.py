@@ -10,6 +10,6 @@ source.append('hal_clock_measurement_test.c')
 source.append('stm32_startup.c')
 
 env = get_stm32_env()
-env.Append(CPPPATH=['#src/include','#src/bsp/include','#src/os/include'])
+env.Append(CPPPATH=['#src/include','#src/bsp/include','#src/os/include','#src/bsp/stm32h743_nucleo/include'])
 source_obj = env.Object(source)
 env.Library('bsp',source_obj)

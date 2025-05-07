@@ -13,3 +13,9 @@
 
 ## 1.3. PLL(Phase Locked Loop) (Internal to MCU)
 - 3 separate PLLs
+
+# 2. Extended interrupt and event controller (EXTI)
+- The Extended Interrupt and event controller (EXTI) manages wakeup through configurable
+and direct event inputs.
+- All Event inputs allow the CPU to wakeup and to generate a CPU interrupt and/or CPU
+event
