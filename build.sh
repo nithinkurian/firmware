@@ -40,6 +40,9 @@ do
 	elif [[ "$1" = "run" ]]; then
 		./build/scons/$2/firmware.elf 
 		exit 0
+	elif [[ "$1" = "analyzer" ]]; then
+		tools/logic_analyzer/Logic-2.4.29-linux-x64.AppImage
+		exit 0
 	else
 		arguments+=($argument)
 	fi

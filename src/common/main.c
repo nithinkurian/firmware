@@ -7,6 +7,7 @@
 #include "hal_processor_faults_test.h" //just for testing
 #include "rtos.h"
 #include <string.h>
+#include "hal_clock_measurement_test.h" //just for testing
 
 
 #define TASK_1_ON    	0x01
@@ -52,6 +53,9 @@ int main(void)
 	//generate_undefined_instruction_usagefault();
 	//generate_invalid_state_usagefault();
 	//generate_divide_by_zero_usagefault();
+
+	//mcu clock out testing
+	//mco2_output();
 
 	//Initialize LED
 	led_init();

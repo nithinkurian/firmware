@@ -6,6 +6,7 @@ source.append('hal_gpio.c')
 source.append('hal_cpu.c')
 source.append('hal_processor_faults.c')
 source.append('hal_processor_faults_test.c')
+source.append('hal_clock_measurement_test.c')
 source.append('semihosting.c')
 
 env = get_x86_64_env()

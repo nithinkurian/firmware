@@ -16,7 +16,7 @@
 - task priority
 
 ## 2.2 Supported RTOSes
-- custom
+- Custom RTOS
 - FreeRTOS
 - x86 pthread
 
@@ -39,7 +39,7 @@
 ## 3.3 Debugging
 - Loading and debugging using gdb
 
-## 3.4 Planned
+## *3.4 Planned*
 - PC test
 - rtos simulator
 - target dll
@@ -50,6 +50,7 @@
 - SWV over commandline
 - debugging using IDE
 - named pipe for hal simulation.
+- Testing source to seperate place
 
 
 # 4. Firmware Features
@@ -80,9 +81,10 @@
 - CRC
 - Hardware Semaphore
 - TCM
+- Watch dog
 
 # 6. Tools
-## 6.1 Planned
+## *6.1 Planned*
 - PC Tool for symbol viewing : Symbol Viewer Tool
 - PC Tool Parameter Viewer Tool
 - Wireshark pluggin to sniff
