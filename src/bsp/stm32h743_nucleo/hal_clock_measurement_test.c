@@ -10,6 +10,9 @@
 #define RCC_AHB4ENR_OFFS        0xE0UL
 #define RCC_AHB4ENR_ADDR        ((RCC_BASE_ADDR) + (RCC_AHB4ENR_OFFS))
 
+#define RCC_CR_OFFSET           0x0UL
+#define RCC_CR_ADDR             ((RCC_BASE_ADDR) + (RCC_CR_OFFSET))
+
 #define PORTC_BA_ADDR           0x58020800UL
 #define PORTC_MODER_OFFSET      0x0UL
 #define PORTC_MODER_ADDR        ((PORTC_BA_ADDR) + (PORTC_MODER_OFFSET))
@@ -18,8 +21,31 @@
 #define PORTC_AFRH_ADDR         ((PORTC_BA_ADDR) + (PORTC_AFRH_OFFSET))
 
 
+void switch_to_HSE()
+{
+    //Note this will switch system clock to HSE
+    //Enable HSE
+    uint32_t *pRCC_CR_Reg = (uint32_t *)RCC_CR_ADDR;
+    //set
+    *pRCC_CR_Reg |= (0x1 << 16);
+
+    //Wait for HSE to be stable
+    while(!(*pRCC_CR_Reg |= (0x1 << 17)));
+
+    //Switch system clock to HSE
+    uint32_t *pRCC_CFGR_Reg = (uint32_t *)RCC_CFGR_ADDR;
+    //clear
+    *pRCC_CFGR_Reg &= ~(7 << 0);
+    //set
+    *pRCC_CFGR_Reg |= (0x2 << 0);
+}
+
+
 void mco2_output()
 {
+    //if you want to measure HSE uncomment below function
+    //switch_to_HSE();
+
     //Select Desired clock for MCOX (2) signal
     uint32_t *pRCC_CFGR_Reg = (uint32_t *)RCC_CFGR_ADDR;
     //Set MCO2 clk to sys clock (0)
