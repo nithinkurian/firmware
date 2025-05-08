@@ -11,13 +11,13 @@ void turn_on_led(led_t led)
 	switch(led)
 	{
 	case YELLOW:
-		hal_gpio_set_pin(0);
+		hal_gpio_set_pin(PORT_B,0);
 		break;
 	case BLUE:
-		hal_gpio_set_pin(7);
+		hal_gpio_set_pin(PORT_B,7);
 		break;
 	case RED:
-		hal_gpio_set_pin(14);
+		hal_gpio_set_pin(PORT_B,14);
 		break;
 
 	}
@@ -30,13 +30,13 @@ void turn_off_led(led_t led)
 	switch(led)
 	{
 	case YELLOW:
-		hal_gpio_clear_pin(0);
+		hal_gpio_clear_pin(PORT_B,0);
 		break;
 	case BLUE:
-		hal_gpio_clear_pin(7);
+		hal_gpio_clear_pin(PORT_B,7);
 		break;
 	case RED:
-		hal_gpio_clear_pin(14);
+		hal_gpio_clear_pin(PORT_B,14);
 		break;
 	}
 }

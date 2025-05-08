@@ -4,7 +4,7 @@
 #include "print_colour.h"
 
 
-void hal_gpio_set_pin(uint16_t value)
+void hal_gpio_set_pin(uint8_t port_number,uint16_t value)
 {
 	switch(value)
 	{		
@@ -20,7 +20,7 @@ void hal_gpio_set_pin(uint16_t value)
 	}
 }
 
-void hal_gpio_clear_pin(uint16_t value)
+void hal_gpio_clear_pin(uint8_t port_number,uint16_t value)
 {
 	switch(value)
 	{		

@@ -2,34 +2,99 @@
 #include "hal_gpio.h"
 #include "stm32h743xx.h"
 #include "stm32h743xx_gpio_driver.h"
+#include <stddef.h>
 
-static void hal_set_gpio_port_b_reg(uint32_t value);
-
-static void hal_set_gpio_port_b_reg(uint32_t value)
+static GPIO_RegDef_t * get_gpio_port_from_number(uint8_t port_number)
 {
-	GPIOB->BSRR= value;
+	switch (port_number) 
+	{
+	  case PORT_A:
+	    return GPIOA;
+	    break;
+	  case PORT_B:
+	    return GPIOB;
+	    break;
+	  case PORT_C:
+	    return GPIOC;
+	    break;
+	  case PORT_D:
+	    return GPIOD;
+	    break;
+	  case PORT_E:
+	    return GPIOE;
+	    break;
+	  case PORT_F:
+	    return GPIOF;
+	    break;
+	  case PORT_G:
+	    return GPIOG;
+	    break;
+	  case PORT_H:
+	    return GPIOH;
+	    break;
+	  case PORT_I:
+	    return GPIOI;
+	    break;
+	  case PORT_J:
+	    return GPIOJ;
+	    break;
+	  case PORT_K:
+	    return GPIOK;
+	    break;
+	  default:
+	    return NULL;
+	}
 }
 
-void hal_gpio_set_pin(uint16_t value)
+void hal_gpio_set_pin(uint8_t port_number,uint16_t pin_number)
 {
-	hal_set_gpio_port_b_reg(1 << value);
+	gpio_pin_write(get_gpio_port_from_number(port_number),pin_number,GPIO_PIN_SET);
 }
 
-void hal_gpio_clear_pin(uint16_t value)
+void hal_gpio_clear_pin(uint8_t port_number,uint16_t pin_number)
 {
-	hal_set_gpio_port_b_reg((1 << value) << 16);
+	gpio_pin_write(get_gpio_port_from_number(port_number),pin_number,GPIO_PIN_RESET);
 }
+
+bool hal_gpio_pin_read(uint8_t port_number,uint16_t pin_number)
+{
+	return gpio_pin_read(get_gpio_port_from_number(port_number),pin_number);
+}
+
 
 void hal_gpio_init(void)
 {
 	//GPIO Port B clock enable
 	GPIOB_PERI_CLK_EN();
 
-	/*Configure GPIO pin Output Level */
-	hal_gpio_clear_pin(0);
-	hal_gpio_clear_pin(7);
-	hal_gpio_clear_pin(14);
+	GPIO_Handle_t gpio_handle;
+	gpio_handle.pGPIOx = GPIOB;
+	gpio_handle.gpio_pin_config.gpio_pin_number = 0;
+	gpio_handle.gpio_pin_config.gpio_pin_mode = GPIO_MODE_OUT;
+	gpio_handle.gpio_pin_config.gpio_pin_speed = GPIO_OP_SPEED_FAST;
+	gpio_handle.gpio_pin_config.gpio_pin_op_type = GPIO_OP_TYPE_PP;
+	gpio_handle.gpio_pin_config.gpio_pin_pupd_control = GPIO_PIN_NO_PUPD;
+	gpio_init(&gpio_handle);
 
-	/* Configure IO Direction mode (Input, Output, Alternate or Analog) */
-	GPIOB->MODER = (1 << (0 * 2U)) | (1 << (7 * 2U)) | (1 << (14 * 2U));
+	gpio_handle.gpio_pin_config.gpio_pin_number = 7;
+	gpio_init(&gpio_handle);
+
+	gpio_handle.gpio_pin_config.gpio_pin_number = 14;
+	gpio_init(&gpio_handle);
+
+	/*Configure GPIO pin Output Level */
+	hal_gpio_clear_pin(PORT_B,0);
+	hal_gpio_clear_pin(PORT_B,7);
+	hal_gpio_clear_pin(PORT_B,14);
+
+
+	//GPIO Port C clock enable
+	//Configuring button as input
+	GPIOC_PERI_CLK_EN();
+	gpio_handle.pGPIOx = GPIOC;
+	gpio_handle.gpio_pin_config.gpio_pin_number = 13;
+	gpio_handle.gpio_pin_config.gpio_pin_mode = GPIO_MODE_IN;
+	gpio_handle.gpio_pin_config.gpio_pin_pupd_control = GPIO_PIN_NO_PUPD;
+	gpio_init(&gpio_handle);
+
 }

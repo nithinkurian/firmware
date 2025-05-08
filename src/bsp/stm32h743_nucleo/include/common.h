@@ -4,14 +4,14 @@
 
 #define __vol volatile
 
-#define ENABLE      1
-#define DISABLE     0
+#define ENABLE                              1
+#define DISABLE                             0
 
-#define SET         ENABLE
-#define RESET       DISABLE
+#define SET                                 ENABLE
+#define RESET                               DISABLE
 
-#define PIN_SET     SET
-#define PIN_RESET   RESET
+#define GPIO_PIN_SET                        SET
+#define GPIO_PIN_RESET                      RESET
 
 #define SET_BIT(reg,offset)                 (reg |=  (1 << offset))
 #define CLEAR_BIT(reg,offset)               (reg &=  ~(1 << offset))
