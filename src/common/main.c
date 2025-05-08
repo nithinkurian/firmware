@@ -67,7 +67,7 @@ int main(void)
 	notification_receive_task_handler = create_task(notification_receive_task,760, 2);
 	receive_handler = create_task(receive_task,760, 2);
 	queue_data_handler = create_queue(80,sizeof(char));
-	semaphore_handler = create_binary_semaphore(5,0);
+	semaphore_handler = create_counting_semaphore(5,0);
 	run_scheduler();
 
 }
