@@ -60,7 +60,7 @@
 - fault handling/ handlers
 
 ## *4.2 Planned*
-- bootloader over UART,USB
+- bootloader over UART,USB, SPI, I2C
 - Serial Protocol for communication to PC
 - Need to improve x86 tick interval to ms
 - C++

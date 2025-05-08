@@ -1,4 +1,5 @@
 #include<stdint.h>
+#include "stm32h743xx.h"
 
 #define SRAM_START    0x24000000U
 #define SRAM_SIZE   ( (512U)*(1024U)) //512K
@@ -391,16 +392,13 @@ void SystemInit (void)
   }
 
   /* Set HSION bit */
- *((volatile uint32_t*)0x58024400UL)|= RCC_CR_HSION;
-  //RCC->CR |= RCC_CR_HSION;
+  RCC->CR |= RCC_CR_HSION;
 
   /* Reset CFGR register */
- *((volatile uint32_t*)0x58024410UL) = 0x00000000;
-  //RCC->CFGR = 0x00000000;
+  RCC->CFGR = 0x00000000;
 
   /* Reset HSEON, HSECSSON, CSION, HSI48ON, CSIKERON, PLL1ON, PLL2ON and PLL3ON bits */
- *((volatile uint32_t*)0x58024400UL) &= 0xEAF6ED7FU;
-  //RCC->CR &= 0xEAF6ED7FU;
+  RCC->CR &= 0xEAF6ED7FU;
 
    /* Decreasing the number of wait states because of lower CPU frequency */
   if(FLASH_LATENCY_DEFAULT  < (*((volatile uint32_t*)0x52002000UL) | FLASH_ACR_LATENCY))
@@ -413,16 +411,13 @@ void SystemInit (void)
 
 // #if defined(D3_SRAM_BASE)
   /* Reset D1CFGR register */
-  *((volatile uint32_t*)0x58024418UL)= 0x00000000;
-  //RCC->D1CFGR = 0x00000000;
+  RCC->D1CFGR = 0x00000000;
 
   /* Reset D2CFGR register */
-  *((volatile uint32_t*)0x5802441CUL) = 0x00000000;
-  //RCC->D2CFGR = 0x00000000;
+  RCC->D2CFGR = 0x00000000;
 
   /* Reset D3CFGR register */
-  *((volatile uint32_t*)0x58024420UL) = 0x00000000;
-  //RCC->D3CFGR = 0x00000000;
+  RCC->D3CFGR = 0x00000000;
 // #else
 //   /* Reset CDCFGR1 register */
 //   RCC->CDCFGR1 = 0x00000000;
@@ -434,41 +429,31 @@ void SystemInit (void)
 //   RCC->SRDCFGR = 0x00000000;
 // #endif
   /* Reset PLLCKSELR register */
-  *((volatile uint32_t*)0x58024428UL) = 0x02020200;
-  //RCC->PLLCKSELR = 0x02020200;
+  RCC->PLLCKSELR = 0x02020200;
 
   /* Reset PLLCFGR register */
-  *((volatile uint32_t*)0x5802442CUL) = 0x01FF0000;
-  //RCC->PLLCFGR = 0x01FF0000;
+  RCC->PLLCFGR = 0x01FF0000;
   /* Reset PLL1DIVR register */
-  *((volatile uint32_t*)0x58024430UL) = 0x01010280;
-  //RCC->PLL1DIVR = 0x01010280;
+  RCC->PLL1DIVR = 0x01010280;
   /* Reset PLL1FRACR register */
-  *((volatile uint32_t*)0x58024434UL) = 0x00000000;
-  //RCC->PLL1FRACR = 0x00000000;
+  RCC->PLL1FRACR = 0x00000000;
 
   /* Reset PLL2DIVR register */
-  *((volatile uint32_t*)0x58024438UL) = 0x01010280;
-  //RCC->PLL2DIVR = 0x01010280;
+  RCC->PLL2DIVR = 0x01010280;
 
   /* Reset PLL2FRACR register */
-  *((volatile uint32_t*)0x5802443CUL) = 0x00000000;
-  //RCC->PLL2FRACR = 0x00000000;
+  RCC->PLL2FRACR = 0x00000000;
   /* Reset PLL3DIVR register */
-  *((volatile uint32_t*)0x58024440UL) = 0x01010280;
-  //RCC->PLL3DIVR = 0x01010280;
+  RCC->PLL3DIVR = 0x01010280;
 
   /* Reset PLL3FRACR register */
-  *((volatile uint32_t*)0x58024444UL) = 0x00000000;
-  //RCC->PLL3FRACR = 0x00000000;
+  RCC->PLL3FRACR = 0x00000000;
 
   /* Reset HSEBYP bit */
-  *((volatile uint32_t*)0x58024400UL)&= 0xFFFBFFFFU;
-  //RCC->CR &= 0xFFFBFFFFU;
+  RCC->CR &= 0xFFFBFFFFU;
 
   /* Disable all interrupts */
-  *((volatile uint32_t*)0x58024460UL)= 0x00000000;
-  //RCC->CIER = 0x00000000;
+  RCC->CIER = 0x00000000;
 
 //#if (STM32H7_DEV_ID == 0x450UL)
   /* dual core CM7 or single core line */
