@@ -225,17 +225,17 @@ typedef struct
 /*
  *  Clock Enable Macros for GPIOx Peripherals
  */
-#define GPIOA_PERI_CLK_EN()         (RCC->AHB4ENR |= (1 << 0))
-#define GPIOB_PERI_CLK_EN()         (RCC->AHB4ENR |= (1 << 1))
-#define GPIOC_PERI_CLK_EN()         (RCC->AHB4ENR |= (1 << 2))
-#define GPIOD_PERI_CLK_EN()         (RCC->AHB4ENR |= (1 << 3))
-#define GPIOE_PERI_CLK_EN()         (RCC->AHB4ENR |= (1 << 4))
-#define GPIOF_PERI_CLK_EN()         (RCC->AHB4ENR |= (1 << 5))
-#define GPIOG_PERI_CLK_EN()         (RCC->AHB4ENR |= (1 << 6))
-#define GPIOH_PERI_CLK_EN()         (RCC->AHB4ENR |= (1 << 7))
-#define GPIOI_PERI_CLK_EN()         (RCC->AHB4ENR |= (1 << 8))
-#define GPIOJ_PERI_CLK_EN()         (RCC->AHB4ENR |= (1 << 9))
-#define GPIOK_PERI_CLK_EN()         (RCC->AHB4ENR |= (1 << 10))
+#define GPIOA_PERI_CLK_EN()         SET_BIT(RCC->AHB4ENR,0)
+#define GPIOB_PERI_CLK_EN()         SET_BIT(RCC->AHB4ENR,1)
+#define GPIOC_PERI_CLK_EN()         SET_BIT(RCC->AHB4ENR,2)
+#define GPIOD_PERI_CLK_EN()         SET_BIT(RCC->AHB4ENR,3)
+#define GPIOE_PERI_CLK_EN()         SET_BIT(RCC->AHB4ENR,4)
+#define GPIOF_PERI_CLK_EN()         SET_BIT(RCC->AHB4ENR,5)
+#define GPIOG_PERI_CLK_EN()         SET_BIT(RCC->AHB4ENR,6)
+#define GPIOH_PERI_CLK_EN()         SET_BIT(RCC->AHB4ENR,7)
+#define GPIOI_PERI_CLK_EN()         SET_BIT(RCC->AHB4ENR,8)
+#define GPIOJ_PERI_CLK_EN()         SET_BIT(RCC->AHB4ENR,9)
+#define GPIOK_PERI_CLK_EN()         SET_BIT(RCC->AHB4ENR,10)
 
 /*
  *  Clock Enable Macros for I2Cx Peripherals
@@ -258,17 +258,17 @@ typedef struct
 /*
  *  Clock Disable Macros for GPIOx Peripherals
  */
-#define GPIOA_PERI_CLK_DI()         (RCC->AHB4ENR &= ~(1 << 0))
-#define GPIOB_PERI_CLK_DI()         (RCC->AHB4ENR &= ~(1 << 1))
-#define GPIOC_PERI_CLK_DI()         (RCC->AHB4ENR &= ~(1 << 2))
-#define GPIOD_PERI_CLK_DI()         (RCC->AHB4ENR &= ~(1 << 3))
-#define GPIOE_PERI_CLK_DI()         (RCC->AHB4ENR &= ~(1 << 4))
-#define GPIOF_PERI_CLK_DI()         (RCC->AHB4ENR &= ~(1 << 5))
-#define GPIOG_PERI_CLK_DI()         (RCC->AHB4ENR &= ~(1 << 6))
-#define GPIOH_PERI_CLK_DI()         (RCC->AHB4ENR &= ~(1 << 7))
-#define GPIOI_PERI_CLK_DI()         (RCC->AHB4ENR &= ~(1 << 8))
-#define GPIOJ_PERI_CLK_DI()         (RCC->AHB4ENR &= ~(1 << 9))
-#define GPIOK_PERI_CLK_DI()         (RCC->AHB4ENR &= ~(1 << 10))
+#define GPIOA_PERI_CLK_DI()         CLEAR_BIT(RCC->AHB4ENR,0)
+#define GPIOB_PERI_CLK_DI()         CLEAR_BIT(RCC->AHB4ENR,1)
+#define GPIOC_PERI_CLK_DI()         CLEAR_BIT(RCC->AHB4ENR,2)
+#define GPIOD_PERI_CLK_DI()         CLEAR_BIT(RCC->AHB4ENR,3)
+#define GPIOE_PERI_CLK_DI()         CLEAR_BIT(RCC->AHB4ENR,4)
+#define GPIOF_PERI_CLK_DI()         CLEAR_BIT(RCC->AHB4ENR,5)
+#define GPIOG_PERI_CLK_DI()         CLEAR_BIT(RCC->AHB4ENR,6)
+#define GPIOH_PERI_CLK_DI()         CLEAR_BIT(RCC->AHB4ENR,7)
+#define GPIOI_PERI_CLK_DI()         CLEAR_BIT(RCC->AHB4ENR,8)
+#define GPIOJ_PERI_CLK_DI()         CLEAR_BIT(RCC->AHB4ENR,9)
+#define GPIOK_PERI_CLK_DI()         CLEAR_BIT(RCC->AHB4ENR,10)
 
 /*
  *  Clock Disable Macros for I2Cx Peripherals
@@ -286,8 +286,22 @@ typedef struct
  *  Clock Disable Macros for SYSCFG Peripherals
  */
 
+/**********************Reset Register Macros for Peripherals************************/
 
-
+/*
+ *  Reset Register Macros for GPIOx Peripherals
+ */
+#define GPIOA_REG_RESET()           do{ SET_BITS(RCC->AHB4RSTR,0,1,1); CLEAR_BITS(RCC->AHB4RSTR,0,1);} while(0)
+#define GPIOB_REG_RESET()           do{ SET_BITS(RCC->AHB4RSTR,1,1,1); CLEAR_BITS(RCC->AHB4RSTR,1,1);} while(0)
+#define GPIOC_REG_RESET()           do{ SET_BITS(RCC->AHB4RSTR,2,1,1); CLEAR_BITS(RCC->AHB4RSTR,2,1);} while(0)
+#define GPIOD_REG_RESET()           do{ SET_BITS(RCC->AHB4RSTR,3,1,1); CLEAR_BITS(RCC->AHB4RSTR,3,1);} while(0)
+#define GPIOE_REG_RESET()           do{ SET_BITS(RCC->AHB4RSTR,4,1,1); CLEAR_BITS(RCC->AHB4RSTR,4,1);} while(0)
+#define GPIOF_REG_RESET()           do{ SET_BITS(RCC->AHB4RSTR,5,1,1); CLEAR_BITS(RCC->AHB4RSTR,5,1);} while(0)
+#define GPIOG_REG_RESET()           do{ SET_BITS(RCC->AHB4RSTR,6,1,1); CLEAR_BITS(RCC->AHB4RSTR,6,1);} while(0)
+#define GPIOH_REG_RESET()           do{ SET_BITS(RCC->AHB4RSTR,7,1,1); CLEAR_BITS(RCC->AHB4RSTR,7,1);} while(0)
+#define GPIOI_REG_RESET()           do{ SET_BITS(RCC->AHB4RSTR,8,1,1); CLEAR_BITS(RCC->AHB4RSTR,8,1);} while(0)
+#define GPIOJ_REG_RESET()           do{ SET_BITS(RCC->AHB4RSTR,9,1,1); CLEAR_BITS(RCC->AHB4RSTR,9,1);} while(0)
+#define GPIOK_REG_RESET()           do{ SET_BITS(RCC->AHB4RSTR,10,1,1); CLEAR_BITS(RCC->AHB4RSTR,10,1);} while(0)
 
 /*******************************MISC Constants*********************************/
 #define HSI_CLK             64000000U

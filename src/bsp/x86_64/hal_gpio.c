@@ -4,7 +4,7 @@
 #include "print_colour.h"
 
 
-void gpio_set_pin(uint16_t value)
+void hal_gpio_set_pin(uint16_t value)
 {
 	switch(value)
 	{		
@@ -20,7 +20,7 @@ void gpio_set_pin(uint16_t value)
 	}
 }
 
-void gpio_clear_pin(uint16_t value)
+void hal_gpio_clear_pin(uint16_t value)
 {
 	switch(value)
 	{		
@@ -36,7 +36,7 @@ void gpio_clear_pin(uint16_t value)
 	}
 }
 
-void gpio_init(void)
+void hal_gpio_init(void)
 {
 	//empty
 }

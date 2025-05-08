@@ -3,8 +3,6 @@
 #include "rtos.h"
 #include "stm32h743xx.h"
 
-
-
 #define DUMMY_XPSP			0x01000000U
 
 #define INTERRUPT_DISABLE()  do{__asm volatile ("MOV R0,#0x1"); asm volatile("MSR PRIMASK,R0"); } while(0)
@@ -34,18 +32,15 @@ void init_systick_timer(uint32_t tick_hz)
 	//Systick timer is 24bit
 	uint32_t count_value = (SYSTICK_TIM_CLK/tick_hz) - 1;
 
-	//Clear the value of SRVR
-    SYSTICK->RVR &= ~(0x00FFFFFF);
-
 	//load the value in to SVR
-	SYSTICK->RVR |= count_value;
+	WRITE_REG(SYSTICK->RVR,0,count_value,0xFFFFFF);
 
 	//do some settings
-	SYSTICK->CSR |= (1 << 1); // Enables SysTick exception request.
-	SYSTICK->CSR |= (1 << 2); // Indicates the clock source to	Processor clock (Internal)
+	SET_BIT(SYSTICK->CSR,1);  // Enables SysTick exception request.
+	SET_BIT(SYSTICK->CSR,2);  // Indicates the clock source to	Processor clock (Internal)
 
 	//start systick
-	SYSTICK->CSR |= (1 << 0); // Enables the counter
+	SET_BIT(SYSTICK->CSR,0);  // Enables the counter
 }
 
 __attribute__((naked)) void init_scheduler_stack(uint32_t sched_top_of_stack)
@@ -57,7 +52,7 @@ __attribute__((naked)) void init_scheduler_stack(uint32_t sched_top_of_stack)
 void pend_pendsv()
 {
 	//pend the pendsv exception
-	SCB->ICSR |= (1 << 28);
+	SET_BIT(SCB->ICSR,28);
 }
 
 uint32_t task_stack_init(uint32_t psp_value, void (*task_handler)(void* parameters))

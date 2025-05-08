@@ -8,13 +8,13 @@
 void enable_processor_faults(void)
 {
 
-	SCB->SHCSR |= ( 1 << 16); //mem manage
-	SCB->SHCSR |= ( 1 << 17); //bus fault
-	SCB->SHCSR |= ( 1 << 18); //usage fault
+	SET_BIT(SCB->SHCSR,16);   //mem manage
+	SET_BIT(SCB->SHCSR,17);   //bus fault
+	SET_BIT(SCB->SHCSR,18);   //usage fault
 
 
 	//enable divide by zero trap
-	SCB->CCR |= ( 1 << 4);
+	SET_BIT(SCB->CCR,4);
 }
 
 //2. implement the fault handlers

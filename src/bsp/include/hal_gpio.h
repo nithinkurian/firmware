@@ -4,9 +4,8 @@
 
 #include <stdint.h>
 
-void set_gpio_port_b_reg(uint32_t value);
-void gpio_set_pin(uint16_t value);
-void gpio_clear_pin(uint16_t value);
-void gpio_init(void);
+void hal_gpio_set_pin(uint16_t value);
+void hal_gpio_clear_pin(uint16_t value);
+void hal_gpio_init(void);
 
  #endif // HAL_GPIO_H
