@@ -103,7 +103,7 @@
 typedef struct
 {
     __vol uint32_t MODER;     //GPIO port mode register               Offset 0x00
-    __vol uint32_t OTYPER;    //GPIO port output type register        Offset 0x04
+    __vol uint32_t OTYPE;    //GPIO port output type register        Offset 0x04
     __vol uint32_t OSPEEDR;   //GPIO port output speed register       Offset 0x08
     __vol uint32_t PUPDR;     //GPIO port pull-up/pull-down register  Offset 0x0C
     __vol uint32_t IDR;       //GPIO port input data register         Offset 0x10
@@ -204,6 +204,83 @@ typedef struct
     __vol uint32_t C1_APB4LPENR;    //Offset 0x17c
 }RCC_RegDef_t;
 
+/*
+ *  EXTI peripheral Register Definition Structure
+ */
+typedef struct
+{
+    __vol uint32_t RTSR1;           //Offset 0x00
+    __vol uint32_t FTSR1;           //Offset 0x04
+    __vol uint32_t SWIER1;          //Offset 0x08
+    __vol uint32_t D3PMR1;          //Offset 0x0C
+    __vol uint32_t D3PCR1L;         //Offset 0x10
+    __vol uint32_t D3PCR1H;         //Offset 0x14
+    __vol uint32_t RESERVED1[2];    //Offset 0x18 - 0x1C
+    __vol uint32_t RTSR2;           //Offset 0x20
+    __vol uint32_t FTSR2;           //Offset 0x24
+    __vol uint32_t SWIER2;          //Offset 0x28
+    __vol uint32_t D3PMR2;          //Offset 0x2c
+    __vol uint32_t D3PCR2L;         //Offset 0x30
+    __vol uint32_t D3PCR2H;         //Offset 0x34
+    __vol uint32_t RESERVED2[2];    //Offset 0x38 - 0x3c
+    __vol uint32_t RTSR3;           //Offset 0x40
+    __vol uint32_t FTSR3;           //Offset 0x44
+    __vol uint32_t SWIER3;          //Offset 0x48
+    __vol uint32_t D3PMR3;          //Offset 0x4c
+    __vol uint32_t D3PCR3L;         //Offset 0x50
+    __vol uint32_t D3PCR3H;         //Offset 0x54
+    __vol uint32_t RESERVED3[10];   //Offset 0x58 - 0x7c
+    __vol uint32_t CPUIMR1;         //Offset 0x80
+    __vol uint32_t CPUEMR1;         //Offset 0x84
+    __vol uint32_t CPUPR1;          //Offset 0x88
+    __vol uint32_t RESERVED4;       //Offset 0x8c
+    __vol uint32_t CPUIMR2;         //Offset 0x90
+    __vol uint32_t CPUEMR2;         //Offset 0x94
+    __vol uint32_t CPUPR2;          //Offset 0x98
+    __vol uint32_t RESERVED5;       //Offset 0x9c
+    __vol uint32_t CPUIMR3;         //Offset 0xA0
+    __vol uint32_t CPUEMR3;         //Offset 0xA4
+    __vol uint32_t CPUPR3;          //Offset 0xA8
+}EXTI_RegDef_t;
+
+/*
+ *  System configuration controller Register Definition Structure
+ */
+typedef struct
+{
+    __vol uint32_t RESERVED1;      /*!< Reserved,                                           Address offset: 0x00        */
+    __vol uint32_t PMCR;           /*!< SYSCFG peripheral mode configuration register,      Address offset: 0x04        */
+    __vol uint32_t EXTICR[4];      /*!< SYSCFG external interrupt configuration registers,  Address offset: 0x08-0x14   */
+    __vol uint32_t CFGR;           /*!< SYSCFG configuration registers,                     Address offset: 0x18        */
+    __vol uint32_t RESERVED2;      /*!< Reserved,                                           Address offset: 0x1C        */
+    __vol uint32_t CCCSR;          /*!< SYSCFG compensation cell control/status register,   Address offset: 0x20        */
+    __vol uint32_t CCVR;           /*!< SYSCFG compensation cell value register,            Address offset: 0x24        */
+    __vol uint32_t CCCR;           /*!< SYSCFG compensation cell code register,             Address offset: 0x28        */
+    __vol uint32_t PWRCR;          /*!< PWR control register,                               Address offset: 0x2C        */
+    __vol uint32_t RESERVED3[61];  /*!< Reserved, 0x30-0x120                                                            */
+    __vol uint32_t PKGR;           /*!< SYSCFG package register,                            Address offset: 0x124       */
+    __vol uint32_t RESERVED4[118]; /*!< Reserved, 0x128-0x2FC                                                           */
+    __vol uint32_t UR0;            /*!< SYSCFG user register 0,                             Address offset: 0x300       */
+    __vol uint32_t UR1;            /*!< SYSCFG user register 1,                             Address offset: 0x304       */
+    __vol uint32_t UR2;            /*!< SYSCFG user register 2,                             Address offset: 0x308       */
+    __vol uint32_t UR3;            /*!< SYSCFG user register 3,                             Address offset: 0x30C       */
+    __vol uint32_t UR4;            /*!< SYSCFG user register 4,                             Address offset: 0x310       */
+    __vol uint32_t UR5;            /*!< SYSCFG user register 5,                             Address offset: 0x314       */
+    __vol uint32_t UR6;            /*!< SYSCFG user register 6,                             Address offset: 0x318       */
+    __vol uint32_t UR7;            /*!< SYSCFG user register 7,                             Address offset: 0x31C       */
+    __vol uint32_t UR8;            /*!< SYSCFG user register 8,                             Address offset: 0x320       */
+    __vol uint32_t UR9;            /*!< SYSCFG user register 9,                             Address offset: 0x324       */
+    __vol uint32_t UR10;           /*!< SYSCFG user register 10,                            Address offset: 0x328       */
+    __vol uint32_t UR11;           /*!< SYSCFG user register 11,                            Address offset: 0x32C       */
+    __vol uint32_t UR12;           /*!< SYSCFG user register 12,                            Address offset: 0x330       */
+    __vol uint32_t UR13;           /*!< SYSCFG user register 13,                            Address offset: 0x334       */
+    __vol uint32_t UR14;           /*!< SYSCFG user register 14,                            Address offset: 0x338       */
+    __vol uint32_t UR15;           /*!< SYSCFG user register 15,                            Address offset: 0x33C       */
+    __vol uint32_t UR16;           /*!< SYSCFG user register 16,                            Address offset: 0x340       */
+    __vol uint32_t UR17;           /*!< SYSCFG user register 17,                            Address offset: 0x344       */
+
+} SYSCFG_RegDef_t;
+
 
 /*****************************Peripheral Definition*******************************/
 #define GPIOA                       ((GPIO_RegDef_t*)GPIOA_BASEADDR)
@@ -219,6 +296,12 @@ typedef struct
 #define GPIOK                       ((GPIO_RegDef_t*)GPIOK_BASEADDR)
 
 #define RCC                         ((RCC_RegDef_t*)RCC_BASEADDR)
+#define EXTI                        ((EXTI_RegDef_t*)EXTI_BASEADDR)
+#define SYSCFG                      ((SYSCFG_RegDef_t*)SYSCFG_BASEADDR)
+
+
+
+
 
 /**********************Clock Enable Macros for Peripherals************************/
 
@@ -252,6 +335,7 @@ typedef struct
 /*
  *  Clock Enable Macros for SYSCFG Peripherals
  */
+#define SYSCFG_PERI_CLK_EN()         SET_BIT(RCC->APB4ENR,1)
 
 /**********************Clock Disable Macros for Peripherals************************/
 
@@ -285,6 +369,7 @@ typedef struct
 /*
  *  Clock Disable Macros for SYSCFG Peripherals
  */
+#define SYSCFG_PERI_CLK_DI()         CLEAR_BIT(RCC->APB4ENR,1)
 
 /**********************Reset Register Macros for Peripherals************************/
 
@@ -303,9 +388,58 @@ typedef struct
 #define GPIOJ_REG_RESET()           do{ SET_BITS(RCC->AHB4RSTR,9,1,1); CLEAR_BITS(RCC->AHB4RSTR,9,1);} while(0)
 #define GPIOK_REG_RESET()           do{ SET_BITS(RCC->AHB4RSTR,10,1,1); CLEAR_BITS(RCC->AHB4RSTR,10,1);} while(0)
 
-/*******************************MISC Constants*********************************/
-#define HSI_CLK             64000000U
-#define SYSTICK_TIM_CLK     HSI_CLK
+/*******************************MISC MACROS*********************************/
+#define HSI_CLK                 64000000U
+#define SYSTICK_TIM_CLK         HSI_CLK
+#define NO_PR_BITS_IMPLEMENTED  4
 
+
+/*
+ *  Returns port code from GPIOx base address
+ */
+#define GPIO_BASEADDR_T0_CODE(x)   ((x == GPIOA)? 0 :\
+                                    (x == GPIOB)? 1 :\
+                                    (x == GPIOC)? 2 :\
+                                    (x == GPIOD)? 3 :\
+                                    (x == GPIOE)? 4 :\
+                                    (x == GPIOF)? 5 :\
+                                    (x == GPIOG)? 6 :\
+                                    (x == GPIOH)? 7 :\
+                                    (x == GPIOI)? 8 :\
+                                    (x == GPIOJ)? 9 :\
+                                    (x == GPIOK)? 10 :0 )
+
+/*
+ *  IRQ (Interrupt Request) Numbers
+ */
+
+#define IRQ_NO_EXTI0                6
+#define IRQ_NO_EXTI1                7
+#define IRQ_NO_EXTI2                8
+#define IRQ_NO_EXTI3                9
+#define IRQ_NO_EXTI4                10
+#define IRQ_NO_EXTI9_5              23
+#define IRQ_NO_EXTI15_10            40
+
+/*
+ *  NVIC IRQ (Interrupt Request) Priority
+ */
+
+#define NVIC_IRQ_PRIORITY0          0
+#define NVIC_IRQ_PRIORITY1          1
+#define NVIC_IRQ_PRIORITY2          2
+#define NVIC_IRQ_PRIORITY3          3
+#define NVIC_IRQ_PRIORITY4          4
+#define NVIC_IRQ_PRIORITY5          5
+#define NVIC_IRQ_PRIORITY6          6
+#define NVIC_IRQ_PRIORITY7          7
+#define NVIC_IRQ_PRIORITY8          8
+#define NVIC_IRQ_PRIORITY9          9
+#define NVIC_IRQ_PRIORITY10         10
+#define NVIC_IRQ_PRIORITY11         11
+#define NVIC_IRQ_PRIORITY12         12
+#define NVIC_IRQ_PRIORITY13         13
+#define NVIC_IRQ_PRIORITY14         14
+#define NVIC_IRQ_PRIORITY15         15
 
  #endif // STM32H743XX_H

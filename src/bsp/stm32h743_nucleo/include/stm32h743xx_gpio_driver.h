@@ -58,7 +58,7 @@ typedef struct
 #define GPIO_MODE_ANALOG        3 //RESET STATE
 #define GPIO_MODE_IT_FT         4
 #define GPIO_MODE_IT_RT         5
-#define GPIO_MODE_IT_FR         6
+#define GPIO_MODE_IT_RFT        6
 
 /*
  * @GPIO_PIN_SPEEDS
@@ -130,7 +130,8 @@ void gpio_pin_toggle(GPIO_RegDef_t *p_gpiox,uint8_t pin_number);
 /*
  * interrupt
  */
-void gpio_irq_config(uint8_t irq_number,uint8_t irq_priority,uint8_t en_or_di);
+void gpio_irq_interrupt_config(uint8_t irq_number,uint8_t en_or_di);
+void gpio_irq_priorityconfig(uint8_t irq_number,uint32_t irq_priority);
 void gpio_irq_handling(uint8_t pin_number);
 
 

@@ -82,6 +82,7 @@
 - Hardware Semaphore
 - TCM
 - Watch dog
+- Cache
 
 # 6. Tools
 ## *6.1 Planned*

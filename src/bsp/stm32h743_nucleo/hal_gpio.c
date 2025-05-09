@@ -93,8 +93,10 @@ void hal_gpio_init(void)
 	GPIOC_PERI_CLK_EN();
 	gpio_handle.pGPIOx = GPIOC;
 	gpio_handle.gpio_pin_config.gpio_pin_number = 13;
-	gpio_handle.gpio_pin_config.gpio_pin_mode = GPIO_MODE_IN;
+	gpio_handle.gpio_pin_config.gpio_pin_mode = GPIO_MODE_IT_FT;
 	gpio_handle.gpio_pin_config.gpio_pin_pupd_control = GPIO_PIN_NO_PUPD;
 	gpio_init(&gpio_handle);
+	gpio_irq_interrupt_config(IRQ_NO_EXTI15_10,ENABLE);
+	gpio_irq_priorityconfig(IRQ_NO_EXTI15_10,NVIC_IRQ_PRIORITY15);
 
 }
