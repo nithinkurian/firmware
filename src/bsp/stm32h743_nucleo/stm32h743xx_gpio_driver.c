@@ -135,6 +135,9 @@ void gpio_peri_clk_control(GPIO_RegDef_t *p_gpiox, uint8_t en_or_di)
  */
 void gpio_init(GPIO_Handle_t *handle)
 {
+    //enable GPIO peripheral clock
+    gpio_peri_clk_control(handle->pGPIOx, ENABLE);
+
     //configure mode
     if(handle->gpio_pin_config.gpio_pin_mode <= GPIO_MODE_ANALOG)
     {
@@ -330,11 +333,13 @@ void gpio_pin_write(GPIO_RegDef_t *p_gpiox,uint8_t pin_number,uint8_t pin_value)
 {
     if(pin_value == GPIO_PIN_SET)
     {
-        SET_BIT(p_gpiox->ODR,pin_number);
+        p_gpiox->BSRR = (1 << pin_number);
+        //SET_BIT(p_gpiox->ODR,pin_number);
     }
     else
     {
-        CLEAR_BIT(p_gpiox->ODR,pin_number);
+        p_gpiox->BSRR = (1 << (pin_number+16));
+        //CLEAR_BIT(p_gpiox->ODR,pin_number);
     }
 }
 

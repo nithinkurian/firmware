@@ -64,9 +64,6 @@ bool hal_gpio_pin_read(uint8_t port_number,uint16_t pin_number)
 
 void hal_gpio_init(void)
 {
-	//GPIO Port B clock enable
-	GPIOB_PERI_CLK_EN();
-
 	GPIO_Handle_t gpio_handle;
 	gpio_handle.pGPIOx = GPIOB;
 	gpio_handle.gpio_pin_config.gpio_pin_number = 0;
@@ -90,7 +87,6 @@ void hal_gpio_init(void)
 
 	//GPIO Port C clock enable
 	//Configuring button as input
-	GPIOC_PERI_CLK_EN();
 	gpio_handle.pGPIOx = GPIOC;
 	gpio_handle.gpio_pin_config.gpio_pin_number = 13;
 	gpio_handle.gpio_pin_config.gpio_pin_mode = GPIO_MODE_IT_FT;
