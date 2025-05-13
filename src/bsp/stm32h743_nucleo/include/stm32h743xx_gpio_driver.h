@@ -29,7 +29,7 @@ typedef struct
 
 /*
  * @GPIO_PIN_NUMBERS
- * GPIO pin possible pin modes
+ * GPIO pin possible pin numbers
  */
 #define GPIO_NUMBER_0           0
 #define GPIO_NUMBER_1           1

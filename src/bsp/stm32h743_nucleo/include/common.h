@@ -18,8 +18,8 @@
 #define SET_BITS(reg,offset,value,mask)     ((reg) |=  (((mask)&(value)) << (offset)))
 #define CLEAR_BITS(reg,offset,mask)         ((reg) &= ~((mask)         << (offset)))
 #define WRITE_REG(reg,offset,value,mask)    do { CLEAR_BITS(reg,offset,mask); SET_BITS(reg,offset,value,mask);}while(0)
-#define READ_BIT(reg,offset)                ((reg) |= (1 << (offset)))
-#define READ_BITS(reg,offset,mask)          ((reg) |= ((mask) << (offset)))
+#define READ_BIT(reg,offset)                ((reg) & (1 << (offset)))
+#define READ_BITS(reg,offset,mask)          ((reg) & ((mask) << (offset)))
 
 
 

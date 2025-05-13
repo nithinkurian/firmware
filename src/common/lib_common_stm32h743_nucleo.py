@@ -5,6 +5,7 @@ from Environments import *
 sources = []
 sources.append('main.c')
 sources.append('led.c')
+sources.append('serial.c')
 
 env = get_stm32_env()
 env.Append(CPPPATH=['#src/include','#src/bsp/include','#src/os/include'])

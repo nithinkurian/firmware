@@ -3,6 +3,7 @@ from Environments import *
 
 source = []
 source.append('hal_gpio.c')
+source.append('hal_usart.c')
 source.append('hal_cpu.c')
 source.append('hal_processor_faults.c')
 source.append('hal_processor_faults_test.c')

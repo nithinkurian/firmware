@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include "hal_cpu.h"
 #include "led.h"
+#include "serial.h"
 #include <stdio.h>
 #include "print_colour.h"
 #include "hal_processor_faults.h"
@@ -59,6 +60,9 @@ int main(void)
 
 	//Initialize LED
 	led_init();
+
+	//Initialize USART
+	serial_init();
 
 	printf(BOLD_DARK_GRAY"%"U32_PRINT": Initialized\n",get_rtos_tick_count());
 	printf("%"U32_PRINT": %s Initializing\n",get_rtos_tick_count(),get_rtos_name());

@@ -184,17 +184,20 @@ void gpio_init(GPIO_Handle_t *handle)
         SET_BIT(EXTI->CPUIMR1,handle->gpio_pin_config.gpio_pin_number);
     }
 
-    if(handle->gpio_pin_config.gpio_pin_mode == GPIO_MODE_OUT)
+    if((handle->gpio_pin_config.gpio_pin_mode == GPIO_MODE_OUT)||
+        (handle->gpio_pin_config.gpio_pin_mode == GPIO_MODE_ALTFN))
     {
+
         //configure speed
         WRITE_REG(handle->pGPIOx->OSPEEDR,2*handle->gpio_pin_config.gpio_pin_number,handle->gpio_pin_config.gpio_pin_speed,0x3);
 
-        //configure pull up pull down settings
-        WRITE_REG(handle->pGPIOx->PUPDR,2*handle->gpio_pin_config.gpio_pin_number,handle->gpio_pin_config.gpio_pin_pupd_control,0x3);
+
+        //output type
+        SET_BITS(handle->pGPIOx->OTYPE,handle->gpio_pin_config.gpio_pin_number,handle->gpio_pin_config.gpio_pin_op_type,0x1);
     }
 
-    //output type
-    SET_BITS(handle->pGPIOx->OTYPE,handle->gpio_pin_config.gpio_pin_number,handle->gpio_pin_config.gpio_pin_op_type,0x1);
+    //configure pull up pull down settings
+    WRITE_REG(handle->pGPIOx->PUPDR,2*handle->gpio_pin_config.gpio_pin_number,handle->gpio_pin_config.gpio_pin_pupd_control,0x3);
 
     //alternate function mode
     if(handle->gpio_pin_config.gpio_pin_mode == GPIO_MODE_ALTFN)
@@ -202,7 +205,7 @@ void gpio_init(GPIO_Handle_t *handle)
         uint8_t index,offset;
         index = handle->gpio_pin_config.gpio_pin_number/8;
         offset = 4 * (handle->gpio_pin_config.gpio_pin_number%8);
-        WRITE_REG(handle->pGPIOx->AFR[index],offset,handle->gpio_pin_config.gpio_pin_alt_fun_mode,0x3);
+        WRITE_REG(handle->pGPIOx->AFR[index],offset,handle->gpio_pin_config.gpio_pin_alt_fun_mode,0x7);
     }
 
 }

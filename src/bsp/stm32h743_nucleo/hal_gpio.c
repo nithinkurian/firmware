@@ -84,8 +84,6 @@ void hal_gpio_init(void)
 	hal_gpio_clear_pin(PORT_B,7);
 	hal_gpio_clear_pin(PORT_B,14);
 
-
-	//GPIO Port C clock enable
 	//Configuring button as input
 	gpio_handle.pGPIOx = GPIOC;
 	gpio_handle.gpio_pin_config.gpio_pin_number = 13;

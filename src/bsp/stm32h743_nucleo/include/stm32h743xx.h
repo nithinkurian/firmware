@@ -281,6 +281,26 @@ typedef struct
 
 } SYSCFG_RegDef_t;
 
+/*
+ *  System configuration controller Register Definition Structure
+ */
+typedef struct
+{
+    __vol uint32_t CR1;           /* Address offset: 0x00        */
+    __vol uint32_t CR2;           /* Address offset: 0x04        */
+    __vol uint32_t CR3;           /* Address offset: 0x08        */
+    __vol uint32_t BRR;           /* Address offset: 0x0C        */
+    __vol uint32_t GTPR;          /* Address offset: 0x10        */
+    __vol uint32_t RTOR;          /* Address offset: 0x14        */
+    __vol uint32_t RQR;           /* Address offset: 0x18        */
+    __vol uint32_t ISR;           /* Address offset: 0x1C        */
+    __vol uint32_t ICR;           /* Address offset: 0x20        */
+    __vol uint32_t RDR;           /* Address offset: 0x24        */
+    __vol uint32_t TDR;           /* Address offset: 0x28        */
+    __vol uint32_t PRESCALE;      /* Address offset: 0x2C        */
+
+} USART_RegDef_t;
+
 
 /*****************************Peripheral Definition*******************************/
 #define GPIOA                       ((GPIO_RegDef_t*)GPIOA_BASEADDR)
@@ -299,6 +319,14 @@ typedef struct
 #define EXTI                        ((EXTI_RegDef_t*)EXTI_BASEADDR)
 #define SYSCFG                      ((SYSCFG_RegDef_t*)SYSCFG_BASEADDR)
 
+#define USART1                      ((USART_RegDef_t*)USART1_BASEADDR)
+#define USART2                      ((USART_RegDef_t*)USART2_BASEADDR)
+#define USART3                      ((USART_RegDef_t*)USART3_BASEADDR)
+#define UART4                       ((USART_RegDef_t*)UART4_BASEADDR)
+#define UART5                       ((USART_RegDef_t*)UART5_BASEADDR)
+#define USART6                      ((USART_RegDef_t*)USART6_BASEADDR)
+#define UART7                       ((USART_RegDef_t*)UART7_BASEADDR)
+#define UART8                       ((USART_RegDef_t*)UART8_BASEADDR)
 
 
 
@@ -331,6 +359,14 @@ typedef struct
 /*
  *  Clock Enable Macros for USARTx Peripherals
  */
+#define USART1_PERI_CLK_EN()        SET_BIT(RCC->APB2ENR,4)
+#define USART2_PERI_CLK_EN()        SET_BIT(RCC->APB1LENR,17)
+#define USART3_PERI_CLK_EN()        SET_BIT(RCC->APB1LENR,18)
+#define UART4_PERI_CLK_EN()         SET_BIT(RCC->APB1LENR,19)
+#define UART5_PERI_CLK_EN()         SET_BIT(RCC->APB1LENR,20)
+#define USART6_PERI_CLK_EN()        SET_BIT(RCC->APB2ENR,5)
+#define UART7_PERI_CLK_EN()         SET_BIT(RCC->APB1LENR,30)
+#define UART8_PERI_CLK_EN()         SET_BIT(RCC->APB1LENR,31)
 
 /*
  *  Clock Enable Macros for SYSCFG Peripherals
@@ -365,6 +401,14 @@ typedef struct
 /*
  *  Clock Disable Macros for USARTx Peripherals
  */
+#define USART1_PERI_CLK_DI()        CLEAR_BIT(RCC->APB2ENR,4)
+#define USART2_PERI_CLK_DI()        CLEAR_BIT(RCC->APB1LENR,17)
+#define USART3_PERI_CLK_DI()        CLEAR_BIT(RCC->APB1LENR,18)
+#define UART4_PERI_CLK_DI()         CLEAR_BIT(RCC->APB1LENR,19)
+#define UART5_PERI_CLK_DI()         CLEAR_BIT(RCC->APB1LENR,20)
+#define USART6_PERI_CLK_DI()        CLEAR_BIT(RCC->APB2ENR,5)
+#define UART7_PERI_CLK_DI()         CLEAR_BIT(RCC->APB1LENR,30)
+#define UART8_PERI_CLK_DI()         CLEAR_BIT(RCC->APB1LENR,31)
 
 /*
  *  Clock Disable Macros for SYSCFG Peripherals
@@ -388,7 +432,20 @@ typedef struct
 #define GPIOJ_REG_RESET()           do{ SET_BITS(RCC->AHB4RSTR,9,1,1); CLEAR_BITS(RCC->AHB4RSTR,9,1);} while(0)
 #define GPIOK_REG_RESET()           do{ SET_BITS(RCC->AHB4RSTR,10,1,1); CLEAR_BITS(RCC->AHB4RSTR,10,1);} while(0)
 
+/*
+ *  Reset Register Macros for USARTx Peripherals
+ */
+#define USART1_REG_RESET()          do{ SET_BITS(RCC->APB2RSTR,4,1,1); CLEAR_BITS(RCC->APB1LRSTR,4,1);} while(0)
+#define USART2_REG_RESET()          do{ SET_BITS(RCC->APB1LRSTR,17,1,1); CLEAR_BITS(RCC->APB1LRSTR,17,1);} while(0)
+#define USART3_REG_RESET()          do{ SET_BITS(RCC->APB1LRSTR,18,1,1); CLEAR_BITS(RCC->APB1LRSTR,18,1);} while(0)
+#define UART4_REG_RESET()           do{ SET_BITS(RCC->APB1LRSTR,19,1,1); CLEAR_BITS(RCC->APB1LRSTR,19,1);} while(0)
+#define UART5_REG_RESET()           do{ SET_BITS(RCC->APB1LRSTR,20,1,1); CLEAR_BITS(RCC->APB1LRSTR,20,1);} while(0)
+#define USART6_REG_RESET()          do{ SET_BITS(RCC->APB2RSTR,5,1,1); CLEAR_BITS(RCC->APB1LRSTR,5,1);} while(0)
+#define UART7_REG_RESET()           do{ SET_BITS(RCC->APB1LRSTR,30,1,1); CLEAR_BITS(RCC->APB1LRSTR,30,1);} while(0)
+#define UART8_REG_RESET()           do{ SET_BITS(RCC->APB1LRSTR,31,1,1); CLEAR_BITS(RCC->APB1LRSTR,31,1);} while(0)
+
 /*******************************MISC MACROS*********************************/
+//Need to move to RCC headers
 #define HSI_CLK                 64000000U
 #define SYSTICK_TIM_CLK         HSI_CLK
 #define NO_PR_BITS_IMPLEMENTED  4
