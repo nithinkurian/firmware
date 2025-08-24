@@ -1,0 +1,9 @@
+build/*
+.sconsign.dblite
+tools/scons/scons-local-4.9.1/*
+src/ReferenceProject/Debug/*
+/site_scons/__pycache__/Environments.cpython-310.pyc
+/__pycache__/common_source.cpython-310.pyc
+/tools/rtos/FreeRTOS/FreeRTOSv202406.01-LTS/*
+/tools/rtos/FreeRTOS/FreeRTOSv202212.01/*
+/tools/segger/SystemView_Src_V360d/*

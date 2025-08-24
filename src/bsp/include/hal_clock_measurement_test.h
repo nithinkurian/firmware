@@ -1,0 +1,7 @@
+#ifndef HAL_CLOCK_MEASUREMENT_TEST_H
+#define HAL_CLOCK_MEASUREMENT_TEST_H
+
+
+void mco2_output();
+
+#endif // HAL_CLOCK_MEASUREMENT_TEST_H

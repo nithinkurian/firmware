@@ -1,0 +1,6 @@
+gcc for arm Download : https://developer.arm.com/downloads/-/gnu-rm
+docs https://gcc.gnu.org/onlinedocs/gcc-10.3.0/gcc/
+
+arm-none-eabi-objdump -h build/scons/STH7N001N/firmware.elf 
+
+arm-none-eabi-nm build/scons/STH7N001N/firmware.elf 

@@ -1,0 +1,3 @@
+https://www.freertos.org/
+https://www.freertos.org/Documentation/00-Overview
+https://freertos.org/Documentation/02-Kernel/03-Supported-devices/02-Customization

@@ -1,0 +1,2 @@
+*.zip filter=lfs diff=lfs merge=lfs -text
+tools/logic_analyzer/Logic-2.4.29-linux-x64.AppImage filter=lfs diff=lfs merge=lfs -text

@@ -1,0 +1,14 @@
+ gdb ./a.out
+(gdb) run
+<segfault happens here>
+(gdb) backtrace
+<offending code is shown here>
+
+
+gdb -tui 
+to toggle GUI Ctrl+x A
+
+https://sourceware.org/gdb/current/onlinedocs/gdb.html/TUI-Commands.html
+
+CppCon 2015: Greg Law " Give me 15 minutes & I'll change your view of GDB"
+https://www.youtube.com/watch?app=desktop&v=PorfLSr3DDI
