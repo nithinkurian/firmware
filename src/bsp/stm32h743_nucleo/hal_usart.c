@@ -9,6 +9,8 @@
 
 
 
+USART_Handle_t usart3_handle;
+
 void hal_usart_init(void)
 {
     GPIO_Handle_t gpio_handle;
@@ -25,8 +27,6 @@ void hal_usart_init(void)
     gpio_handle.gpio_pin_config.gpio_pin_number = 9;
     gpio_init(&gpio_handle);
 
-
-    USART_Handle_t usart3_handle;
     usart3_handle.pUSARTx = USART3;
 
     usart3_handle.usart_config.usart_mode = USART_MODE_TXRX;
@@ -37,5 +37,9 @@ void hal_usart_init(void)
     usart3_handle.usart_config.usart_hw_flow_control = USART_HW_FLOW_CTRL_NONE;
     usart_init(&usart3_handle);
 
+}
 
+void hal_usart3_transmit(uint8_t *buffer,uint16_t length)
+{
+    usart_send_data(&usart3_handle,buffer,length);
 }

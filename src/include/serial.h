@@ -1,6 +1,9 @@
-#ifndef USART_H
-#define USART_H
+#ifndef SERIAL_H
+#define SERIAL_H
+
+#include <stdint.h>
 
 void serial_init();
+void serial_transmit(uint8_t *buffer,uint16_t length);
 
-#endif // USART_H
+#endif // SERIAL_H

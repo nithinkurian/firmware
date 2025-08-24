@@ -64,6 +64,8 @@ int main(void)
 	//Initialize USART
 	serial_init();
 
+	uint8_t msg[] = "Serial Init...\n\r";
+	serial_transmit(msg,strlen((char *)msg));
 	printf(BOLD_DARK_GRAY"%"U32_PRINT": Initialized\n",get_rtos_tick_count());
 	printf("%"U32_PRINT": %s Initializing\n",get_rtos_tick_count(),get_rtos_name());
 
