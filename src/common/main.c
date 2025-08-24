@@ -16,7 +16,7 @@
 #define RECEIVED_DATA	0x04
 
 #define TASK_1_DELAY 	500
-#define TIMER_DELAY 		4000
+#define TIMER_DELAY 		10000
 
 
 //Semi hosting init function
@@ -102,7 +102,7 @@ void task1_function(void* parameters)
 	create_and_start_software_timer(TIMER_DELAY,true,timer_callback);
 	while(1)
 	{
-		if(take_semaphore(semaphore_handler,TIMER_DELAY*2))
+		if(take_semaphore(semaphore_handler,TIMER_DELAY*10))
 		{
 			turn_on_led(YELLOW);
 			notify_task_setbit(notification_receive_task_handler,TASK_1_ON);
