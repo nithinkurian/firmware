@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, feature_branch ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Make test script executable
+        run: chmod +x test/run_build_sh_tests.sh
+
+      - name: Install ShellCheck
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y shellcheck
+
+      - name: Run shellcheck on scripts
+        run: |
+          shellcheck build.sh || true
+          shellcheck test/run_build_sh_tests.sh || true
+
+      - name: Run build.sh tests
+        run: ./test/run_build_sh_tests.sh
