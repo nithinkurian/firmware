@@ -9,7 +9,6 @@ SCONS="${SCONS:-tools/scons/scons-local-4.9.1/scons.py}"
 ARM_GCC_PATH="${ARM_GCC_PATH:-tools/gcc-arm-none-eabi-10.3-2021.10/bin/}"
 ARM_GCC_GDB="${ARM_GCC_GDB:-${ARM_GCC_PATH}arm-none-eabi-gdb}"
 
-BUILD="./build"
 arguments=()
 
 command_exists() { command -v "$1" >/dev/null 2>&1; }

@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, feature_branch ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Make test script executable
+        run: chmod +x test/run_build_sh_tests.sh
+
+      - name: Run shellcheck on scripts
+        uses: koalaman/shellcheck-action@master
+        with:
+          files: |
+            build.sh
+            test/run_build_sh_tests.sh
+
+      - name: Run build.sh tests
+        run: ./test/run_build_sh_tests.sh
