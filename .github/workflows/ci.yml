@@ -45,4 +45,4 @@ jobs:
 
       - name: Run build stage (scons)
         run: |
-          ./build.sh --build
+          ./build.sh

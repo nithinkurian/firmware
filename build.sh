@@ -69,11 +69,6 @@ if command -v getopt >/dev/null 2>&1; then
 				"$PYTHON" "$SCONS" -Qc
 				exit 0
 				;;
-			-b|--build)
-				# Run scons with no extra targets (build default)
-				"$PYTHON" "$SCONS" -Q
-				exit 0
-				;;
 			-v|--verbose)
 				VERBOSE=1; shift
 				;;
