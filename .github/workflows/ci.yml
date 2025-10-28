@@ -21,10 +21,14 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y shellcheck
 
+      - name: Syntax check build.sh
+        run: |
+          bash -n build.sh
+
       - name: Run shellcheck on scripts
         run: |
-          shellcheck build.sh || true
-          shellcheck test/run_build_sh_tests.sh || true
+          shellcheck build.sh
+          shellcheck test/run_build_sh_tests.sh
 
       - name: Run build.sh tests
         run: ./test/run_build_sh_tests.sh
