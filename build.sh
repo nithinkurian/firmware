@@ -48,6 +48,54 @@ else
 	fi
 fi
 
+# Runtime flags with defaults
+VERBOSE=${VERBOSE:-0}
+DRY_RUN=${DRY_RUN:-0}
+
+# Parse options (short and long) using getopt. Supported options:
+# -h|--help, -c|--clean, -v|--verbose, -n|--dry-run, -t|--toolchain <path>, -g|--gdb <path>
+if command -v getopt >/dev/null 2>&1; then
+	PARSED=$(getopt -o hcvnt:g: -l help,clean,verbose,dry-run,toolchain:,gdb: -- "$@") || {
+		usage
+		exit 2
+	}
+	eval set -- "$PARSED"
+	while true; do
+		case "$1" in
+			-h|--help)
+				usage
+				exit 0
+				;;
+			-c|--clean)
+				"$PYTHON" "$SCONS" -Qc
+				exit 0
+				;;
+			-v|--verbose)
+				VERBOSE=1; shift
+				;;
+			-n|--dry-run)
+				DRY_RUN=1; shift
+				;;
+			-t|--toolchain)
+				ARM_GCC_PATH="$2"
+				# also update default gdb path when toolchain path changed
+				ARM_GCC_GDB="${ARM_GCC_PATH%/}/arm-none-eabi-gdb"
+				shift 2
+				;;
+			-g|--gdb)
+				ARM_GCC_GDB="$2"
+				shift 2
+				;;
+			--)
+				shift; break
+				;;
+			*)
+				break
+				;;
+		esac
+	done
+fi
+
 
 while [[ $# -gt 0 ]]; do
 	case "$1" in
