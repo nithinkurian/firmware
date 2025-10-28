@@ -9,3 +9,4 @@ src/ReferenceProject/Debug/*
 /tools/scons/scons-local-4.9.1/scons-local-4.9.1/SCons/__pycache__/*
 /tools/scons/scons-local-4.9.1/scons-local-4.9.1/SCons/*/__pycache__/*
 /tools/scons/scons-local-4.9.1/scons-local-4.9.1/SCons/*/*/__pycache__/*
+site_scons/__pycache__/*

@@ -2,6 +2,9 @@
 
 PYTHON="python3"
 SCONS="tools/scons/scons-local-4.9.1/scons.py"
+ARM_GCC_PATH="tools/gcc-arm-none-eabi-10.3-2021.10/bin/"
+ARM_GCC_GDB=$ARM_GCC_PATH"arm-none-eabi-gdb"
+
 BUILD="./build"
 
 arguments=()
@@ -22,20 +25,20 @@ do
 		openocd -f board/st_nucleo_h743zi.cfg
 		exit 0
 	elif [[ "$1" = "load" ]]; then
-		arm-none-eabi-gdb --command=build/scons/$2/flash.gdb
+		$ARM_GCC_GDB --command=build/scons/$2/flash.gdb
 		exit 0
 	elif [[ "$1" = "loadsemi" ]]; then
-		arm-none-eabi-gdb --command=build/scons/$2/flash_semi.gdb
+		$ARM_GCC_GDB --command=build/scons/$2/flash_semi.gdb
 		exit 0
 	elif [[ "$1" = "debug" ]]; then
 		if [[ "$2" = "X8664______PTHRE_001" ]]; then
 			gdb -tui build/scons/$2/firmware.elf
 		else
-			arm-none-eabi-gdb --command=build/scons/$2/debug.gdb -tui build/scons/$2/firmware.elf
+			$ARM_GCC_GDB --command=build/scons/$2/debug.gdb -tui build/scons/$2/firmware.elf
 		fi
 		exit 0
 	elif [[ "$1" = "debugsemi" ]]; then
-		arm-none-eabi-gdb --command=build/scons/$2/debug_semi.gdb -tui build/scons/$2/firmware_semi.elf
+		$ARM_GCC_GDB --command=build/scons/$2/debug_semi.gdb -tui build/scons/$2/firmware_semi.elf
 		exit 0
 	elif [[ "$1" = "run" ]]; then
 		./build/scons/$2/firmware.elf 
