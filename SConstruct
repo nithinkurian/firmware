@@ -16,6 +16,22 @@ for target in fw_targets:
 		variant_dir='build/scons/'+target+'/',
 		src_dir='src', duplicate=False)
 
+# Copy helper run script into each variant_dir so CI and users can call it from build tree
+import shutil
+import os
+# Install a single run.sh into build/scons/run.sh using SCons so it's tracked/cleaned
+import SCons.Script
+env = DefaultEnvironment() if 'DefaultEnvironment' in globals() else Environment()
+run_src = File('run.sh')
+run_dst_dir = Dir('build/scons')
+# install will place run.sh into build/scons/run.sh
+installed = env.Install(run_dst_dir, run_src)
+# Ensure installed file is executable (post action so it doesn't create a self-source rule)
+try:
+	env.AddPostAction(installed, SCons.Script.Chmod('$TARGET', 0o755))
+except Exception:
+	# Fallback: attempt to create a command that runs after install
+	env.Command(None, installed, SCons.Script.Chmod('$TARGET', 0o755))
 Alias('libs', 'build/scons/libs/')
 
 libs = [
